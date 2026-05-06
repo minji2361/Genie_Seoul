@@ -1,94 +1,79 @@
 "use client";
 
-import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const NAV_LINKS = [
-  { href: "/#categories", label: "카테고리" },
-  { href: "/#programs",   label: "프로그램" },
-  { href: "/#reviews",    label: "후기" },
-  { href: "/#history",    label: "히스토리" },
-  { href: "/#faq",        label: "FAQ" },
-  { href: "/program",     label: "전체 보기" },
+  { href: "#about-us", label: "지니 이야기" },
+  { href: "#genie-day", label: "Genie-Day" },
+  { href: "#genie-us", label: "Genie-Us" },
+  { href: "#genie-club", label: "Genie-Club" },
+  { href: "#genie-login", label: "Genie-Login" },
+  { href: "#genie-interview", label: "Genie-Interview" },
 ];
 
 export default function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [activeHref, setActiveHref] = useState<string>(NAV_LINKS[0].href);
+
+  const handleNavClick = (href: string) => {
+    const target = document.querySelector(href);
+    if (!target) return;
+    setActiveHref(href);
+    const top = (target as HTMLElement).offsetTop - 112;
+    window.scrollTo({ top, behavior: "smooth" });
+  };
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const updateNavHeight = () => {
+      document.documentElement.style.setProperty("--nav-h", "112px");
+    };
+    const updateActiveTabOnScroll = () => {
+      const scrollY = window.scrollY + 130;
+      let current = NAV_LINKS[0].href;
+
+      for (const link of NAV_LINKS) {
+        const section = document.querySelector(link.href) as HTMLElement | null;
+        if (section && section.offsetTop <= scrollY) {
+          current = link.href;
+        }
+      }
+      setActiveHref(current);
+    };
+
+    updateNavHeight();
+    updateActiveTabOnScroll();
+    window.addEventListener("scroll", updateActiveTabOnScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", updateActiveTabOnScroll);
+      document.documentElement.style.removeProperty("--nav-h");
+    };
   }, []);
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 bg-white border-b-2 border-[#111] transition-all ${
-        scrolled ? "shadow-[0_4px_0_#FFE600]" : ""
-      }`}
-    >
-      <div className="container-genie h-[60px] flex items-center justify-between">
-
-        {/* Logo */}
-        <Link
-          href="/"
-          className="font-display text-[26px] text-[#111] tracking-tight leading-none shrink-0 hover:text-[#111] transition-colors"
-        >
-          GENIE
-        </Link>
-
-        {/* Desktop centre nav */}
-        <nav className="hidden lg:flex items-center gap-8">
-          {NAV_LINKS.map((l) => (
-            <Link key={l.href} href={l.href} className="nav-link text-[13px]">
-              {l.label}
-            </Link>
-          ))}
-        </nav>
-
-        {/* Desktop right CTA */}
-        <div className="hidden lg:flex items-center gap-2 shrink-0">
-          <Link href="/#apply" className="btn-outline text-[13px] py-2 px-5">
-            문의하기
-          </Link>
-          <Link href="/#apply" className="btn-primary text-[13px] py-2 px-5">
-            무료 신청하기
-          </Link>
-        </div>
-
-        {/* Mobile hamburger */}
-        <button
-          className="lg:hidden flex flex-col justify-center gap-[5px] p-1 w-9 h-9"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="메뉴"
-        >
-          <span className={`block w-6 h-[2px] bg-[#111] transition-all duration-200 origin-center ${menuOpen ? "rotate-45 translate-y-[7px]" : ""}`} />
-          <span className={`block w-6 h-[2px] bg-[#111] transition-opacity duration-200 ${menuOpen ? "opacity-0" : ""}`} />
-          <span className={`block w-6 h-[2px] bg-[#111] transition-all duration-200 origin-center ${menuOpen ? "-rotate-45 -translate-y-[7px]" : ""}`} />
+    <header className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-b from-[#7a17ff] to-[#5c09e8]">
+      <div className="container-genie h-[52px] flex items-center justify-center">
+        <button type="button" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} aria-label="GENIE 홈으로 이동">
+          <img src="/logo-placeholder.svg" alt="GENIE 로고" className="h-8 w-auto opacity-95" />
         </button>
       </div>
-
-      {/* Mobile drawer */}
-      {menuOpen && (
-        <nav className="lg:hidden bg-[#FFE600] border-t-2 border-[#111]">
+      <div>
+        <nav className="container-genie h-[60px] flex items-center gap-2 overflow-x-auto scrollbar-hide">
           {NAV_LINKS.map((l) => (
-            <Link
+            <button
               key={l.href}
-              href={l.href}
-              className="block font-display text-xl text-[#111] px-6 py-4 border-b border-[#111]/15 hover:bg-[#f5dc00] transition-colors"
-              onClick={() => setMenuOpen(false)}
+              type="button"
+              onClick={() => handleNavClick(l.href)}
+              className={`shrink-0 h-9 px-4 rounded-full text-sm font-bold transition-colors ${
+                activeHref === l.href
+                  ? "border border-white/70 bg-white text-[#5c09e8] shadow-[0_0_0_2px_rgba(255,255,255,0.15)]"
+                  : "border border-white/25 bg-white/8 text-white hover:bg-white/18"
+              }`}
             >
               {l.label}
-            </Link>
+            </button>
           ))}
-          <div className="px-6 py-5 flex flex-col gap-3">
-            <Link href="/#apply" className="btn-primary block text-center" onClick={() => setMenuOpen(false)}>
-              무료 신청하기
-            </Link>
-          </div>
         </nav>
-      )}
+      </div>
     </header>
   );
 }

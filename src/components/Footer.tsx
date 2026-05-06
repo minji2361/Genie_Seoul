@@ -48,7 +48,7 @@ export default function Footer() {
             <ul className="space-y-3">
               {["지니어링", "지니어스", "지니데이", "지니클럽", "번개모임"].map((p) => (
                 <li key={p}>
-                  <Link href="/program" className="text-white/40 text-sm hover:text-[#FFE600] transition-colors">
+                  <Link href="/#genie-us" className="text-white/40 text-sm hover:text-[#FFE600] transition-colors">
                     {p}
                   </Link>
                 </li>
@@ -61,12 +61,13 @@ export default function Footer() {
             <p className="text-[#FFE600] text-[10px] font-bold tracking-[3px] mb-5">NAVIGATION</p>
             <ul className="space-y-3">
               {[
-                { href: "/",            label: "홈" },
-                { href: "/#categories", label: "카테고리" },
-                { href: "/#reviews",    label: "참여자 후기" },
-                { href: "/#history",    label: "히스토리" },
-                { href: "/#faq",        label: "FAQ" },
-                { href: "/#apply",      label: "신청하기" },
+                { href: "/#about-us", label: "About us" },
+                { href: "/#genie-day", label: "Genie-Day" },
+                { href: "/#genie-us", label: "Genie-Us" },
+                { href: "/#genie-club", label: "Genie-Club" },
+                { href: "/#history", label: "History" },
+                { href: "/#genie-login", label: "Genie-Login" },
+                { href: "/#genie-interview", label: "Genie-Interview" },
               ].map((l) => (
                 <li key={l.href}>
                   <Link href={l.href} className="text-white/40 text-sm hover:text-[#FFE600] transition-colors">

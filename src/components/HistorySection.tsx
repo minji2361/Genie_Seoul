@@ -2,7 +2,7 @@ import { HISTORY } from "@/data";
 
 export default function HistorySection() {
   return (
-    <section id="history" className="py-24 bg-[#111]">
+    <section id="history" className="py-24 bg-[#111] scroll-mt-20">
       <div className="container-genie">
 
         {/* Header — horizontal on desktop */}
@@ -57,7 +57,7 @@ export default function HistorySection() {
             <p className="font-display text-[#111] text-3xl lg:text-4xl">함께 멋진 일을 만들어요</p>
             <p className="text-[#111]/55 text-sm mt-1">지니와 함께 중랑의 청년 문화를 만들어가세요.</p>
           </div>
-          <a href="#apply" className="btn-primary self-start md:self-auto text-base py-4 px-10">
+          <a href="#genie-login" className="btn-primary self-start md:self-auto text-base py-4 px-10">
             지금 참여하기 →
           </a>
         </div>
