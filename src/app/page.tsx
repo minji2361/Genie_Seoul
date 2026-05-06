@@ -1,12 +1,12 @@
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
-import IntroSection from "@/components/IntroSection";
-import CategoriesSection from "@/components/CategoriesSection";
-import ProgramsSection from "@/components/ProgramsSection";
-import ReviewsSection from "@/components/ReviewsSection";
+import AboutUsSection from "@/components/AboutUsSection";
+import GenieDaySection from "@/components/GenieDaySection";
+import GenieUsSection from "@/components/GenieUsSection";
+import GenieClubSection from "@/components/GenieClubSection";
 import HistorySection from "@/components/HistorySection";
-import FaqSection from "@/components/FaqSection";
-import ApplySection from "@/components/ApplySection";
+import GenieInterviewSection from "@/components/GenieInterviewSection";
+import GenieLoginSection from "@/components/GenieLoginSection";
 import Footer from "@/components/Footer";
 
 export default function HomePage() {
@@ -15,13 +15,13 @@ export default function HomePage() {
       <Navbar />
       <main>
         <HeroSection />
-        <IntroSection />
-        <CategoriesSection />
-        <ProgramsSection />
-        <ReviewsSection />
+        <AboutUsSection />
+        <GenieDaySection />
+        <GenieUsSection />
+        <GenieClubSection />
         <HistorySection />
-        <FaqSection />
-        <ApplySection />
+        <GenieLoginSection />
+        <GenieInterviewSection />
       </main>
       <Footer />
     </>

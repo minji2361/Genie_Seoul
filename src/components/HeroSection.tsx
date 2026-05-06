@@ -1,99 +1,41 @@
 import Link from "next/link";
-import { MARQUEE_ITEMS } from "@/data";
 
 export default function HeroSection() {
-  const doubled = [...MARQUEE_ITEMS, ...MARQUEE_ITEMS];
-
   return (
-    <section className="relative bg-[#FFE600] pt-[60px] overflow-hidden">
+    <section className="relative pt-[132px] overflow-hidden bg-gradient-to-b from-[#6f14ff] to-[#4e00d5]">
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_20%_15%,rgba(255,255,255,0.16),transparent_35%),radial-gradient(circle_at_85%_10%,rgba(255,255,255,0.12),transparent_30%)]" />
 
-      {/* Background decorative shapes */}
-      <div className="absolute right-[-80px] top-[80px]  w-[420px] h-[420px] rounded-full bg-black/[0.045] pointer-events-none" />
-      <div className="absolute right-[120px] top-[130px] w-[200px] h-[200px] rounded-full bg-black/[0.035] pointer-events-none" />
-      <div className="absolute left-[-60px]  bottom-[60px] w-[260px] h-[260px] rounded-full bg-black/[0.03]  pointer-events-none" />
-      <div className="absolute left-[380px] top-[40px]   w-[80px]  h-[80px]  rounded-full bg-black/[0.04]  pointer-events-none hidden lg:block" />
-
-      <div className="container-genie pt-20 pb-14 lg:pt-24 lg:pb-20 relative">
-
-        {/* Two-column layout on desktop */}
-        <div className="lg:grid lg:grid-cols-[1fr_420px] lg:gap-16 lg:items-end">
-
-          {/* LEFT: headline */}
-          <div>
-            <div className="tag-pill mb-7 animate-fadeUp">서울 북부 청년 커뮤니티</div>
-
-            <h1 className="font-display text-[80px] sm:text-[100px] lg:text-[130px] xl:text-[150px] text-[#111] leading-[0.88] mb-2 animate-fadeUp delay-100">
-              중랑에서<br />찾는
-            </h1>
-            <h1 className="font-display text-[80px] sm:text-[100px] lg:text-[130px] xl:text-[150px] text-[#111]/30 leading-[0.88] mb-10 animate-fadeUp delay-200">
-              진짜 '나'
-            </h1>
-
-            <div className="flex flex-wrap gap-3 animate-fadeUp delay-300">
-              <Link href="/#programs" className="btn-primary text-base py-4 px-8">
-                프로그램 둘러보기 →
-              </Link>
-              <Link href="/#apply" className="btn-outline text-base py-4 px-8">
-                무료 신청하기
-              </Link>
-            </div>
-          </div>
-
-          {/* RIGHT: description + stats — desktop only aside */}
-          <div className="hidden lg:flex flex-col justify-end gap-8 pb-2 animate-fadeUp delay-300">
-            <p className="text-[#111]/60 text-base leading-relaxed border-l-4 border-[#111]/20 pl-5">
-              취향 기반 모임·행사·원데이클래스.<br />
-              중랑에서 시작하는 청년 문화<br />
-              커뮤니티 플랫폼.
-            </p>
-
-            {/* Stats grid */}
-            <div className="grid grid-cols-2 gap-px bg-[#111]/10">
-              {[
-                { num: "10+",  label: "운영 년차" },
-                { num: "500+", label: "참여 청년" },
-                { num: "4",    label: "프로그램 카테고리" },
-                { num: "중랑",  label: "대표 청년단체" },
-              ].map((s) => (
-                <div key={s.label} className="bg-[#FFE600] p-5">
-                  <div className="font-display text-4xl text-[#111]">{s.num}</div>
-                  <div className="text-xs text-[#111]/50 font-bold mt-1 tracking-wide">{s.label}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile stats row */}
-        <div className="lg:hidden flex gap-8 mt-12 pt-8 border-t-2 border-[#111]/10 animate-fadeUp delay-400">
-          {[
-            { num: "10+",  label: "운영 년차" },
-            { num: "500+", label: "참여 청년" },
-            { num: "4",    label: "카테고리" },
-          ].map((s) => (
-            <div key={s.label}>
-              <div className="font-display text-3xl text-[#111]">{s.num}</div>
-              <div className="text-xs text-[#111]/50 font-bold mt-1">{s.label}</div>
-            </div>
-          ))}
-        </div>
-
-        {/* Mobile description */}
-        <p className="lg:hidden text-[#333] text-sm leading-relaxed mt-8 animate-fadeUp delay-400">
-          취향 기반 모임·행사·원데이클래스.<br />
-          중랑에서 시작하는 청년 문화 커뮤니티 플랫폼.
+      <div className="container-genie relative pt-14 pb-14 lg:pt-16 lg:pb-20 text-center">
+        <p className="text-white/95 text-[30px] sm:text-[42px] lg:text-[56px] font-display leading-[1.15]">
+          중랑에서 찾는<br />
+          진짜 &apos;나&apos;
         </p>
-      </div>
+        <p className="mt-7 text-white/90 text-[28px] sm:text-[34px] lg:text-[44px] font-display leading-[1.2]">
+          내 취향이 일상이 되는 곳,<br />
+          <span className="text-[#FFE600]">가장 가까운 놀이터</span>
+        </p>
 
-      {/* Marquee ticker */}
-      <div className="bg-[#111] py-3 overflow-hidden">
-        <div className="flex animate-marquee whitespace-nowrap">
-          {doubled.map((item, i) => (
-            <span key={i} className="font-display text-[#FFE600] text-sm mx-8 tracking-widest">
-              {item}
-              <span className="mx-8 text-[#FFE600]/25">✦</span>
-            </span>
-          ))}
+        <div className="mt-8 text-[#FFE600]">
+          <p className="font-display text-3xl sm:text-4xl lg:text-5xl">플레이그라운드</p>
+          <p className="font-display text-5xl sm:text-6xl lg:text-7xl leading-none mt-2">genie</p>
+        </div>
+
+        {/* Replace this with actual hero character image later */}
+        <div className="mt-10 mx-auto w-[210px] h-[210px] sm:w-[260px] sm:h-[260px] lg:w-[320px] lg:h-[320px] rounded-[36px] border-2 border-dashed border-white/45 bg-white/10 flex items-center justify-center">
+          <div className="text-white/80 text-sm font-bold tracking-wide">
+            HERO IMAGE
+            <br />
+            PLACEHOLDER
+          </div>
+        </div>
+
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+          <Link href="/#genie-us" className="btn-primary text-base py-4 px-8">
+            프로그램 보기
+          </Link>
+          <Link href="/#genie-login" className="btn-outline text-base py-4 px-8 !text-white !border-white hover:!bg-white hover:!text-[#5c09e8]">
+            로그인
+          </Link>
         </div>
       </div>
     </section>
