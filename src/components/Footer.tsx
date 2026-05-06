@@ -1,0 +1,118 @@
+import Link from "next/link";
+
+export default function Footer() {
+  return (
+    <footer className="bg-[#111] border-t border-white/10">
+
+      {/* Yellow marquee stripe */}
+      <div className="bg-[#FFE600] py-2.5 overflow-hidden">
+        <div className="flex whitespace-nowrap animate-marquee">
+          {Array(16).fill(null).map((_, i) => (
+            <span key={i} className="font-display text-[#111] text-sm tracking-[3px] px-8">
+              GENIE ✦ 중랑청년 ✦ FIND YOUR GENIE ✦
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <div className="container-genie py-16">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 mb-14">
+
+          {/* Brand */}
+          <div className="col-span-2 lg:col-span-1">
+            <div className="font-display text-[#FFE600] text-4xl mb-3">GENIE</div>
+            <p className="text-white/38 text-xs leading-relaxed mb-6">
+              서울 북부 대표 청년 문화<br />스타트업 플랫폼.<br />
+              2015년부터 함께해 왔습니다.
+            </p>
+            <div className="flex gap-2">
+              {[
+                { label: "IG", href: "#" },
+                { label: "KT", href: "#" },
+                { label: "YT", href: "#" },
+              ].map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  className="w-9 h-9 border border-white/18 flex items-center justify-center text-[10px] font-bold text-white/38 hover:border-[#FFE600] hover:text-[#FFE600] transition-all"
+                >
+                  {s.label}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Programs */}
+          <div>
+            <p className="text-[#FFE600] text-[10px] font-bold tracking-[3px] mb-5">PROGRAMS</p>
+            <ul className="space-y-3">
+              {["지니어링", "지니어스", "지니데이", "지니클럽", "번개모임"].map((p) => (
+                <li key={p}>
+                  <Link href="/program" className="text-white/40 text-sm hover:text-[#FFE600] transition-colors">
+                    {p}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Navigation */}
+          <div>
+            <p className="text-[#FFE600] text-[10px] font-bold tracking-[3px] mb-5">NAVIGATION</p>
+            <ul className="space-y-3">
+              {[
+                { href: "/",            label: "홈" },
+                { href: "/#categories", label: "카테고리" },
+                { href: "/#reviews",    label: "참여자 후기" },
+                { href: "/#history",    label: "히스토리" },
+                { href: "/#faq",        label: "FAQ" },
+                { href: "/#apply",      label: "신청하기" },
+              ].map((l) => (
+                <li key={l.href}>
+                  <Link href={l.href} className="text-white/40 text-sm hover:text-[#FFE600] transition-colors">
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <p className="text-[#FFE600] text-[10px] font-bold tracking-[3px] mb-5">CONTACT</p>
+            <ul className="space-y-3 text-white/40 text-sm">
+              <li>
+                <a href="mailto:genie@example.com" className="hover:text-[#FFE600] transition-colors">
+                  genie@example.com
+                </a>
+              </li>
+              <li>서울특별시 중랑구</li>
+              <li className="pt-1 space-y-2">
+                {[
+                  { href: "#", label: "인스타그램" },
+                  { href: "#", label: "카카오 채널" },
+                  { href: "#", label: "유튜브" },
+                ].map((l) => (
+                  <div key={l.label}>
+                    <a href={l.href} className="hover:text-[#FFE600] transition-colors block">
+                      {l.label}
+                    </a>
+                  </div>
+                ))}
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom bar */}
+        <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row sm:justify-between gap-3 text-white/20 text-xs">
+          <span>© 2025 GENIE. ALL RIGHTS RESERVED.</span>
+          <div className="flex gap-6">
+            <a href="#" className="hover:text-white/45 transition-colors">개인정보처리방침</a>
+            <a href="#" className="hover:text-white/45 transition-colors">이용약관</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
