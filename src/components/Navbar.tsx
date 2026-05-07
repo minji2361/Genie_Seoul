@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const NAV_LINKS = [
   { href: "#about-us", label: "지니 이야기" },
@@ -8,10 +8,17 @@ const NAV_LINKS = [
   { href: "#genie-us", label: "Genie-Us" },
   { href: "#genie-club", label: "Genie-Club" },
   { href: "#genie-login", label: "Genie-Login" },
-  { href: "#genie-interview", label: "Genie-Interview" },
 ];
 
-export default function Navbar() {
+type NavbarProps = {
+  isLoggedIn: boolean;
+};
+
+export default function Navbar({ isLoggedIn }: NavbarProps) {
+  const navLinks = useMemo(
+    () => (isLoggedIn ? [...NAV_LINKS, { href: "#genie-interview", label: "Genie-Interview" }] : NAV_LINKS),
+    [isLoggedIn]
+  );
   const [activeHref, setActiveHref] = useState<string>(NAV_LINKS[0].href);
 
   const handleNavClick = (href: string) => {
@@ -30,7 +37,7 @@ export default function Navbar() {
       const scrollY = window.scrollY + 130;
       let current = NAV_LINKS[0].href;
 
-      for (const link of NAV_LINKS) {
+      for (const link of navLinks) {
         const section = document.querySelector(link.href) as HTMLElement | null;
         if (section && section.offsetTop <= scrollY) {
           current = link.href;
@@ -47,7 +54,7 @@ export default function Navbar() {
       window.removeEventListener("scroll", updateActiveTabOnScroll);
       document.documentElement.style.removeProperty("--nav-h");
     };
-  }, []);
+  }, [navLinks]);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-b from-[#7a17ff] to-[#5c09e8]">
@@ -58,7 +65,7 @@ export default function Navbar() {
       </div>
       <div>
         <nav className="container-genie h-[60px] flex items-center gap-2 overflow-x-auto scrollbar-hide">
-          {NAV_LINKS.map((l) => (
+          {navLinks.map((l) => (
             <button
               key={l.href}
               type="button"

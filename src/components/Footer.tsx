@@ -1,20 +1,22 @@
 import Link from "next/link";
 
-export default function Footer() {
+type FooterProps = {
+  isLoggedIn: boolean;
+};
+
+export default function Footer({ isLoggedIn }: FooterProps) {
+  const navigationLinks = [
+    { href: "/#about-us", label: "About us" },
+    { href: "/#genie-day", label: "Genie-Day" },
+    { href: "/#genie-us", label: "Genie-Us" },
+    { href: "/#genie-club", label: "Genie-Club" },
+    { href: "/#history", label: "History" },
+    { href: "/#genie-login", label: "Genie-Login" },
+    ...(isLoggedIn ? [{ href: "/#genie-interview", label: "Genie-Interview" }] : []),
+  ];
+
   return (
     <footer className="bg-[#111] border-t border-white/10">
-
-      {/* Yellow marquee stripe */}
-      <div className="bg-[#FFE600] py-2.5 overflow-hidden">
-        <div className="flex whitespace-nowrap animate-marquee">
-          {Array(16).fill(null).map((_, i) => (
-            <span key={i} className="font-display text-[#111] text-sm tracking-[3px] px-8">
-              GENIE ✦ 중랑청년 ✦ FIND YOUR GENIE ✦
-            </span>
-          ))}
-        </div>
-      </div>
-
       <div className="container-genie py-16">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 mb-14">
 
@@ -60,15 +62,7 @@ export default function Footer() {
           <div>
             <p className="text-[#FFE600] text-[10px] font-bold tracking-[3px] mb-5">NAVIGATION</p>
             <ul className="space-y-3">
-              {[
-                { href: "/#about-us", label: "About us" },
-                { href: "/#genie-day", label: "Genie-Day" },
-                { href: "/#genie-us", label: "Genie-Us" },
-                { href: "/#genie-club", label: "Genie-Club" },
-                { href: "/#history", label: "History" },
-                { href: "/#genie-login", label: "Genie-Login" },
-                { href: "/#genie-interview", label: "Genie-Interview" },
-              ].map((l) => (
+              {navigationLinks.map((l) => (
                 <li key={l.href}>
                   <Link href={l.href} className="text-white/40 text-sm hover:text-[#FFE600] transition-colors">
                     {l.label}
