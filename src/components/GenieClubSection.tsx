@@ -1,69 +1,48 @@
-import { REVIEWS } from "@/data";
+import MediaSlot from "@/components/MediaSlot";
 
-function Stars({ count }: { count: number }) {
-  return (
-    <div className="flex gap-0.5">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <span key={i} className={`text-sm ${i < count ? "text-[#FFE600]" : "text-[#ddd]"}`} style={{ fontFamily: "serif" }}>
-          ★
-        </span>
-      ))}
-    </div>
-  );
-}
+const CLUBS = [
+  { title: "독서 모임", desc: "2025.03 함께 읽고 나누는 저녁" },
+  { title: "러닝 크루", desc: "2025.02 가볍게 달리는 아침" },
+  { title: "필름 클럽", desc: "2025.01 영화와 대화" },
+  { title: "핸드메이드", desc: "2024.12 만드는 즐거움" },
+];
 
 export default function GenieClubSection() {
   return (
-    <section id="genie-club" className="py-24 bg-white scroll-mt-20">
-      <div className="container-genie">
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between mb-14 gap-4">
-          <div>
-            <p className="section-eyebrow mb-4">PARTICIPANT REVIEWS</p>
-            <h2 className="font-display text-6xl lg:text-7xl text-[#111] leading-none">참여자 후기</h2>
-          </div>
-          <div className="flex items-end gap-6">
-            <div className="text-right">
-              <div className="font-display text-5xl text-[#111]">4.9</div>
-              <Stars count={5} />
-              <p className="text-xs text-[#999] mt-1">{REVIEWS.length}개 후기 평균</p>
-            </div>
-          </div>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[2px] bg-[#111]">
-          {REVIEWS.map((review, idx) => {
-            const isYellow = idx === 0;
-            return (
-              <div key={review.id} className={`p-7 flex flex-col gap-5 ${isYellow ? "bg-[#FFE600]" : idx % 2 === 0 ? "bg-white" : "bg-[#F5F5F5]"}`}>
-                <div className="flex items-center justify-between">
-                  <Stars count={review.rating} />
-                  <span className="text-[10px] font-bold tracking-wider px-2.5 py-1 bg-[#111] text-[#FFE600]">{review.program}</span>
-                </div>
-                <p className={`text-sm leading-relaxed flex-1 ${isYellow ? "text-[#111]/75" : "text-[#444]"}`}>&ldquo;{review.content}&rdquo;</p>
-                <div className={`flex items-center gap-3 pt-4 border-t ${isYellow ? "border-[#111]/15" : "border-[#eee]"}`}>
-                  <div className={`w-9 h-9 rounded-full flex items-center justify-center font-display text-sm ${isYellow ? "bg-[#111] text-[#FFE600]" : "bg-[#FFE600] text-[#111]"}`}>
-                    {review.name[0]}
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm text-[#111]">{review.name}</p>
-                    <p className={`text-xs ${isYellow ? "text-[#111]/50" : "text-[#999]"}`}>만 {review.age}세</p>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        <div className="mt-[2px] grid grid-cols-2 lg:grid-cols-4 gap-[2px] bg-[#111]">
-          {[
-            { num: "98%", label: "재참여 의향" },
-            { num: "96%", label: "지인 추천 의향" },
-            { num: "500+", label: "누적 참여자" },
-            { num: "4.9", label: "평균 만족도" },
-          ].map((s) => (
-            <div key={s.label} className="bg-[#F5F5F5] p-6 text-center">
-              <div className="font-display text-4xl text-[#111] mb-1">{s.num}</div>
-              <div className="text-xs text-[#999] font-bold tracking-wide">{s.label}</div>
-            </div>
+    <section id="genie-club" className="bg-white pb-16 pt-14 sm:pb-20 sm:pt-16 lg:pb-24 lg:pt-20 scroll-mt-[var(--nav-h)]">
+      <div className="mx-auto w-full max-w-6xl px-5 sm:px-8 lg:px-10">
+        <h2 className="text-center text-xl font-bold leading-snug text-genie-purple sm:text-2xl lg:text-3xl">
+          우리가 함께한
+          <br />
+          &apos;지니클럽&apos;
+        </h2>
+
+        <ul className="mt-12 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 lg:mx-auto lg:mt-14 lg:max-w-5xl lg:gap-x-8 lg:gap-y-12">
+          {CLUBS.map((c) => (
+            <li key={c.title} className="flex flex-col items-center text-center">
+              <MediaSlot
+                aspectClass="aspect-[4/3]"
+                variant="on-white"
+                label="사진"
+                hint="교체"
+                className="w-full rounded-xl"
+              />
+              <p className="mt-3 text-sm font-bold text-[#111] sm:text-base">{c.title}</p>
+              <p className="mt-1 text-xs font-normal leading-snug text-[#444] sm:text-sm">{c.desc}</p>
+            </li>
           ))}
+        </ul>
+
+        <div className="mt-12 flex justify-center lg:mt-14">
+          <button
+            type="button"
+            className="inline-flex items-center gap-2 text-sm font-bold text-genie-purple hover:underline sm:text-base"
+          >
+            더 보기
+            <span className="text-lg" aria-hidden>
+              →
+            </span>
+          </button>
         </div>
       </div>
     </section>

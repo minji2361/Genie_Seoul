@@ -1,85 +1,181 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 const NAV_LINKS = [
-  { href: "#about-us", label: "지니 이야기" },
-  { href: "#genie-day", label: "Genie-Day" },
-  { href: "#genie-us", label: "Genie-Us" },
-  { href: "#genie-club", label: "Genie-Club" },
-  { href: "#genie-login", label: "Genie-Login" },
+  { href: "#story", labelKr: "지니이야기", labelEn: null as string | null },
+  { href: "#genie-day", labelKr: "지니데이", labelEn: "Genie Day" },
+  { href: "#genie-us", labelKr: "지니어스", labelEn: "Genie Us" },
+  { href: "#genie-club", labelKr: "지니클럽", labelEn: "Genie Club" },
 ];
 
 type NavbarProps = {
   isLoggedIn: boolean;
 };
 
+function NavLabel({
+  labelKr,
+  labelEn,
+  active,
+}: {
+  labelKr: string;
+  labelEn: string | null;
+  active: boolean;
+}) {
+  if (!labelEn) {
+    return <span className="text-[11px] font-bold sm:text-xs">{labelKr}</span>;
+  }
+  return (
+    <span className="flex flex-col items-center gap-0.5 leading-none">
+      <span className="text-[11px] font-bold sm:text-xs">{labelKr}</span>
+      <span
+        className={`text-[9px] font-semibold sm:text-[10px] ${active ? "text-[#111]/65" : "text-white/85"}`}
+      >
+        {labelEn}
+      </span>
+    </span>
+  );
+}
+
 export default function Navbar({ isLoggedIn }: NavbarProps) {
-  const navLinks = useMemo(
-    () => (isLoggedIn ? [...NAV_LINKS, { href: "#genie-interview", label: "Genie-Interview" }] : NAV_LINKS),
+  const headerRef = useRef<HTMLElement>(null);
+  const navScrollRef = useRef<HTMLElement>(null);
+  const blockNavClickRef = useRef(false);
+  const extraLinks = useMemo(
+    () => (isLoggedIn ? [{ href: "#genie-interview", labelKr: "FAQ", labelEn: null as string | null }] : []),
     [isLoggedIn]
   );
+  const navLinks = [...NAV_LINKS, ...extraLinks];
   const [activeHref, setActiveHref] = useState<string>(NAV_LINKS[0].href);
 
   const handleNavClick = (href: string) => {
+    if (blockNavClickRef.current) {
+      blockNavClickRef.current = false;
+      return;
+    }
     const target = document.querySelector(href);
     if (!target) return;
     setActiveHref(href);
-    const top = (target as HTMLElement).offsetTop - 112;
-    window.scrollTo({ top, behavior: "smooth" });
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   useEffect(() => {
-    const updateNavHeight = () => {
-      document.documentElement.style.setProperty("--nav-h", "112px");
+    const el = headerRef.current;
+    if (!el || typeof ResizeObserver === "undefined") {
+      document.documentElement.style.setProperty("--nav-h", "72px");
+      return;
+    }
+    const apply = () => {
+      document.documentElement.style.setProperty("--nav-h", `${el.offsetHeight}px`);
     };
-    const updateActiveTabOnScroll = () => {
-      const scrollY = window.scrollY + 130;
-      let current = NAV_LINKS[0].href;
+    apply();
+    const ro = new ResizeObserver(apply);
+    ro.observe(el);
+    return () => {
+      ro.disconnect();
+      document.documentElement.style.removeProperty("--nav-h");
+    };
+  }, [isLoggedIn]);
 
+  useEffect(() => {
+    const getNav = () =>
+      parseInt(getComputedStyle(document.documentElement).getPropertyValue("--nav-h") || "72", 10);
+
+    const onScroll = () => {
+      const threshold = window.scrollY + getNav() + 24;
+      let current = NAV_LINKS[0].href;
       for (const link of navLinks) {
-        const section = document.querySelector(link.href) as HTMLElement | null;
-        if (section && section.offsetTop <= scrollY) {
-          current = link.href;
-        }
+        const el = document.querySelector(link.href) as HTMLElement | null;
+        if (!el) continue;
+        const sectionTop = el.getBoundingClientRect().top + window.scrollY;
+        if (sectionTop <= threshold) current = link.href;
       }
       setActiveHref(current);
     };
 
-    updateNavHeight();
-    updateActiveTabOnScroll();
-    window.addEventListener("scroll", updateActiveTabOnScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", updateActiveTabOnScroll);
-      document.documentElement.style.removeProperty("--nav-h");
-    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, [navLinks]);
 
+  useEffect(() => {
+    const el = navScrollRef.current;
+    if (!el) return;
+
+    const onPointerDown = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse" || e.button !== 0) return;
+      const startX = e.clientX;
+      const startScroll = el.scrollLeft;
+      let moved = false;
+
+      const onPointerMove = (ev: PointerEvent) => {
+        const dx = ev.clientX - startX;
+        if (Math.abs(dx) > 8) moved = true;
+        if (moved) el.scrollLeft = startScroll - dx;
+      };
+
+      const onPointerUp = () => {
+        document.removeEventListener("pointermove", onPointerMove);
+        document.removeEventListener("pointerup", onPointerUp);
+        if (moved) blockNavClickRef.current = true;
+      };
+
+      document.addEventListener("pointermove", onPointerMove, { passive: true });
+      document.addEventListener("pointerup", onPointerUp);
+    };
+
+    el.addEventListener("pointerdown", onPointerDown);
+    return () => el.removeEventListener("pointerdown", onPointerDown);
+  }, []);
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-b from-[#7a17ff] to-[#5c09e8]">
-      <div className="container-genie h-[52px] flex items-center justify-center">
-        <button type="button" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} aria-label="GENIE 홈으로 이동">
-          <img src="/logo-placeholder.svg" alt="GENIE 로고" className="h-8 w-auto opacity-95" />
-        </button>
-      </div>
-      <div>
-        <nav className="container-genie h-[60px] flex items-center gap-2 overflow-x-auto scrollbar-hide">
-          {navLinks.map((l) => (
-            <button
-              key={l.href}
-              type="button"
-              onClick={() => handleNavClick(l.href)}
-              className={`shrink-0 h-9 px-4 rounded-full text-sm font-bold transition-colors ${
-                activeHref === l.href
-                  ? "border border-white/70 bg-white text-[#5c09e8] shadow-[0_0_0_2px_rgba(255,255,255,0.15)]"
-                  : "border border-white/25 bg-white/8 text-white hover:bg-white/18"
-              }`}
-            >
-              {l.label}
-            </button>
-          ))}
-        </nav>
+    <header ref={headerRef} className="fixed left-0 right-0 top-0 z-50 bg-genie-purple shadow-[0_1px_0_rgba(0,0,0,0.06)]">
+      <div className="mx-auto flex w-full max-w-6xl flex-col lg:max-w-7xl">
+        <div className="flex items-center justify-between border-b border-white/15 px-4 py-2 sm:px-6 lg:px-10">
+          <button
+            type="button"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="flex h-8 min-w-[76px] shrink-0 items-center justify-center rounded-lg border-2 border-dashed border-white/45 bg-white/10 px-2.5 sm:h-9 sm:min-w-[88px]"
+            aria-label="홈으로 이동"
+          >
+            <span className="text-[10px] font-bold tracking-wide text-white">로고</span>
+          </button>
+          <a
+            href="#genie-login"
+            className="shrink-0 text-sm font-normal text-white hover:text-white/85 sm:text-base"
+            onClick={(e) => {
+              e.preventDefault();
+              document.querySelector("#genie-login")?.scrollIntoView({ behavior: "smooth", block: "start" });
+            }}
+          >
+            로그인
+          </a>
+        </div>
+
+        <div className="flex flex-nowrap items-center gap-2 px-4 py-2 sm:gap-3 sm:px-6 lg:px-10">
+          <nav
+            ref={navScrollRef}
+            className="min-h-9 min-w-0 flex-1 cursor-grab overflow-x-auto overscroll-x-contain scroll-smooth [-webkit-overflow-scrolling:touch] active:cursor-grabbing touch-pan-x scrollbar-hide select-none"
+            aria-label="섹션 바로가기 (좌우로 스크롤)"
+          >
+            <div className="flex w-max items-center justify-start gap-1.5 py-0.5 sm:justify-end sm:gap-2 sm:pl-0 sm:pr-1">
+              {navLinks.map((l) => (
+                <button
+                  key={l.href}
+                  type="button"
+                  onClick={() => handleNavClick(l.href)}
+                  className={`shrink-0 rounded-full px-2.5 py-2 transition-colors sm:px-4 sm:py-2.5 ${
+                    activeHref === l.href
+                      ? "bg-genie-yellow text-[#111] shadow-sm"
+                      : "text-white/95 hover:bg-white/15"
+                  }`}
+                >
+                  <NavLabel labelKr={l.labelKr} labelEn={l.labelEn} active={activeHref === l.href} />
+                </button>
+              ))}
+            </div>
+          </nav>
+        </div>
       </div>
     </header>
   );
