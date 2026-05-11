@@ -1,41 +1,38 @@
-import Link from "next/link";
+import MediaSlot from "@/components/MediaSlot";
 
 export default function HeroSection() {
   return (
-    <section className="relative pt-[132px] overflow-hidden bg-gradient-to-b from-[#6f14ff] to-[#4e00d5]">
-      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_20%_15%,rgba(255,255,255,0.16),transparent_35%),radial-gradient(circle_at_85%_10%,rgba(255,255,255,0.12),transparent_30%)]" />
-
-      <div className="container-genie relative pt-14 pb-14 lg:pt-16 lg:pb-20 text-center">
-        <p className="text-white/95 text-[30px] sm:text-[42px] lg:text-[56px] font-display leading-[1.15]">
-          중랑에서 찾는<br />
-          진짜 &apos;나&apos;
-        </p>
-        <p className="mt-7 text-white/90 text-[28px] sm:text-[34px] lg:text-[44px] font-display leading-[1.2]">
-          내 취향이 일상이 되는 곳,<br />
-          <span className="text-[#FFE600]">가장 가까운 놀이터</span>
-        </p>
-
-        <div className="mt-8 text-[#FFE600]">
-          <p className="font-display text-3xl sm:text-4xl lg:text-5xl">플레이그라운드</p>
-          <p className="font-display text-5xl sm:text-6xl lg:text-7xl leading-none mt-2">genie</p>
+    <section
+      id="hero"
+      className="bg-genie-purple pb-12 pt-[calc(var(--nav-h)+20px)] text-center sm:pb-16 sm:pt-[calc(var(--nav-h)+24px)] lg:pb-20 lg:pt-[calc(var(--nav-h)+28px)] scroll-mt-0"
+    >
+      <div className="mx-auto flex w-full max-w-6xl flex-col items-center px-5 text-center sm:px-8 lg:px-10 lg:flex-row lg:items-center lg:justify-between lg:gap-14 lg:text-left">
+        <div className="max-w-xl lg:flex-1">
+          <p className="text-lg font-normal leading-snug text-white sm:text-xl lg:text-2xl lg:leading-snug">
+            내 취향이 일상이 되는 곳,
+          </p>
+          <p className="mt-3 text-base font-normal leading-relaxed text-white/95 sm:text-lg lg:mt-4 lg:text-xl">
+            중랑에서 만나는 나만의 커뮤니티
+          </p>
+          <p className="mt-4 text-lg font-bold leading-snug text-white sm:mt-5 sm:text-xl lg:text-2xl">
+            가장 가까운 놀이터
+          </p>
+          <p className="mt-3 text-xl font-normal leading-snug text-genie-yellow sm:text-2xl lg:mt-4 lg:text-3xl xl:text-4xl">
+            플레이그라운드
+          </p>
+          <p className="font-display mt-6 text-5xl font-normal leading-none tracking-tight text-white sm:mt-8 sm:text-6xl lg:mt-10 lg:text-7xl xl:text-8xl">
+            genie
+          </p>
         </div>
 
-        {/* Replace this with actual hero character image later */}
-        <div className="mt-10 mx-auto w-[210px] h-[210px] sm:w-[260px] sm:h-[260px] lg:w-[320px] lg:h-[320px] rounded-[36px] border-2 border-dashed border-white/45 bg-white/10 flex items-center justify-center">
-          <div className="text-white/80 text-sm font-bold tracking-wide">
-            HERO IMAGE
-            <br />
-            PLACEHOLDER
-          </div>
-        </div>
-
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-          <Link href="/#genie-us" className="btn-primary text-base py-4 px-8">
-            프로그램 보기
-          </Link>
-          <Link href="/#genie-login" className="btn-outline text-base py-4 px-8 !text-white !border-white hover:!bg-white hover:!text-[#5c09e8]">
-            로그인
-          </Link>
+        <div className="mt-10 flex w-full max-w-[300px] justify-center sm:max-w-[340px] lg:mt-0 lg:max-w-[min(42vw,420px)] lg:shrink-0">
+          <MediaSlot
+            aspectClass="aspect-square"
+            variant="on-purple"
+            label="히어로 캐릭터"
+            hint="램프·유령 일러스트"
+            className="w-full rounded-[32px]"
+          />
         </div>
       </div>
     </section>

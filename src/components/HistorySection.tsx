@@ -1,65 +1,48 @@
-import { HISTORY } from "@/data";
+import MediaSlot from "@/components/MediaSlot";
+
+const EVENTS = [
+  { date: "2025.04", title: "봄 피크닉", desc: "중랑천 산책 후 모임" },
+  { date: "2025.03", title: "드로잉 클래스", desc: "감성 일러스트 체험" },
+  { date: "2025.02", title: "북토크", desc: "에세이 나눔의 밤" },
+];
 
 export default function HistorySection() {
   return (
-    <section id="history" className="py-24 bg-[#111] scroll-mt-20">
-      <div className="container-genie">
+    <section id="past-genieday" className="bg-white py-14 sm:py-20 lg:py-24 scroll-mt-[var(--nav-h)]">
+      <div className="mx-auto w-full max-w-6xl px-5 sm:px-8 lg:px-10">
+        <h2 className="text-center text-xl font-bold leading-snug text-genie-purple sm:text-2xl lg:text-3xl">
+          우리가 함께한
+          <br />
+          &apos;지니데이&apos;
+        </h2>
 
-        {/* Header — horizontal on desktop */}
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between mb-16 gap-6">
-          <div>
-            <p className="section-eyebrow text-[#FFE600]/35 mb-4">GENIE&apos;S FOOTSTEPS</p>
-            <h2 className="font-display text-6xl lg:text-7xl text-white leading-none">
-              지니의<br />
-              <span className="text-[#FFE600]">발자취</span>
-            </h2>
-          </div>
-          <p className="text-white/40 text-sm leading-relaxed max-w-xs lg:text-right">
-            2015년부터 시작된 지니의 여정.<br />
-            중랑 청년들과 함께 만들어온 이야기입니다.
-          </p>
-        </div>
-
-        {/* Timeline: 4 columns on desktop */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[1px] bg-white/10">
-          {HISTORY.map((item, idx) => (
-            <div
-              key={item.period}
-              className={`p-8 flex flex-col ${
-                idx === 3 ? "bg-[#FFE600]" : idx % 2 === 0 ? "bg-[#111]" : "bg-[#1a1a1a]"
-              }`}
-            >
-              {/* Period badge */}
-              <div className={`inline-block self-start px-3 py-1 mb-6 ${idx === 3 ? "bg-[#111]" : "bg-[#FFE600]"}`}>
-                <span className={`font-display text-sm tracking-wider ${idx === 3 ? "text-[#FFE600]" : "text-[#111]"}`}>
-                  {item.period}
-                </span>
-              </div>
-
-              {/* Events list */}
-              <ul className="space-y-3 flex-1">
-                {item.events.map((ev, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <span className={`shrink-0 w-1.5 h-1.5 rounded-full mt-2 ${idx === 3 ? "bg-[#111]" : "bg-[#FFE600]"}`} />
-                    <span className={`text-sm leading-relaxed ${idx === 3 ? "text-[#111]/70" : "text-white/55"}`}>
-                      {ev}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+        <ul className="mt-10 flex gap-3 overflow-x-auto pb-2 scrollbar-hide sm:grid sm:grid-cols-3 sm:gap-6 sm:overflow-visible lg:mt-12 lg:gap-8">
+          {EVENTS.map((ev) => (
+            <li key={ev.title} className="w-[min(72vw,200px)] shrink-0 sm:w-auto">
+              <MediaSlot
+                aspectClass="aspect-[5/4]"
+                variant="on-white"
+                label="행사 사진"
+                hint="교체"
+                className="rounded-xl"
+              />
+              <p className="mt-2 text-xs font-bold text-genie-purple">{ev.date}</p>
+              <p className="mt-0.5 text-sm font-bold text-[#111]">{ev.title}</p>
+              <p className="mt-1 text-xs font-normal leading-snug text-[#444]">{ev.desc}</p>
+            </li>
           ))}
-        </div>
+        </ul>
 
-        {/* Bottom CTA strip */}
-        <div className="mt-[1px] bg-[#FFE600] flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-8">
-          <div>
-            <p className="font-display text-[#111] text-3xl lg:text-4xl">함께 멋진 일을 만들어요</p>
-            <p className="text-[#111]/55 text-sm mt-1">지니와 함께 중랑의 청년 문화를 만들어가세요.</p>
-          </div>
-          <a href="#genie-login" className="btn-primary self-start md:self-auto text-base py-4 px-10">
-            지금 참여하기 →
-          </a>
+        <div className="mt-10 flex justify-center lg:mt-12">
+          <button
+            type="button"
+            className="inline-flex items-center gap-2 text-sm font-bold text-genie-purple hover:underline sm:text-base"
+          >
+            더 보기
+            <span className="text-lg" aria-hidden>
+              →
+            </span>
+          </button>
         </div>
       </div>
     </section>

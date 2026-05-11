@@ -10,10 +10,10 @@ import "@fontsource/noto-sans-kr/900.css";
 import "@/styles/globals.css";
 
 export const metadata: Metadata = {
-  title: "GENIE — 중랑 청년 문화 플랫폼",
+  title: "genie — 중랑 청년 문화 커뮤니티",
   description:
-    "서울 북부 대표 청년 문화 스타트업 플랫폼. 취향 기반 모임·행사·원데이클래스.",
-  keywords: ["중랑", "청년", "문화", "커뮤니티", "원데이클래스", "동아리"],
+    "취향 기반 모임·지니데이·지니어스·지니클럽. 중랑 청년 문화 플랫폼 genie.",
+  keywords: ["중랑", "청년", "문화", "커뮤니티", "지니데이", "지니클럽", "genie"],
 };
 
 export default function RootLayout({

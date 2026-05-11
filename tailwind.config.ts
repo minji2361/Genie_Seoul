@@ -15,8 +15,11 @@ const config: Config = {
       },
       colors: {
         genie: {
-          yellow: "#FFE600",
-          black:  "#111111",
+          purple: "#7B4BFF",
+          "purple-deep": "#5B2EE6",
+          yellow: "#FFEE00",
+          lavender: "#EDE7FF",
+          black: "#111111",
         },
       },
       fontFamily: {
