@@ -11,7 +11,8 @@ export default function HeroSection() {
           <p className="text-lg font-normal leading-snug text-white sm:text-xl lg:text-2xl lg:leading-snug">
             내 취향이 일상이 되는 곳,
           </p>
-          <p className="mt-3 text-base font-normal leading-relaxed text-white/95 sm:text-lg lg:mt-4 lg:text-xl">
+          <p className="text-lg font-normal leading-snug text-white sm:text-xl lg:text-2xl lg:leading-snug">
+          {/* <p className="mt-3 text-base font-normal leading-relaxed text-white/95 sm:text-lg lg:mt-4 lg:text-xl"> */}
             중랑에서 만나는 나만의 커뮤니티
           </p>
           <p className="mt-4 text-lg font-bold leading-snug text-white sm:mt-5 sm:text-xl lg:text-2xl">

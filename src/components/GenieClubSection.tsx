@@ -12,9 +12,7 @@ export default function GenieClubSection() {
     <section id="genie-club" className="bg-white pb-16 pt-14 sm:pb-20 sm:pt-16 lg:pb-24 lg:pt-20 scroll-mt-[var(--nav-h)]">
       <div className="mx-auto w-full max-w-6xl px-5 sm:px-8 lg:px-10">
         <h2 className="text-center text-xl font-bold leading-snug text-genie-purple sm:text-2xl lg:text-3xl">
-          우리가 함께한
-          <br />
-          &apos;지니클럽&apos;
+          우리가 함께한 &apos;지니클럽&apos;
         </h2>
 
         <ul className="mt-12 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 lg:mx-auto lg:mt-14 lg:max-w-5xl lg:gap-x-8 lg:gap-y-12">
