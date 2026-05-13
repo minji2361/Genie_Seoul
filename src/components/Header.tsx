@@ -4,6 +4,7 @@ const NAV = [
   { href: "#story", label: "지니이야기" },
   { href: "#genie-day", label: "Genie-Day" },
   { href: "#genie-us", label: "Genie-Us" },
+  { href: "#genie-club", label: "Genie-Club" },
 ];
 
 export function Header() {

@@ -9,7 +9,7 @@ const CLUBS = [
 
 export function GenieClubSection() {
   return (
-    <section id="genie-us" className="bg-white py-12 max-[390px]:py-10 tablet:py-14 desktop:py-16">
+    <section className="bg-white py-12 max-[390px]:py-10 tablet:py-14 desktop:py-16">
       <div className="mx-auto max-w-content px-4 tablet:px-6 desktop:px-8">
         <h2 className="text-2xl font-extrabold text-neutral-900 max-[390px]:text-xl tablet:text-3xl">
           우리가 함께한 <span className="text-genie-purple">&apos;지니클럽&apos;</span>
