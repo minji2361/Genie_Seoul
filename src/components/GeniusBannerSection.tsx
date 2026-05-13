@@ -2,7 +2,7 @@ import { ImagePlaceholder } from "@/components/ImagePlaceholder";
 
 export function GeniusBannerSection() {
   return (
-    <section className="bg-genie-purple py-10 max-[390px]:py-8 tablet:py-12 desktop:py-14">
+    <section id="genie-us" className="bg-genie-purple py-10 max-[390px]:py-8 tablet:py-12 desktop:py-14">
       <div className="mx-auto grid max-w-content items-center gap-6 px-4 tablet:grid-cols-2 tablet:gap-8 tablet:px-6 desktop:grid-cols-2 desktop:gap-10 desktop:px-8">
         <div className="text-center text-white tablet:text-left">
           <p className="text-sm font-medium text-white/90 max-[390px]:text-xs tablet:text-base">
