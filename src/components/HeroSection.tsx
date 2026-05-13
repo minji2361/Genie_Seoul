@@ -1,38 +1,26 @@
-import MediaSlot from "@/components/MediaSlot";
+import { ImagePlaceholder } from "@/components/ImagePlaceholder";
 
-export default function HeroSection() {
+export function HeroSection() {
   return (
-    <section
-      id="hero"
-      className="bg-genie-purple pb-12 pt-[calc(var(--nav-h)+20px)] text-center sm:pb-16 sm:pt-[calc(var(--nav-h)+24px)] lg:pb-20 lg:pt-[calc(var(--nav-h)+28px)] scroll-mt-0"
-    >
-      <div className="mx-auto flex w-full max-w-6xl flex-col items-center px-5 text-center sm:px-8 lg:px-10 lg:flex-row lg:items-center lg:justify-between lg:gap-14 lg:text-left">
-        <div className="max-w-xl lg:flex-1">
-          <p className="text-lg font-normal leading-snug text-white sm:text-xl lg:text-2xl lg:leading-snug">
+    <section className="bg-genie-purple pb-10 pt-6 max-[390px]:pb-8 max-[390px]:pt-5 tablet:pb-12 tablet:pt-8 desktop:pb-16 desktop:pt-10">
+      <div className="mx-auto grid max-w-content grid-cols-1 gap-8 px-4 max-[390px]:gap-6 tablet:gap-10 tablet:px-6 desktop:grid-cols-2 desktop:items-center desktop:gap-12 desktop:px-8">
+        <div className="flex flex-col gap-3 text-center text-white desktop:text-left">
+          <p className="text-sm font-medium text-white/90 max-[390px]:text-xs tablet:text-base">
             내 취향이 일상이 되는 곳,
+            <br />
+            <span className="font-bold">가장 가까운 놀이터</span>
           </p>
-          <p className="text-lg font-normal leading-snug text-white sm:text-xl lg:text-2xl lg:leading-snug">
-          {/* <p className="mt-3 text-base font-normal leading-relaxed text-white/95 sm:text-lg lg:mt-4 lg:text-xl"> */}
-            중랑에서 만나는 나만의 커뮤니티
-          </p>
-          <p className="mt-4 text-lg font-bold leading-snug text-white sm:mt-5 sm:text-xl lg:text-2xl">
-            가장 가까운 놀이터
-          </p>
-          <p className="mt-3 text-xl font-normal leading-snug text-genie-yellow sm:text-2xl lg:mt-4 lg:text-3xl xl:text-4xl">
+          <p className="text-xl text-genie-yellow font-bold max-[390px]:text-lg tablet:text-2xl desktop:text-3xl">
             플레이그라운드
           </p>
-          <p className="font-display mt-6 text-5xl font-normal leading-none tracking-tight text-white sm:mt-8 sm:text-6xl lg:mt-10 lg:text-7xl xl:text-8xl">
+          <p className="text-6xl font-extrabold leading-none text-genie-yellow max-[390px]:text-7xl tablet:text-6xl desktop:text-7xl">
             genie
           </p>
         </div>
-
-        <div className="mt-10 flex w-full max-w-[300px] justify-center sm:max-w-[340px] lg:mt-0 lg:max-w-[min(42vw,420px)] lg:shrink-0">
-          <MediaSlot
-            aspectClass="aspect-square"
-            variant="on-purple"
-            label="히어로 캐릭터"
-            hint="램프·유령 일러스트"
-            className="w-full rounded-[32px]"
+        <div className="flex justify-center tablet:justify-center desktop:justify-end">
+          <ImagePlaceholder
+            label="히어로_지니램프"
+            className="aspect-[4/3] w-full max-w-[280px] rounded-2xl max-[390px]:max-w-[240px] tablet:max-w-[320px] desktop:max-w-[400px]"
           />
         </div>
       </div>

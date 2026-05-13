@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@fontsource/black-han-sans": "^5.2.8",
     "@fontsource/noto-sans-kr": "^5.2.9",
     "next": "14.2.5",
     "react": "^18",

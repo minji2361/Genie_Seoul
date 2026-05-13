@@ -9,25 +9,21 @@ const config: Config = {
   theme: {
     extend: {
       screens: {
-        xs: "480px",
-        xl: "1280px",
-        "2xl": "1440px",
+        tablet: "768px",
+        desktop: "1440px",
       },
       colors: {
         genie: {
-          purple: "#7B4BFF",
-          "purple-deep": "#5B2EE6",
-          yellow: "#FFEE00",
-          lavender: "#EDE7FF",
-          black: "#111111",
+          purple: "#5D29D6",
+          yellow: "#F2E205",
+          lavender: "#E6E0F8",
         },
       },
       fontFamily: {
-        sans:    ["var(--font-noto)", "'Noto Sans KR'", "sans-serif"],
-        display: ["var(--font-black-han)", "'Black Han Sans'", "sans-serif"],
+        sans: ["var(--font-noto-sans-kr)", "system-ui", "sans-serif"],
       },
       maxWidth: {
-        genie: "1280px",
+        content: "1200px",
       },
     },
   },

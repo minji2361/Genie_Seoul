@@ -1,55 +1,35 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import Navbar from "@/components/Navbar";
-import HeroSection from "@/components/HeroSection";
-import ImageBannerSection from "@/components/ImageBannerSection";
-import AboutUsSection from "@/components/AboutUsSection";
-import PrinciplesSection from "@/components/PrinciplesSection";
-import GenieDaySection from "@/components/GenieDaySection";
-import FindGroupSection from "@/components/FindGroupSection";
-import HistorySection from "@/components/HistorySection";
-import GeniusCalloutSection from "@/components/GeniusCalloutSection";
-import GenieUsSection from "@/components/GenieUsSection";
-import CommunicationMagicSection from "@/components/CommunicationMagicSection";
-import GenieClubSection from "@/components/GenieClubSection";
-import GenieLoginSection from "@/components/GenieLoginSection";
-import GenieInterviewSection from "@/components/GenieInterviewSection";
-import Footer from "@/components/Footer";
-
-const LOGIN_STORAGE_KEY = "genie-login-user";
+import { CommunicationMagicSection } from "@/components/CommunicationMagicSection";
+import { FindMeetingSection } from "@/components/FindMeetingSection";
+import { FooterBanner } from "@/components/FooterBanner";
+import { GenieClubSection } from "@/components/GenieClubSection";
+import { GenieDayBannerSection } from "@/components/GenieDayBannerSection";
+import { GenieHistorySection } from "@/components/GenieHistorySection";
+import { GenieStorySection } from "@/components/GenieStorySection";
+import { GeniusBannerSection } from "@/components/GeniusBannerSection";
+import { GeniusListSection } from "@/components/GeniusListSection";
+import { Header } from "@/components/Header";
+import { HeroSection } from "@/components/HeroSection";
+import { IntroPhotoSection } from "@/components/IntroPhotoSection";
+import { PastGenieDaySection } from "@/components/PastGenieDaySection";
 
 export default function HomePage() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const userId = localStorage.getItem(LOGIN_STORAGE_KEY);
-    setIsLoggedIn(Boolean(userId));
-  }, []);
-
   return (
-    <>
-      <Navbar isLoggedIn={isLoggedIn} />
-      <main className="mx-auto w-full max-w-6xl bg-white shadow-[0_0_0_1px_rgba(93,38,193,0.08)] min-[481px]:my-2 min-[481px]:rounded-2xl min-[481px]:shadow-xl lg:max-w-7xl lg:my-4">
+    <div className="min-h-screen bg-white text-neutral-900">
+      <Header />
+      <main>
         <HeroSection />
-        <ImageBannerSection />
-        <AboutUsSection />
-        <PrinciplesSection />
-        <GenieDaySection />
-        <FindGroupSection />
-        <HistorySection />
-        <GeniusCalloutSection />
-        <GenieUsSection />
+        <IntroPhotoSection />
+        <GenieStorySection />
+        <GenieHistorySection />
+        <GenieDayBannerSection />
+        <FindMeetingSection />
+        <PastGenieDaySection />
+        <GeniusBannerSection />
+        <GeniusListSection />
         <CommunicationMagicSection />
         <GenieClubSection />
-        <GenieLoginSection
-          isLoggedIn={isLoggedIn}
-          onLogin={() => setIsLoggedIn(true)}
-          onLogout={() => setIsLoggedIn(false)}
-        />
-        {isLoggedIn ? <GenieInterviewSection /> : null}
       </main>
-      <Footer isLoggedIn={isLoggedIn} />
-    </>
+      <FooterBanner />
+    </div>
   );
 }

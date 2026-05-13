@@ -1,19 +1,17 @@
 import type { Metadata } from "next";
 
-// ── 폰트 직접 내장 (Google Fonts 외부 요청 없음, OFL 라이선스) ──
-import "@fontsource/black-han-sans";           // 400 weight only (display font)
-import "@fontsource/noto-sans-kr/300.css";
 import "@fontsource/noto-sans-kr/400.css";
+import "@fontsource/noto-sans-kr/500.css";
 import "@fontsource/noto-sans-kr/700.css";
-import "@fontsource/noto-sans-kr/900.css";
+import "@fontsource/noto-sans-kr/800.css";
 
 import "@/styles/globals.css";
 
 export const metadata: Metadata = {
-  title: "genie — 중랑 청년 문화 커뮤니티",
+  title: "플레이그라운드 genie",
   description:
-    "취향 기반 모임·지니데이·지니어스·지니클럽. 중랑 청년 문화 플랫폼 genie.",
-  keywords: ["중랑", "청년", "문화", "커뮤니티", "지니데이", "지니클럽", "genie"],
+    "내 취향이 일상이 되는 곳, 가장 가까운 놀이터. 지니데이·지니어스·지니클럽과 동네 모임을 만나보세요.",
+  keywords: ["genie", "플레이그라운드", "지니데이", "지니어스", "지니클럽", "모임", "취향"],
 };
 
 export default function RootLayout({
