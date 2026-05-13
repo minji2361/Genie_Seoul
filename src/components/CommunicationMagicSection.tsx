@@ -1,21 +1,26 @@
-import MediaSlot from "@/components/MediaSlot";
+import { ImagePlaceholder } from "@/components/ImagePlaceholder";
 
-export default function CommunicationMagicSection() {
+export function CommunicationMagicSection() {
   return (
-    <section id="communication" className="bg-genie-lavender py-16 sm:py-20 lg:py-24 scroll-mt-[var(--nav-h)]">
-      <div className="mx-auto flex w-full max-w-6xl flex-col items-center px-5 sm:px-8 lg:flex-row lg:justify-center lg:gap-16 lg:px-10">
-        <div className="w-[min(100%,260px)] lg:w-[min(100%,300px)]">
-          <MediaSlot
-            aspectClass="aspect-square"
-            variant="on-light"
-            label="캐릭터"
-            hint="하트 일러스트"
-            className="rounded-3xl border border-genie-purple/20"
+    <section className="bg-genie-lavender/30 py-12 max-[390px]:py-10 tablet:py-14 desktop:py-16">
+      <div className="mx-auto grid max-w-content items-center gap-6 px-4 tablet:grid-cols-2 tablet:gap-8 tablet:px-6 desktop:grid-cols-2 desktop:gap-10 desktop:px-8">
+        <div className="text-center tablet:text-left">
+          <p className="text-sm font-medium max-[390px]:text-xs tablet:text-base">
+            관심사가 만나<br />특별한 인연이 되는
+          </p>
+          <h2 className="mt-2 text-4xl font-extrabold text-genie-purple max-[390px]:text-3xl tablet:text-5xl desktop:text-6xl">
+            소통의 마법
+          </h2>
+          <p className="mt-3 max-w-md text-sm text-neutral-700 max-[390px]:text-xs tablet:text-base">
+            다양한 소모임과 활동을 통해<br />나만의 커뮤니티를 만들어보세요!
+          </p>
+        </div>
+        <div className="flex justify-center tablet:justify-end">
+          <ImagePlaceholder
+            label="소통의마법_하트캐릭터"
+            className="aspect-square w-full max-w-[220px] rounded-2xl max-[390px]:max-w-[180px] tablet:max-w-[260px]"
           />
         </div>
-        <h2 className="mt-8 text-3xl font-black text-genie-purple sm:text-4xl lg:mt-0 lg:text-5xl xl:text-6xl">
-          소통의 마법
-        </h2>
       </div>
     </section>
   );

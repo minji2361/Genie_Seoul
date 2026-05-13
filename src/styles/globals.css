@@ -3,156 +3,29 @@
 @tailwind utilities;
 
 :root {
-  --yellow: #FFEE00;
-  --purple-deep: #7B4BFF;
-  --purple-light: #EDE7FF;
-  --black: #111111;
-  --font-black-han: 'Black Han Sans', sans-serif;
-  --font-noto: 'Noto Sans KR', sans-serif;
-  --max-w: 1280px;
-  --nav-h: 56px;
+  --font-noto-sans-kr: "Noto Sans KR", system-ui, -apple-system, sans-serif;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
 
 body {
-  font-family: var(--font-noto), 'Noto Sans KR', sans-serif;
-  background: var(--purple-light);
-  color: #111;
+  margin: 0;
+  font-family: var(--font-noto-sans-kr);
+  color: #171717;
+  background: #ffffff;
   -webkit-font-smoothing: antialiased;
 }
 
-.font-display { font-family: var(--font-black-han), 'Black Han Sans', sans-serif; }
-
-.container-genie {
-  max-width: var(--max-w);
-  margin: 0 auto;
-  padding: 0 48px;
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
-@media (max-width: 768px) {
-  .container-genie { padding: 0 20px; }
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
-
-.tag-pill {
-  display: inline-block;
-  background: #111;
-  color: #FFE600;
-  font-size: 10px;
-  font-weight: 900;
-  letter-spacing: 2px;
-  padding: 4px 12px;
-  text-transform: uppercase;
-}
-
-.btn-primary {
-  display: inline-block;
-  background: #111;
-  color: #FFE600;
-  font-weight: 900;
-  font-size: 14px;
-  padding: 14px 32px;
-  letter-spacing: 0.5px;
-  transition: opacity 0.15s;
-  cursor: pointer;
-  border: none;
-  text-decoration: none;
-  white-space: nowrap;
-}
-.btn-primary:hover { opacity: 0.82; }
-
-.btn-outline {
-  display: inline-block;
-  background: transparent;
-  color: #111;
-  font-weight: 900;
-  font-size: 14px;
-  padding: 13px 30px;
-  border: 2px solid #111;
-  letter-spacing: 0.5px;
-  transition: background 0.15s, color 0.15s;
-  cursor: pointer;
-  text-decoration: none;
-  white-space: nowrap;
-}
-.btn-outline:hover { background: #111; color: #FFE600; }
-
-.section-eyebrow {
-  font-size: 10px;
-  font-weight: 900;
-  letter-spacing: 4px;
-  color: #999;
-  text-transform: uppercase;
-}
-
-.scrollbar-hide::-webkit-scrollbar { display: none; }
-.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(28px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.animate-fadeUp { animation: fadeUp 0.65s cubic-bezier(0.16,1,0.3,1) forwards; }
-.delay-100 { animation-delay: 0.1s; opacity: 0; }
-.delay-200 { animation-delay: 0.2s; opacity: 0; }
-.delay-300 { animation-delay: 0.35s; opacity: 0; }
-.delay-400 { animation-delay: 0.5s; opacity: 0; }
-
-@keyframes marquee {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-.animate-marquee { animation: marquee 22s linear infinite; }
-
-.nav-link {
-  position: relative;
-  font-size: 13px;
-  font-weight: 700;
-  color: #111;
-  text-decoration: none;
-  padding-bottom: 2px;
-}
-.nav-link::after {
-  content: '';
-  position: absolute;
-  bottom: -2px; left: 0;
-  width: 0; height: 2px;
-  background: #FFE600;
-  transition: width 0.2s ease;
-}
-.nav-link:hover::after { width: 100%; }
-
-.prog-card {
-  border: 1.5px solid #111;
-  padding: 20px 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  transition: background 0.15s;
-  cursor: pointer;
-  text-decoration: none;
-  color: inherit;
-}
-.prog-card:hover { background: #FFE600; }
-
-.cat-card {
-  padding: 32px 28px;
-  transition: transform 0.2s ease;
-}
-.cat-card:hover { transform: translateY(-4px); }
-
-.genie-input {
-  width: 100%;
-  background: transparent;
-  border: none;
-  border-bottom: 1.5px solid rgba(255, 255, 255, 0.35);
-  padding: 12px 0;
-  font-size: 15px;
-  color: #fff;
-  font-family: var(--font-noto), sans-serif;
-  outline: none;
-  transition: border-color 0.15s;
-}
-.genie-input::placeholder { color: rgba(255, 255, 255, 0.4); }
-.genie-input:focus { border-bottom-color: var(--yellow); }
