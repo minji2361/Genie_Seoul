@@ -29,3 +29,11 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+.nav-scroll-x {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x;
+}
