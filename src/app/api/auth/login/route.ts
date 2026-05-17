@@ -17,6 +17,16 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "아이디와 비밀번호를 입력해 주세요." }, { status: 400 });
   }
 
+  if (!process.env.ADMIN_ID || !process.env.ADMIN_PASSWORD) {
+    return NextResponse.json(
+      {
+        error:
+          "서버에 로그인 환경 변수가 없습니다. Vercel → Settings → Environment Variables 에 ADMIN_ID, ADMIN_PASSWORD, SESSION_SECRET 을 등록한 뒤 Redeploy 하세요.",
+      },
+      { status: 500 },
+    );
+  }
+
   if (!validateAdminCredentials(id, password)) {
     return NextResponse.json({ error: "아이디 또는 비밀번호가 올바르지 않습니다." }, { status: 401 });
   }

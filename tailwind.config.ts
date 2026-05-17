@@ -21,6 +21,15 @@ const config: Config = {
       },
       fontFamily: {
         sans: ["var(--font-noto-sans-kr)", "system-ui", "sans-serif"],
+        paperlogyLight: ["var(--font-paperlogy)"],
+        paperlogy: ["var(--font-paperlogy)"],
+        paperlogyBold: ["var(--font-paperlogy)"],
+        paperlogyBlack: ["var(--font-paperlogy)"],
+        gmarket: ["var(--font-gmarket)"],
+        appleThin: ["var(--font-apple-sd)"],
+        appleMedium: ["var(--font-apple-sd)"],
+        appleSemiBold: ["var(--font-apple-sd)"],
+        appleHB: ["var(--font-apple-sd)"],
       },
       maxWidth: {
         content: "1200px",
