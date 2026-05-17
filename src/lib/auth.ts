@@ -41,12 +41,15 @@ export function verifySessionToken(token: string | undefined): boolean {
 }
 
 export function validateAdminCredentials(id: string, password: string): boolean {
-  const adminId = process.env.ADMIN_ID;
-  const adminPassword = process.env.ADMIN_PASSWORD;
+  const adminId = process.env.ADMIN_ID?.trim();
+  const adminPassword = process.env.ADMIN_PASSWORD?.trim();
 
   if (!adminId || !adminPassword) return false;
 
-  return id === adminId && password === adminPassword;
+  const normalizedId = id.trim().toLowerCase();
+  const normalizedAdminId = adminId.toLowerCase();
+
+  return normalizedId === normalizedAdminId && password === adminPassword;
 }
 
 export async function isAuthenticated(): Promise<boolean> {

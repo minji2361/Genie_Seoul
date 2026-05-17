@@ -1,0 +1,57 @@
+---
+description: 모바일 전용 합성 이미지(GenieStory1Txt 등) 반응형 박스 규칙
+globs: src/components/IntroPhotoSection.tsx,src/components/**/*Section.tsx
+alwaysApply: false
+---
+
+# Intro Photo — 모바일 전용 이미지 반응형 규칙
+
+PC/태블릿 전용 에셋이 없고 **모바일 기준 합성 PNG**(`GenieStory1Txt.PNG`, 1242×1086)만 있을 때 아래 규칙을 따른다.
+
+## 브레이크포인트
+
+| 구간 | 화면 너비 |
+|------|-----------|
+| 모바일 | ~767px |
+| 태블릿 | 768px ~ 1439px |
+| PC (desktop) | 1440px 이상 |
+
+## 크기 규칙
+
+| 구간 | 박스 가로 | 박스 세로 | 설명 |
+|------|-----------|-----------|------|
+| **모바일** | 화면 **100%** | 비율 **1242:1086** 자동 | 모바일용 디자인 그대로 꽉 채움 |
+| **태블릿** | 최대 **621px** | 비율 유지 | 원본 가로의 **50%**, 가운데 정렬 |
+| **PC** | 최대 **621px** | 비율 유지 | 태블릿과 동일 (고정 최대 너비) |
+
+- `621` = `1242 × 0.5` (원본 가로의 절반)
+- 화면이 넓어져도 태블릿·PC 박스는 **621px에서 고정** (`w-1/2` 사용 금지 — 뷰포트에 따라 계속 커짐)
+
+## 구현 패턴
+
+```tsx
+const IMAGE_WIDTH = 1242;
+const IMAGE_HEIGHT = 1086;
+const TABLET_DESKTOP_MAX_WIDTH = 621; // IMAGE_WIDTH / 2
+
+<div className="mx-auto flex w-full justify-center">
+  <div
+    className="relative w-full max-w-full tablet:max-w-[621px] desktop:max-w-[621px]"
+    style={{ aspectRatio: `${IMAGE_WIDTH} / ${IMAGE_HEIGHT}` }}
+  >
+    <Image
+      src="/GenieStory/GenieStory1Txt.PNG"
+      alt="..."
+      fill
+      className="object-contain"
+      sizes="(max-width: 767px) 100vw, 621px"
+    />
+  </div>
+</div>
+```
+
+## 금지
+
+- 태블릿·PC용 별도 파일이 없는데 `object-cover`로 잘라 쓰기
+- 태블릿·PC에서 `tablet:w-1/2`만으로 크기 조절 (초대형 화면에서 과도하게 커짐)
+- 고정 `min-h`로 섹션 높이 강제 (이미지 비율 박스가 높이를 결정해야 함)

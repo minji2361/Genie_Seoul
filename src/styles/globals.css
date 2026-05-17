@@ -4,6 +4,139 @@
 
 :root {
   --font-noto-sans-kr: "Noto Sans KR", system-ui, -apple-system, sans-serif;
+  --font-paperlogy: "Paperlogy", var(--font-noto-sans-kr), sans-serif;
+  --font-gmarket: "Gmarket Sans", var(--font-noto-sans-kr), sans-serif;
+  --font-apple-sd: "Apple SD Gothic Neo", var(--font-noto-sans-kr), sans-serif;
+}
+
+/* Paperlogy — weight별 TTF, 동일 font-family */
+@font-face {
+  font-family: "Paperlogy";
+  src: url("/fonts/Paperlogy-1/Paperlogy-2ExtraLight.ttf") format("truetype");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Paperlogy";
+  src: url("/fonts/Paperlogy-1/Paperlogy-4Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Paperlogy";
+  src: url("/fonts/Paperlogy-1/Paperlogy-8ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Paperlogy";
+  src: url("/fonts/Paperlogy-1/Paperlogy-9Black.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Gmarket Sans";
+  src: url("/fonts/GmarketSansOTF-2/GmarketSansBold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Apple SD Gothic Neo — Regular(R) / SemiBold(SB) */
+@font-face {
+  font-family: "Apple SD Gothic Neo";
+  src: url("/fonts/Apple_SandolGothic_Neo/AppleSDGothicNeoR.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Apple SD Gothic Neo";
+  src: url("/fonts/Apple_SandolGothic_Neo/AppleSDGothicNeoM.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Apple SD Gothic Neo";
+  src: url("/fonts/Apple_SandolGothic_Neo/AppleSDGothicNeoSB.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Apple SD Gothic Neo";
+  src: url("/fonts/Apple_SandolGothic_Neo/AppleSDGothicNeoHB.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer utilities {
+  .font-paperlogyLight {
+    font-family: var(--font-paperlogy);
+    font-weight: 200;
+    font-synthesis: none;
+  }
+
+  .font-paperlogy {
+    font-family: var(--font-paperlogy);
+    font-weight: 400;
+    font-synthesis: none;
+  }
+
+  .font-paperlogyBold {
+    font-family: var(--font-paperlogy);
+    font-weight: 800;
+    font-synthesis: none;
+  }
+
+  .font-paperlogyBlack {
+    font-family: var(--font-paperlogy);
+    font-weight: 900;
+    font-synthesis: none;
+  }
+
+  .font-gmarket {
+    font-family: var(--font-gmarket);
+    font-weight: 700;
+    font-synthesis: none;
+  }
+
+  .font-appleThin {
+    font-family: var(--font-apple-sd);
+    font-weight: 400;
+    font-synthesis: none;
+  }
+
+  .font-appleMedium {
+    font-family: var(--font-apple-sd);
+    font-weight: 500;
+    font-synthesis: none;
+  }
+
+  .font-appleSemiBold {
+    font-family: var(--font-apple-sd);
+    font-weight: 600;
+    font-synthesis: none;
+  }
+
+  .font-appleHB {
+    font-family: var(--font-apple-sd);
+    font-weight: 800;
+    font-synthesis: none;
+  }
 }
 
 * {
