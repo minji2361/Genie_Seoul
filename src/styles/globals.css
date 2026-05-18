@@ -77,8 +77,16 @@
 
 @font-face {
   font-family: "Apple SD Gothic Neo";
-  src: url("/fonts/Apple_SandolGothic_Neo/AppleSDGothicNeoHB.ttf") format("truetype");
+  src: url("/fonts/Apple_SandolGothic_Neo/AppleSDGothicNeoEB.ttf") format("truetype");
   font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Apple SD Gothic Neo";
+  src: url("/fonts/Apple_SandolGothic_Neo/AppleSDGothicNeoH.ttf") format("truetype");
+  font-weight: 900;
   font-style: normal;
   font-display: swap;
 }
@@ -132,9 +140,15 @@
     font-synthesis: none;
   }
 
-  .font-appleHB {
+  .font-appleExtraBold {
     font-family: var(--font-apple-sd);
     font-weight: 800;
+    font-synthesis: none;
+  }
+
+  .font-appleHB {
+    font-family: var(--font-apple-sd);
+    font-weight: 900;
     font-synthesis: none;
   }
 }

@@ -29,6 +29,7 @@ const config: Config = {
         appleThin: ["var(--font-apple-sd)"],
         appleMedium: ["var(--font-apple-sd)"],
         appleSemiBold: ["var(--font-apple-sd)"],
+        appleExtraBold: ["var(--font-apple-sd)"],
         appleHB: ["var(--font-apple-sd)"],
       },
       maxWidth: {
