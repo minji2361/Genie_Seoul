@@ -1,0 +1,221 @@
+---
+description: Apple SD Gothic Neo 폰트 파일·유틸리티·반응형 크기 정리
+globs: src/components/**/*Section.tsx,src/styles/globals.css
+alwaysApply: false
+---
+
+# Apple SD Gothic Neo — 폰트·크기 정리
+
+폰트 파일 경로: `public/fonts/Apple_SandolGothic_Neo/`
+
+## 1. 파일 ↔ 유틸리티 매핑
+
+| 유틸리티 클래스 | TTF 파일 | `font-weight` | 용도 |
+|----------------|----------|---------------|------|
+| `font-appleThin` | `AppleSDGothicNeoR.ttf` | 400 | 본문·부제 (Regular) |
+| `font-appleMedium` | `AppleSDGothicNeoM.ttf` | 500 | 본문·설명 (Medium) |
+| `font-appleSemiBold` | `AppleSDGothicNeoSB.ttf` | 600 | 강조·라벨·소제 (SemiBold) |
+| `font-appleExtraBold` | `AppleSDGothicNeoEB.ttf` | 800 | 배너 대제목 (ExtraBold) |
+| `font-appleHB` | `AppleSDGothicNeoH.ttf` | 900 | 섹션 제목·키워드 강조 (Heavy) |
+
+- 정의 위치: `src/styles/globals.css` (`@font-face` + `@layer utilities`)
+- `font-extrabold`, `font-bold`, `font-medium` 등 **Tailwind weight 클래스와 함께 쓰지 않음** — 합성 볼드 방지
+- `font-appleThin` 이름은 Thin이지만 실제로는 **R(Regular)** 파일을 로드함
+
+## 2. 브레이크포인트
+
+| 구간 | Tailwind | 화면 너비 |
+|------|----------|-----------|
+| 소형 모바일 | `max-[390px]:` | ~390px |
+| 모바일 (기본) | (접두사 없음) | ~391px ~ 767px |
+| 태블릿 | `tablet:` | 768px ~ |
+| PC | `desktop:` | 1440px ~ |
+
+## 3. Tailwind `text-*` 픽셀 참고
+
+| 클래스 | rem | px |
+|--------|-----|-----|
+| `text-xs` | 0.75 | 12 |
+| `text-sm` | 0.875 | 14 |
+| `text-base` | 1 | 16 |
+| `text-lg` | 1.125 | 18 |
+| `text-xl` | 1.25 | 20 |
+| `text-2xl` | 1.5 | 24 |
+| `text-3xl` | 1.875 | 30 |
+| `text-4xl` | 2.25 | 36 |
+| `text-5xl` | 3 | 48 |
+| `text-6xl` | 3.75 | 60 |
+| `text-7xl` | 4.5 | 72 |
+
+## 4. 공통 크기 패턴 (재사용 권장)
+
+새 섹션 추가 시 아래 **티어** 중 하나를 그대로 쓰면 지니데이·지니어스·연혁 등과 시각적으로 맞춘다.
+
+### 티어 A — 보라 배너 대제목 (`font-appleExtraBold`, 노란색)
+
+`GenieDayBannerSection`, `GeniusBannerSection`
+
+| 구간 | 클래스 |
+|------|--------|
+| ≤390px | `text-4xl` |
+| 모바일 | `text-5xl` |
+| tablet | `text-6xl` |
+| desktop | `text-7xl` |
+
+```tsx
+className="font-appleExtraBold mt-3 text-5xl text-genie-yellow max-[390px]:text-4xl tablet:text-6xl desktop:text-7xl"
+```
+
+### 티어 B — 보라 배너 부제·본문 (`font-appleThin`, 흰색 90%)
+
+`GenieDayBannerSection`, `GeniusBannerSection`
+
+| 구간 | 클래스 |
+|------|--------|
+| ≤390px | `text-base` |
+| 모바일 | `text-lg` |
+| tablet | `text-xl` |
+| desktop | `text-3xl` |
+
+```tsx
+className="font-appleThin text-lg font-normal text-white/90 max-[390px]:text-base tablet:text-xl desktop:text-3xl"
+```
+
+본문 두 번째 문단: 위와 동일 + `mt-4 max-w-md`
+
+### 티어 C — 흰 배경 섹션 제목 (`font-appleHB`, 검정 + 보라 span)
+
+`PastGenieDaySection`, `GeniusListSection`
+
+| 구간 | 클래스 |
+|------|--------|
+| ≤390px | `text-3xl` |
+| 모바일 | `text-4xl` |
+| tablet | `text-5xl` |
+
+```tsx
+className="font-appleHB text-4xl text-neutral-900 max-[390px]:text-3xl tablet:text-5xl"
+```
+
+### 티어 D — 모임 찾기 제목 (`font-appleHB`)
+
+`FindMeetingSection` h2
+
+| 구간 | 클래스 |
+|------|--------|
+| ≤390px | `text-2xl` |
+| 모바일 | `text-3xl` |
+| tablet | `text-4xl` |
+| desktop | `text-5xl` |
+
+### 티어 E — 라벨·배지 (`font-appleSemiBold`, 보라 on 라벤더)
+
+`FindMeetingSection` 라벨 span
+
+| 구간 | 클래스 |
+|------|--------|
+| ≤390px | `text-base` |
+| 모바일 | `text-lg` |
+| tablet | `text-xl` |
+| desktop | `text-2xl` |
+
+### 티어 F — 카드·블록 본문 Medium (`font-appleMedium`)
+
+`FindMeetingSection` 설명, `GenieHistorySection` 타임라인 설명
+
+| 구간 | 클래스 | 비고 |
+|------|--------|------|
+| ≤390px | `text-sm` | FindMeeting |
+| 모바일 | `text-base` | FindMeeting |
+| tablet | `text-xl` ~ `text-lg` | 섹션별 상이 |
+| desktop | `text-2xl` | FindMeeting만 |
+
+**FindMeetingSection 본문 전체:**
+
+```tsx
+className="font-appleMedium mt-3 text-base text-neutral-700 max-[390px]:text-sm tablet:text-xl desktop:text-2xl"
+```
+
+**GenieHistorySection 카드 설명:**
+
+```tsx
+className="font-appleMedium text-base text-neutral-600 max-[390px]:text-sm tablet:text-lg"
+```
+
+### 티어 G — 지니 이야기 도입 (`font-appleThin` + 인라인 `font-appleHB`)
+
+`GenieStorySection` 첫 문단
+
+| 구간 | 클래스 |
+|------|--------|
+| ≤390px | `text-base` |
+| 모바일 | `text-lg` |
+| tablet | `text-xl` |
+| desktop | `text-2xl` |
+
+강조 span: 부모와 **동일 크기**, `font-appleHB`만 추가
+
+### 티어 H — 지니 이야기 본문 (`font-appleSemiBold`)
+
+`GenieStorySection` 2·3문단
+
+| 구간 | 클래스 |
+|------|--------|
+| ≤390px | `text-sm` |
+| 모바일 | `text-base` |
+| tablet | `text-lg` |
+| desktop | `text-xl` |
+
+### 티어 I — 연혁 섹션 소개 (`font-appleSemiBold`)
+
+`GenieHistorySection` "지니의 걸어온 발자취"
+
+| 구간 | 클래스 |
+|------|--------|
+| ≤390px | `text-base` |
+| 모바일 | `text-lg` |
+| tablet | `text-xl` |
+| desktop | `text-2xl` |
+
+### 티어 J — day2 배너 오버레이 (`font-appleMedium` + `font-appleSemiBold` span)
+
+`PastGenieDaySection` 하단 배너 문구
+
+| 구간 | 클래스 |
+|------|--------|
+| ≤390px | `text-xs` |
+| 모바일 | `text-sm` |
+| tablet+ | `text-2xl` |
+
+```tsx
+className="font-appleMedium text-center text-sm ... max-[390px]:text-xs tablet:text-2xl"
+// 강조: font-appleSemiBold text-genie-purple
+```
+
+## 5. 컴포넌트별 적용 현황
+
+| 컴포넌트 | 요소 | 유틸리티 | 크기 티어 |
+|----------|------|----------|-----------|
+| `GenieDayBannerSection` | 부제 | `font-appleThin` | B |
+| `GenieDayBannerSection` | 지니데이 | `font-appleExtraBold` | A |
+| `GenieDayBannerSection` | 본문 | `font-appleThin` | B |
+| `GeniusBannerSection` | 부제 | `font-appleThin` | B |
+| `GeniusBannerSection` | 지니어스 | `font-appleExtraBold` | A |
+| `GeniusBannerSection` | 본문 | `font-appleThin` | B |
+| `FindMeetingSection` | 제목 | `font-appleHB` | D |
+| `FindMeetingSection` | 라벨 | `font-appleSemiBold` | E |
+| `FindMeetingSection` | 본문 | `font-appleMedium` | F |
+| `PastGenieDaySection` | 제목 | `font-appleHB` | C |
+| `PastGenieDaySection` | day2 문구 | `font-appleMedium` / `SemiBold` | J |
+| `GeniusListSection` | 제목 | `font-appleHB` | C |
+| `GenieStorySection` | 도입 | `font-appleThin` + `HB` | G |
+| `GenieStorySection` | 본문 | `font-appleSemiBold` | H |
+| `GenieHistorySection` | 소개 | `font-appleSemiBold` | I |
+| `GenieHistorySection` | 카드 설명 | `font-appleMedium` | F (variant) |
+
+## 6. 작업 시 주의
+
+1. Apple 폰트 적용 시 **`font-apple*` 유틸 하나만** 지정하고 `font-bold` 등은 제거한다.
+2. 같은 역할(배너 제목, 섹션 제목)은 위 **티어 표**를 복사해 쓴다.
+3. `max-[390px]:`는 390px 이하 **추가 축소**용; 기본 클래스는 391px~767px 모바일 구간이다.
+4. `AppleSDGothicNeoHB.ttf` 파일은 없음 — Heavy는 **`AppleSDGothicNeoH.ttf`** + `font-appleHB` 사용.

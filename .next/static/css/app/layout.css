@@ -5953,6 +5953,14 @@ video {
   --tw-translate-y: -50%;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
+.-translate-x-2 {
+  --tw-translate-x: -0.5rem;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.-translate-x-4 {
+  --tw-translate-x: -1rem;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
 .transform {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
@@ -6564,10 +6572,6 @@ video {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
 }
-.py-8 {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-}
 .pb-10 {
   padding-bottom: 2.5rem;
 }
@@ -6592,6 +6596,9 @@ video {
 .pt-6 {
   padding-top: 1.5rem;
 }
+.pr-\[38\%\] {
+  padding-right: 38%;
+}
 .text-left {
   text-align: left;
 }
@@ -6600,6 +6607,9 @@ video {
 }
 .align-top {
   vertical-align: top;
+}
+.font-appleExtraBold {
+  font-family: var(--font-apple-sd);
 }
 .font-appleHB {
   font-family: var(--font-apple-sd);
@@ -7482,6 +7492,16 @@ body {
     max-width: 260px;
   }
 
+  .max-\[390px\]\:-translate-x-3 {
+    --tw-translate-x: -0.75rem;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  }
+
+  .max-\[390px\]\:-translate-x-5 {
+    --tw-translate-x: -1.25rem;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  }
+
   .max-\[390px\]\:gap-5 {
     gap: 1.25rem;
   }
@@ -7540,17 +7560,20 @@ body {
     padding-bottom: 2rem;
   }
 
-  .max-\[390px\]\:py-6 {
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
-  }
-
   .max-\[390px\]\:pb-8 {
     padding-bottom: 2rem;
   }
 
   .max-\[390px\]\:pt-5 {
     padding-top: 1.25rem;
+  }
+
+  .max-\[390px\]\:pl-4 {
+    padding-left: 1rem;
+  }
+
+  .max-\[390px\]\:pr-\[42\%\] {
+    padding-right: 42%;
   }
 
   .max-\[390px\]\:text-2xl {
@@ -7561,6 +7584,11 @@ body {
   .max-\[390px\]\:text-3xl {
     font-size: 1.875rem;
     line-height: 2.25rem;
+  }
+
+  .max-\[390px\]\:text-4xl {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
   }
 
   .max-\[390px\]\:text-\[11px\] {
@@ -7590,11 +7618,6 @@ body {
   .max-\[390px\]\:text-xs {
     font-size: 0.75rem;
     line-height: 1rem;
-  }
-
-  .max-\[390px\]\:text-4xl {
-    font-size: 2.25rem;
-    line-height: 2.5rem;
   }
 }
 
@@ -7772,8 +7795,9 @@ body {
     max-width: 621px;
   }
 
-  .tablet\:max-w-lg {
-    max-width: 32rem;
+  .tablet\:translate-x-0 {
+    --tw-translate-x: 0px;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
   }
 
   .tablet\:grid-cols-2 {
@@ -7786,10 +7810,6 @@ body {
 
   .tablet\:flex-wrap {
     flex-wrap: wrap;
-  }
-
-  .tablet\:items-start {
-    align-items: flex-start;
   }
 
   .tablet\:items-center {
@@ -7814,10 +7834,6 @@ body {
 
   .tablet\:justify-between {
     justify-content: space-between;
-  }
-
-  .tablet\:gap-10 {
-    gap: 2.5rem;
   }
 
   .tablet\:gap-3 {
@@ -7896,14 +7912,14 @@ body {
     padding-bottom: 0.5rem;
   }
 
-  .tablet\:py-10 {
-    padding-top: 2.5rem;
-    padding-bottom: 2.5rem;
-  }
-
   .tablet\:py-2\.5 {
     padding-top: 0.625rem;
     padding-bottom: 0.625rem;
+  }
+
+  .tablet\:px-5 {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
   }
 
   .tablet\:pb-12 {
@@ -7918,8 +7934,16 @@ body {
     padding-top: 2rem;
   }
 
+  .tablet\:pr-5 {
+    padding-right: 1.25rem;
+  }
+
   .tablet\:text-left {
     text-align: left;
+  }
+
+  .tablet\:text-center {
+    text-align: center;
   }
 
   .tablet\:text-2xl {
@@ -7942,6 +7966,11 @@ body {
     line-height: 1;
   }
 
+  .tablet\:text-6xl {
+    font-size: 3.75rem;
+    line-height: 1;
+  }
+
   .tablet\:text-base {
     font-size: 1rem;
     line-height: 1.5rem;
@@ -7955,11 +7984,6 @@ body {
   .tablet\:text-xl {
     font-size: 1.25rem;
     line-height: 1.75rem;
-  }
-
-  .tablet\:text-6xl {
-    font-size: 3.75rem;
-    line-height: 1;
   }
 }
 
@@ -8058,6 +8082,11 @@ body {
     gap: 2rem;
   }
 
+  .desktop\:px-5 {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
   .desktop\:px-8 {
     padding-left: 2rem;
     padding-right: 2rem;
@@ -8071,16 +8100,6 @@ body {
   .desktop\:py-16 {
     padding-top: 4rem;
     padding-bottom: 4rem;
-  }
-
-  .desktop\:py-12 {
-    padding-top: 3rem;
-    padding-bottom: 3rem;
-  }
-
-  .desktop\:px-5 {
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
   }
 
   .desktop\:py-3 {
@@ -8106,14 +8125,14 @@ body {
     line-height: 2.25rem;
   }
 
-  .desktop\:text-6xl {
-    font-size: 3.75rem;
+  .desktop\:text-5xl {
+    font-size: 3rem;
     line-height: 1;
   }
 
-  .desktop\:text-xl {
-    font-size: 1.25rem;
-    line-height: 1.75rem;
+  .desktop\:text-6xl {
+    font-size: 3.75rem;
+    line-height: 1;
   }
 
   .desktop\:text-7xl {
@@ -8121,9 +8140,9 @@ body {
     line-height: 1;
   }
 
-  .desktop\:text-5xl {
-    font-size: 3rem;
-    line-height: 1;
+  .desktop\:text-xl {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
   }
 }
 
