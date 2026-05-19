@@ -19,7 +19,7 @@ export function GeniusListSection() {
   return (
     <section className="bg-white py-12 max-[390px]:py-10 tablet:py-14 desktop:py-16">
       <div className="mx-auto max-w-content px-4 tablet:px-6 desktop:px-8">
-        <h2 className="text-2xl font-extrabold text-neutral-900 max-[390px]:text-xl tablet:text-3xl">
+        <h2 className="font-appleHB text-4xl text-neutral-900 max-[390px]:text-3xl tablet:text-5xl">
           우리가 함께한 <span className="text-genie-purple">&apos;지니어스&apos;</span>
         </h2>
         <ul className="mt-8 space-y-6 max-[390px]:mt-6 tablet:mt-10">
