@@ -1,14 +1,28 @@
 import Image from "next/image";
-import { ImagePlaceholder } from "@/components/ImagePlaceholder";
 
 const DAY2_WIDTH = 1137;
 const DAY2_HEIGHT = 186;
 
 const CARDS = [
-  { title: "포토데이", meta: "2024.03 · 성수", label: "지니데이_포토데이" },
-  { title: "시네마데이", meta: "2024.05 · 홍대", label: "지니데이_시네마데이" },
-  { title: "푸드데이", meta: "2024.07 · 을지로", label: "지니데이_푸드데이" },
-];
+  {
+    image: "/GenieDay/drawing_class.jpg",
+    category: "아트/드로잉",
+    title: "오일파스텔",
+    tags: ["힐링", "감성", "드로잉"],
+  },
+  {
+    image: "/GenieDay/perfume_class.jpg",
+    category: "라이프스타일",
+    title: "시그니처 향수, 도예",
+    tags: ["향기", "나만의무드", "라이프"],
+  },
+  {
+    image: "/GenieDay/photo_class.jpg",
+    category: "미디어",
+    title: "브이로그 촬영 기초 스쿨",
+    tags: ["영상", "브이로그", "초보촬영"],
+  },
+] as const;
 
 export function PastGenieDaySection() {
   return (
@@ -17,20 +31,35 @@ export function PastGenieDaySection() {
         <h2 className="font-appleHB text-4xl text-neutral-900 max-[390px]:text-3xl tablet:text-5xl">
           우리가 함께한 <span className="text-genie-purple">&apos;지니데이&apos;</span>
         </h2>
-        <div className="mt-8 flex gap-4 overflow-x-auto pb-2 max-[390px]:mt-6 tablet:mt-10 tablet:grid tablet:grid-cols-2 tablet:overflow-visible desktop:grid-cols-3">
+        <div className="mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 scrollbar-hide max-[390px]:mt-6 tablet:mt-10 tablet:snap-none tablet:gap-5 tablet:overflow-visible desktop:gap-6">
           {CARDS.map((card) => (
             <article
               key={card.title}
-              className="min-w-[240px] flex-1 overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-genie-purple/10 max-[390px]:min-w-[220px] tablet:min-w-0"
+              className="w-[min(300px,85vw)] shrink-0 snap-center overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-genie-purple/10 max-[390px]:w-[min(280px,88vw)] tablet:w-auto tablet:min-w-0 tablet:flex-1 tablet:shrink"
             >
-              <ImagePlaceholder label={card.label} className="h-36 w-full rounded-none rounded-t-2xl text-xs" />
-              <div className="flex items-start gap-2 p-4 max-[390px]:p-3">
-                <span className="mt-0.5 text-genie-purple" aria-hidden>
-                  ✦
+              <div className="relative aspect-[291/250] w-full overflow-hidden rounded-t-2xl">
+                <Image
+                  src={card.image}
+                  alt={card.title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 390px) 88vw, (max-width: 768px) 33vw, 400px"
+                />
+              </div>
+              <div className="space-y-2 p-4 pt-3 text-left max-[390px]:p-3">
+                <span className="font-appleMedium inline-block rounded-full border border-genie-purple bg-white px-3 py-1 text-xs text-genie-purple">
+                  {card.category}
                 </span>
-                <div>
-                  <h3 className="text-base font-bold text-neutral-900">{card.title}</h3>
-                  <p className="text-xs text-neutral-600">{card.meta}</p>
+                <h3 className="font-appleHB text-base leading-snug text-neutral-900 tablet:text-lg">{card.title}</h3>
+                <div className="flex flex-wrap gap-1.5 pt-0.5">
+                  {card.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="font-appleThin rounded-md bg-neutral-100 px-2 py-0.5 text-xs text-neutral-800"
+                    >
+                      #{tag}
+                    </span>
+                  ))}
                 </div>
               </div>
             </article>

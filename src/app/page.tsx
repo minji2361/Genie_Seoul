@@ -8,6 +8,7 @@ import { GenieStorySection } from "@/components/GenieStorySection";
 import { GeniusBannerSection } from "@/components/GeniusBannerSection";
 import { GeniusListSection } from "@/components/GeniusListSection";
 import { Header } from "@/components/Header";
+import { SHOW_GENIE_US } from "@/config/site-sections";
 import { HeroSection } from "@/components/HeroSection";
 import { IntroPhotoSection } from "@/components/IntroPhotoSection";
 import { PastGenieDaySection } from "@/components/PastGenieDaySection";
@@ -24,8 +25,12 @@ export default function HomePage() {
         <GenieDayBannerSection />
         <FindMeetingSection />
         <PastGenieDaySection />
-        <GeniusBannerSection />
-        <GeniusListSection />
+        {SHOW_GENIE_US && (
+          <>
+            <GeniusBannerSection />
+            <GeniusListSection />
+          </>
+        )}
         <CommunicationMagicSection />
         <GenieClubSection />
       </main>
