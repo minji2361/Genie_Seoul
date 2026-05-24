@@ -24,7 +24,7 @@ export function CommunicationMagicSection() {
         </div>
         <div className="flex justify-center tablet:justify-end">
           <Image
-            src="/GenieClub/club_ca.png"
+            src="/GenieClub/genie_club_ca.PNG"
             alt="지니클럽 하트 캐릭터"
             width={CLUB_CA_WIDTH}
             height={CLUB_CA_HEIGHT}

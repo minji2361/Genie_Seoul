@@ -3,13 +3,14 @@ import Link from "next/link";
 
 import { AuthNavItem } from "@/components/AuthNavItem";
 import { DashboardNavItem } from "@/components/DashboardNavItem";
+import { SHOW_GENIE_US } from "@/config/site-sections";
 
 const LOGO_WIDTH = 1072;
 const LOGO_HEIGHT = 420;
 const NAV = [
   { href: "#story", label: "지니이야기" },
   { href: "#genie-day", label: "Genie-Day" },
-  { href: "#genie-us", label: "Genie-Us" },
+  ...(SHOW_GENIE_US ? [{ href: "#genie-us", label: "Genie-Us" as const }] : []),
   { href: "#genie-club", label: "Genie-Club" },
 ];
 
