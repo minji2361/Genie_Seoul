@@ -5,19 +5,19 @@ const DAY2_HEIGHT = 186;
 
 const CARDS = [
   {
-    image: "/GenieDay/drawing_class.jpg",
+    image: "/GenieDay/drawing_class.png",
     category: "아트/드로잉",
     title: "오일파스텔",
     tags: ["힐링", "감성", "드로잉"],
   },
   {
-    image: "/GenieDay/perfume_class.jpg",
+    image: "/GenieDay/perfume_class.png",
     category: "라이프스타일",
     title: "시그니처 향수, 도예",
     tags: ["향기", "나만의무드", "라이프"],
   },
   {
-    image: "/GenieDay/photo_class.jpg",
+    image: "/GenieDay/photo_class.png",
     category: "미디어",
     title: "브이로그 촬영 기초 스쿨",
     tags: ["영상", "브이로그", "초보촬영"],

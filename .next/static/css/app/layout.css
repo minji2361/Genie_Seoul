@@ -5649,9 +5649,6 @@ video {
 .mr-3 {
   margin-right: 0.75rem;
 }
-.mt-0\.5 {
-  margin-top: 0.125rem;
-}
 .mt-1 {
   margin-top: 0.25rem;
 }
@@ -5712,14 +5709,14 @@ video {
 .aspect-\[1014\/947\] {
   aspect-ratio: 1014/947;
 }
-.aspect-square {
-  aspect-ratio: 1 / 1;
-}
 .aspect-\[291\/250\] {
   aspect-ratio: 291/250;
 }
 .aspect-\[437\/278\] {
   aspect-ratio: 437/278;
+}
+.aspect-square {
+  aspect-ratio: 1 / 1;
 }
 .h-1\.5 {
   height: 0.375rem;
@@ -5747,9 +5744,6 @@ video {
 }
 .h-32 {
   height: 8rem;
-}
-.h-36 {
-  height: 9rem;
 }
 .h-4 {
   height: 1rem;
@@ -5790,11 +5784,11 @@ video {
 .h-full {
   height: 100%;
 }
-.h-screen {
-  height: 100vh;
-}
 .h-px {
   height: 1px;
+}
+.h-screen {
+  height: 100vh;
 }
 .min-h-\[4rem\] {
   min-height: 4rem;
@@ -5877,6 +5871,9 @@ video {
 .w-\[7rem\] {
   width: 7rem;
 }
+.w-\[min\(300px\2c 85vw\)\] {
+  width: min(300px, 85vw);
+}
 .w-auto {
   width: auto;
 }
@@ -5890,17 +5887,8 @@ video {
 .w-px {
   width: 1px;
 }
-.w-\[min\(280px\2c 78vw\)\] {
-  width: min(280px, 78vw);
-}
-.w-\[min\(300px\2c 85vw\)\] {
-  width: min(300px, 85vw);
-}
 .min-w-0 {
   min-width: 0px;
-}
-.min-w-\[240px\] {
-  min-width: 240px;
 }
 .min-w-\[4rem\] {
   min-width: 4rem;
@@ -6068,6 +6056,9 @@ video {
 .justify-between {
   justify-content: space-between;
 }
+.gap-1\.5 {
+  gap: 0.375rem;
+}
 .gap-2 {
   gap: 0.5rem;
 }
@@ -6085,9 +6076,6 @@ video {
 }
 .gap-8 {
   gap: 2rem;
-}
-.gap-1\.5 {
-  gap: 0.375rem;
 }
 .gap-x-2 {
   -moz-column-gap: 0.5rem;
@@ -6197,9 +6185,6 @@ video {
 }
 .rounded-md {
   border-radius: 0.375rem;
-}
-.rounded-none {
-  border-radius: 0px;
 }
 .rounded-sm {
   border-radius: 0.125rem;
@@ -6492,9 +6477,6 @@ video {
 .p-2\.5 {
   padding: 0.625rem;
 }
-.p-3 {
-  padding: 0.75rem;
-}
 .p-4 {
   padding: 1rem;
 }
@@ -6543,6 +6525,10 @@ video {
   padding-left: 2rem;
   padding-right: 2rem;
 }
+.py-0\.5 {
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
+}
 .py-1 {
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
@@ -6583,10 +6569,6 @@ video {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
 }
-.py-0\.5 {
-  padding-top: 0.125rem;
-  padding-bottom: 0.125rem;
-}
 .pb-10 {
   padding-bottom: 2.5rem;
 }
@@ -6605,17 +6587,17 @@ video {
 .pl-6 {
   padding-left: 1.5rem;
 }
-.pt-4 {
-  padding-top: 1rem;
-}
-.pt-6 {
-  padding-top: 1.5rem;
-}
 .pt-0\.5 {
   padding-top: 0.125rem;
 }
 .pt-3 {
   padding-top: 0.75rem;
+}
+.pt-4 {
+  padding-top: 1rem;
+}
+.pt-6 {
+  padding-top: 1.5rem;
 }
 .text-left {
   text-align: left;
@@ -7467,10 +7449,6 @@ body {
     margin-top: 1.5rem;
   }
 
-  .max-\[390px\]\:h-28 {
-    height: 7rem;
-  }
-
   .max-\[390px\]\:h-\[180px\] {
     height: 180px;
   }
@@ -7483,16 +7461,8 @@ body {
     min-height: 3.5rem;
   }
 
-  .max-\[390px\]\:w-\[min\(260px\2c 82vw\)\] {
-    width: min(260px, 82vw);
-  }
-
   .max-\[390px\]\:w-\[min\(280px\2c 88vw\)\] {
     width: min(280px, 88vw);
-  }
-
-  .max-\[390px\]\:min-w-\[220px\] {
-    min-width: 220px;
   }
 
   .max-\[390px\]\:min-w-\[3\.5rem\] {
@@ -7535,10 +7505,6 @@ body {
     margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
   }
 
-  .max-\[390px\]\:p-2\.5 {
-    padding: 0.625rem;
-  }
-
   .max-\[390px\]\:p-3 {
     padding: 0.75rem;
   }
@@ -7578,16 +7544,16 @@ body {
     padding-bottom: 2rem;
   }
 
+  .max-\[390px\]\:pb-3 {
+    padding-bottom: 0.75rem;
+  }
+
   .max-\[390px\]\:pb-8 {
     padding-bottom: 2rem;
   }
 
   .max-\[390px\]\:pt-5 {
     padding-top: 1.25rem;
-  }
-
-  .max-\[390px\]\:pb-3 {
-    padding-bottom: 0.75rem;
   }
 
   .max-\[390px\]\:text-2xl {
@@ -7717,10 +7683,6 @@ body {
     margin-top: 2rem;
   }
 
-  .tablet\:grid {
-    display: grid;
-  }
-
   .tablet\:aspect-auto {
     aspect-ratio: auto;
   }
@@ -7731,10 +7693,6 @@ body {
 
   .tablet\:h-28 {
     height: 7rem;
-  }
-
-  .tablet\:h-36 {
-    height: 9rem;
   }
 
   .tablet\:h-\[280px\] {
@@ -7881,10 +7839,6 @@ body {
        object-position: center;
   }
 
-  .tablet\:p-4 {
-    padding: 1rem;
-  }
-
   .tablet\:p-5 {
     padding: 1.25rem;
   }
@@ -7927,16 +7881,16 @@ body {
     padding-bottom: 3rem;
   }
 
+  .tablet\:pb-5 {
+    padding-bottom: 1.25rem;
+  }
+
   .tablet\:pl-8 {
     padding-left: 2rem;
   }
 
   .tablet\:pt-8 {
     padding-top: 2rem;
-  }
-
-  .tablet\:pb-5 {
-    padding-bottom: 1.25rem;
   }
 
   .tablet\:text-left {
@@ -8049,10 +8003,6 @@ body {
 
   .desktop\:max-w-\[621px\] {
     max-width: 621px;
-  }
-
-  .desktop\:grid-cols-3 {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .desktop\:grid-cols-4 {
