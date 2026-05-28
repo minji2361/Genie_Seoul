@@ -5,28 +5,28 @@ const CLUB2_HEIGHT = 207;
 
 const CLUBS = [
   {
-    image: "/GenieClub/book_crew.jpg",
+    image: "/GenieClub/book_crew.png",
     title: "독서토론",
     descLine1: "책을 통해 생각을 나누고,",
     descLine2: "서로의 시야를 넓히는 시간",
     label: "지니클럽_독서토론",
   },
   {
-    image: "/GenieClub/running_crew.jpg",
+    image: "/GenieClub/running_crew.png",
     title: "중랑천 러닝크루",
     descLine1: "함께 뛰며 건강도 챙기고",
     descLine2: "일상의 스트레스도 날려요!",
     label: "지니클럽_러닝크루",
   },
   {
-    image: "/GenieClub/boardgame_crew.jpg",
+    image: "/GenieClub/boardgame_crew.png",
     title: "중랑구 보드게임 검은조직",
     descLine1: "보드게임 한 판으로 친해지는 우리!",
     descLine2: "전략도 우정도 레벨 업!",
     label: "지니클럽_보드게임",
   },
   {
-    image: "/GenieClub/soccer_crew.jpg",
+    image: "/GenieClub/soccer_crew.png",
     title: "족발킹 (족구동아리)",
     descLine1: "족구로 하나되는 에너지!",
     descLine2: "함께 땀 흘리고 웃어요!",
