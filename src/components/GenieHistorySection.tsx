@@ -75,10 +75,10 @@ export function GenieHistorySection() {
                       {item.icon}
                     </span>
                   </div>
-                  <h3 className="font-paperlogyBlack col-start-2 row-start-1 text-xl leading-snug text-neutral-900 max-[390px]:text-lg tablet:text-2xl">
+                  <h3 className="font-paperlogyBlack col-start-2 row-start-1 break-keep text-xl leading-snug text-neutral-900 max-[390px]:text-lg tablet:text-2xl">
                     {item.title}
                   </h3>
-                  <p className="font-appleMedium col-start-2 row-start-2 text-base leading-relaxed text-neutral-600 max-[390px]:text-sm tablet:text-lg">
+                  <p className="font-appleMedium col-start-2 row-start-2 break-keep text-base leading-relaxed text-neutral-600 max-[390px]:text-sm tablet:text-lg">
                     {item.description}
                   </p>
                 </div>
