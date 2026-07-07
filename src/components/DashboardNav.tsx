@@ -28,6 +28,11 @@ export function DashboardNav() {
                 대시보드
               </Link>
             </li>
+            <li className="shrink-0">
+              <Link href="/interview" className="whitespace-nowrap hover:text-genie-yellow">
+                인터뷰
+              </Link>
+            </li>
             {isDashboard ? (
               <li className="shrink-0">
                 <Link

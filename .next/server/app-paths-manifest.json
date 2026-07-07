@@ -1,1 +1,10 @@
-{}
+{
+  "/api/interview/route": "app/api/interview/route.js",
+  "/api/interview/[id]/route": "app/api/interview/[id]/route.js",
+  "/dashboard/participant/new/page": "app/dashboard/participant/new/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/dashboard/participant/[id]/page": "app/dashboard/participant/[id]/page.js",
+  "/dashboard/participant/[id]/personality-test2/page": "app/dashboard/participant/[id]/personality-test2/page.js",
+  "/dashboard/participant/[id]/personality-test2/results/page": "app/dashboard/participant/[id]/personality-test2/results/page.js",
+  "/interview/page": "app/interview/page.js"
+}

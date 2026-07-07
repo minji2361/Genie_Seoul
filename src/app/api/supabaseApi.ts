@@ -141,3 +141,95 @@ export const uploadSignature = async (dataUrl: string, fileName: string) => {
 export async function deleteParticipant(id: string) {
     return await supabase.from('participant').delete().eq('id', id);
 }
+
+export type GenieInterview = {
+    id: string;
+    counselors: string;
+    name: string;
+    age: string;
+    gender: string;
+    mbti: string;
+    region: string;
+    hobby: string;
+    dream: string;
+    q1_why_qa: string;
+    q2_current_interest: string;
+    q3_one_hour_wish: string;
+    q4_what_tires: string;
+    q5_energy_focus: string;
+    q6_what_lacking: string;
+    q7_local_taste: string;
+    q8_ideal_day: string;
+    q9_needed_gathering: string;
+    q10_life_priority: string;
+    q11_one_wish: string;
+    q12_interview_thoughts: string;
+    event_types: string[];
+    event_types_etc: string;
+    meeting_times: string[];
+    oneday_classes: string[];
+    clubs: string[];
+    signatureurl: string;
+    created_at: string;
+};
+
+export const getGenieInterviews = async () => {
+    const res = await fetch('/api/interview', { credentials: 'include' });
+    const json = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+        return { data: [], error: { message: json.error ?? '인터뷰 목록을 불러오지 못했습니다.' } };
+    }
+
+    return { data: json.data ?? [], error: null };
+};
+
+export const getGenieInterviewById = async (id: string) => {
+    const res = await fetch(`/api/interview/${id}`, { credentials: 'include' });
+    const json = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+        return { data: null, error: { message: json.error ?? '인터뷰를 불러오지 못했습니다.' } };
+    }
+
+    return { data: json.data ?? null, error: null };
+};
+
+export const addGenieInterview = async (
+    interview: Omit<GenieInterview, 'id' | 'created_at' | 'counselors' | 'signatureurl'> & {
+        signatureurl: string;
+        counselorId: string;
+    },
+) => {
+    const { counselorId: _counselorId, ...rest } = interview;
+
+    const res = await fetch('/api/interview', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(rest),
+    });
+
+    const json = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+        return { data: null, error: { message: json.error ?? '인터뷰 등록에 실패했습니다.' } };
+    }
+
+    return { data: json.data, error: null };
+};
+
+export async function deleteGenieInterview(id: string) {
+    const res = await fetch(`/api/interview/${id}`, {
+        method: 'DELETE',
+        credentials: 'include',
+    });
+
+    const json = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+        return { error: { message: json.error ?? '삭제에 실패했습니다.' } };
+    }
+
+    return { error: null };
+}

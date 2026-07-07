@@ -65,7 +65,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = async () => {
     await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
     setIsAuthenticated(false);
-    if (pathname?.startsWith("/dashboard")) {
+    if (pathname?.startsWith("/dashboard") || pathname?.startsWith("/interview")) {
       router.replace("/login");
     } else {
       router.replace("/");
