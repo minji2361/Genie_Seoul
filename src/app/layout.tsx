@@ -6,13 +6,44 @@ import "@fontsource/noto-sans-kr/700.css";
 import "@fontsource/noto-sans-kr/800.css";
 
 import { Providers } from "@/components/Providers";
+import { getSiteUrl } from "@/lib/site-url";
 import "@/styles/globals.css";
 
+const siteUrl = getSiteUrl();
+
+const googleVerification =
+  process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ??
+  "etSlSFKIMQcKvqbM9n7nZh57Z2ZoBFeu11E6YUspRQc";
+const naverVerification = process.env.NEXT_PUBLIC_NAVER_SITE_VERIFICATION;
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "플레이그라운드 genie",
   description:
     "내 취향이 일상이 되는 곳, 가장 가까운 놀이터. 지니데이·지니어스·지니클럽과 동네 모임을 만나보세요.",
-  keywords: ["genie", "플레이그라운드", "지니데이", "지니어스", "지니클럽", "모임", "취향"],
+  keywords: ["genie", "플레이그라운드", "지니데이", "지니어스", "지니클럽", "모임", "취향", "genie-land"],
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "ko_KR",
+    url: siteUrl,
+    siteName: "플레이그라운드 genie",
+    title: "플레이그라운드 genie",
+    description:
+      "내 취향이 일상이 되는 곳, 가장 가까운 놀이터. 지니데이·지니어스·지니클럽과 동네 모임을 만나보세요.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  verification: {
+    google: googleVerification,
+    ...(naverVerification
+      ? { other: { "naver-site-verification": naverVerification } }
+      : {}),
+  },
 };
 
 export default function RootLayout({
@@ -22,6 +53,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
+      <head>
+        <meta
+          name="google-site-verification"
+          content="etSlSFKIMQcKvqbM9n7nZh57Z2ZoBFeu11E6YUspRQc"
+        />
+      </head>
       <body>
         <Providers>{children}</Providers>
       </body>
