@@ -8,6 +8,7 @@ import { GenieStorySection } from "@/components/GenieStorySection";
 import { GeniusBannerSection } from "@/components/GeniusBannerSection";
 import { GeniusListSection } from "@/components/GeniusListSection";
 import { Header } from "@/components/Header";
+import { HomePopup } from "@/components/HomePopup";
 import { SHOW_GENIE_US } from "@/config/site-sections";
 import { HeroSection } from "@/components/HeroSection";
 import { IntroPhotoSection } from "@/components/IntroPhotoSection";
@@ -16,6 +17,7 @@ import { PastGenieDaySection } from "@/components/PastGenieDaySection";
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-white text-neutral-900">
+      <HomePopup />
       <Header />
       <main>
         <HeroSection />
