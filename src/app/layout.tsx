@@ -18,7 +18,7 @@ const naverVerification = process.env.NEXT_PUBLIC_NAVER_SITE_VERIFICATION;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "지니랜드 | 내 취향이 일상이 되는 곳",
+  title: "지니 | 내 취향이 일상이 되는 곳",
   description: "우리동네 플레이그라운드 '지니'",
   keywords: ["genie", "플레이그라운드", "지니데이", "지니어스", "지니클럽", "모임", "취향", "genie-land"],
   alternates: {
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     locale: "ko_KR",
     url: siteUrl,
     siteName: "지니랜드",
-    title: "지니랜드 | 내 취향이 일상이 되는 곳",
+    title: "지니 | 내 취향이 일상이 되는 곳",
     description: "우리동네 플레이그라운드 '지니'",
   },
   robots: {
@@ -52,7 +52,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <head>
-        <title>지니랜드 | 내 취향이 일상이 되는 곳</title>
+        <title>지니 | 내 취향이 일상이 되는 곳</title>
         <meta name="description" content="우리동네 플레이그라운드 '지니'" />
         <meta name="robots" content="index,follow" />
         <meta
