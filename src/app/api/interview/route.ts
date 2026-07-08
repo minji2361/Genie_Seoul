@@ -114,7 +114,7 @@ export async function POST(request: Request) {
 
   const payload = pickInterviewPayload(body as Record<string, unknown>);
   const surveyPayload = pickSurveyPayload(body as Record<string, unknown>);
-  const required = ["name", "age", "gender", "mbti", "region", "signatureurl"] as const;
+  const required = ["name", "age", "gender", "mbti", "region"] as const;
 
   for (const field of required) {
     if (!payload[field]?.trim()) {
@@ -149,6 +149,7 @@ export async function POST(request: Request) {
         q10_life_priority: payload.q10_life_priority ?? "",
         q11_one_wish: payload.q11_one_wish ?? "",
         q12_interview_thoughts: payload.q12_interview_thoughts ?? "",
+        signatureurl: payload.signatureurl ?? "",
         ...surveyPayload,
         counselors: counselorId,
       },
