@@ -7,12 +7,11 @@ const STORAGE_KEY = 'genie-home-popup-hide-until';
 
 /** 나중에 이미지·문구로 교체하세요 */
 const POPUP = {
-    imageSrc: '/IGO_poster.jpg',
-    imageAlt: 'I GO 팝업 포스터',
-    title: '아이고(I GO) 내 팔자야',
-    description: ['인생의 타이밍!', '인생이 자꾸 엇박자를 탈 때!', '내 운명의 BPM 확인하는 법'],
+    imageSrc: '/Perfume_poster.jpg',
+    imageAlt: '향수 팝업 포스터',
+    title: '취\'향\'저격',
+    description: ['향으로 알아보는', '나만의 성향과 방향성', '7월 25일(토) 13:00 ~ 18:00'],
 };
-
 function isHiddenForToday(): boolean {
     try {
         const raw = localStorage.getItem(STORAGE_KEY);
@@ -117,9 +116,7 @@ export function HomePopup() {
                         id="home-popup-title"
                         className="text-lg font-semibold tracking-wide text-white sm:text-xl"
                     >
-                        아이고(
-                        <span style={{ color: '#00FF99' }}>I GO</span>
-                        ) 내 팔자야
+                        취&apos;향&apos;저격
                     </h2>
                     <p className="mt-2 text-sm font-light leading-relaxed text-white/80 sm:text-[15px]">
                         {POPUP.description.map((line) => (
