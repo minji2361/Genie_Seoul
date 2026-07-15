@@ -236,6 +236,26 @@ export default function Interview() {
                                                 <button
                                                     onClick={(e) => {
                                                         e.stopPropagation();
+                                                        router.push(`/interview/participant/${item.id}/edit`);
+                                                    }}
+                                                    className="px-4 py-1 rounded-md text-sm transition"
+                                                    style={baseButtonStyle}
+                                                    onMouseEnter={(e) =>
+                                                        Object.assign(e.currentTarget.style, hoverButtonStyle)
+                                                    }
+                                                    onMouseLeave={(e) =>
+                                                        Object.assign(e.currentTarget.style, baseButtonStyle)
+                                                    }
+                                                    onFocus={(e) =>
+                                                        (e.currentTarget.style.boxShadow = focusRingStyle.boxShadow)
+                                                    }
+                                                    onBlur={(e) => (e.currentTarget.style.boxShadow = 'none')}
+                                                >
+                                                    {t.edit}
+                                                </button>
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
                                                         handleDelete(item.id);
                                                     }}
                                                     className="px-4 py-1 rounded-md text-sm transition"

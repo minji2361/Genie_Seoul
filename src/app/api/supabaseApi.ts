@@ -152,6 +152,8 @@ export type GenieInterview = {
     region: string;
     hobby: string;
     dream: string;
+    major_job: string;
+    schedule: string;
     q1_why_qa: string;
     q2_current_interest: string;
     q3_one_hour_wish: string;
@@ -168,7 +170,9 @@ export type GenieInterview = {
     event_types_etc: string;
     meeting_times: string[];
     oneday_classes: string[];
+    oneday_classes_etc: string;
     clubs: string[];
+    clubs_etc: string;
     signatureurl: string;
     created_at: string;
 };
@@ -214,6 +218,26 @@ export const addGenieInterview = async (
 
     if (!res.ok) {
         return { data: null, error: { message: json.error ?? '인터뷰 등록에 실패했습니다.' } };
+    }
+
+    return { data: json.data, error: null };
+};
+
+export const updateGenieInterview = async (
+    id: string,
+    interview: Omit<GenieInterview, 'id' | 'created_at' | 'counselors'>,
+) => {
+    const res = await fetch(`/api/interview/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(interview),
+    });
+
+    const json = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+        return { data: null, error: { message: json.error ?? '인터뷰 수정에 실패했습니다.' } };
     }
 
     return { data: json.data, error: null };
