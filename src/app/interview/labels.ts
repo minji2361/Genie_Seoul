@@ -12,6 +12,7 @@ export const interviewLabels = {
     colRegion: '거주 지역',
     colActions: '관리',
     viewDetail: '상세 보기',
+    edit: '수정',
     delete: '삭제',
     confirmDelete: '정말 삭제하시겠습니까?',
     deleteFailed: '삭제에 실패했습니다.',

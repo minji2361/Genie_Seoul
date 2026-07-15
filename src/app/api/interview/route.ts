@@ -13,6 +13,8 @@ const INTERVIEW_FIELDS = [
   "region",
   "hobby",
   "dream",
+  "major_job",
+  "schedule",
   "q1_why_qa",
   "q2_current_interest",
   "q3_one_hour_wish",
@@ -57,6 +59,9 @@ function pickSurveyPayload(body: Record<string, unknown>) {
 
   survey.event_types_etc =
     typeof body["event_types_etc"] === "string" ? (body["event_types_etc"] as string) : "";
+  survey.oneday_classes_etc =
+    typeof body["oneday_classes_etc"] === "string" ? (body["oneday_classes_etc"] as string) : "";
+  survey.clubs_etc = typeof body["clubs_etc"] === "string" ? (body["clubs_etc"] as string) : "";
 
   return survey;
 }
@@ -137,6 +142,8 @@ export async function POST(request: Request) {
         ...payload,
         hobby: payload.hobby ?? "",
         dream: payload.dream ?? "",
+        major_job: payload.major_job ?? "",
+        schedule: payload.schedule ?? "",
         q1_why_qa: payload.q1_why_qa ?? "",
         q2_current_interest: payload.q2_current_interest ?? "",
         q3_one_hour_wish: payload.q3_one_hour_wish ?? "",

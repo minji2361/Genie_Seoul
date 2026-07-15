@@ -109,6 +109,8 @@ create table if not exists public.int_interviews (
     region text not null,
     hobby text not null default '',
     dream text not null default '',
+    major_job text not null default '',
+    schedule text not null default '',
     q1_why_qa text not null default '',
     q2_current_interest text not null default '',
     q3_one_hour_wish text not null default '',
@@ -126,7 +128,9 @@ create table if not exists public.int_interviews (
     event_types_etc text not null default '',
     meeting_times jsonb not null default '[]'::jsonb,
     oneday_classes jsonb not null default '[]'::jsonb,
+    oneday_classes_etc text not null default '',
     clubs jsonb not null default '[]'::jsonb,
+    clubs_etc text not null default '',
     signatureurl text not null,
     created_at timestamptz not null default now()
 );

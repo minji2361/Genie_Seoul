@@ -5,7 +5,15 @@ export const EVENT_TYPES = [
     '취업/창업 관련 프로그램',
 ] as const;
 
-export const MEETING_TIMES = ['평일 저녁', '주말 낮', '주말 저녁', '무관함'] as const;
+export const MEETING_TIMES = [
+    '평일 오전',
+    '평일 낮',
+    '평일 저녁',
+    '주말 오전',
+    '주말 낮',
+    '주말 저녁',
+    '무관함',
+] as const;
 
 export const ONEDAY_CLASSES = ['오일파스텔', '커스텀향수만들기', '도예클래스', '사주 명리학', '퍼스널컬러'] as const;
 
@@ -18,7 +26,9 @@ export type SurveyState = {
     event_types_etc: string;
     meeting_times: string[];
     oneday_classes: string[];
+    oneday_classes_etc: string;
     clubs: string[];
+    clubs_etc: string;
 };
 
 export const INITIAL_SURVEY: SurveyState = {
@@ -26,5 +36,7 @@ export const INITIAL_SURVEY: SurveyState = {
     event_types_etc: '',
     meeting_times: [],
     oneday_classes: [],
+    oneday_classes_etc: '',
     clubs: [],
+    clubs_etc: '',
 };

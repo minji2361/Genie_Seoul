@@ -221,6 +221,8 @@ create table if not exists public.int_interviews (
     region text not null,
     hobby text not null default '',
     dream text not null default '',
+    major_job text not null default '',
+    schedule text not null default '',
     q1_why_qa text not null default '',
     q2_current_interest text not null default '',
     q3_one_hour_wish text not null default '',
@@ -238,17 +240,23 @@ create table if not exists public.int_interviews (
     event_types_etc text not null default '',
     meeting_times jsonb not null default '[]'::jsonb,
     oneday_classes jsonb not null default '[]'::jsonb,
+    oneday_classes_etc text not null default '',
     clubs jsonb not null default '[]'::jsonb,
+    clubs_etc text not null default '',
     signatureurl text not null,
     created_at timestamptz not null default now()
 );
 
--- 기존 테이블에 설문 컬럼이 없으면 추가 (idempotent)
+-- 기존 테이블에 설문/확장 컬럼이 없으면 추가 (idempotent)
+alter table public.int_interviews add column if not exists major_job text not null default '';
+alter table public.int_interviews add column if not exists schedule text not null default '';
 alter table public.int_interviews add column if not exists event_types jsonb not null default '[]'::jsonb;
 alter table public.int_interviews add column if not exists event_types_etc text not null default '';
 alter table public.int_interviews add column if not exists meeting_times jsonb not null default '[]'::jsonb;
 alter table public.int_interviews add column if not exists oneday_classes jsonb not null default '[]'::jsonb;
+alter table public.int_interviews add column if not exists oneday_classes_etc text not null default '';
 alter table public.int_interviews add column if not exists clubs jsonb not null default '[]'::jsonb;
+alter table public.int_interviews add column if not exists clubs_etc text not null default '';
 
 create index if not exists idx_int_interviews_counselors on public.int_interviews (counselors);
 
