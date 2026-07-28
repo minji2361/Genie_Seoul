@@ -195,7 +195,18 @@ export function InterviewForm({ mode, interviewId, initialInterview }: Interview
     );
 
     return (
-        <div className="p-6 max-w-2xl mx-auto min-h-screen">
+        <div className="relative p-6 max-w-2xl mx-auto min-h-screen">
+            {loading && (
+                <div className="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm">
+                    <div className="flex flex-col items-center rounded-2xl bg-white px-10 py-8 shadow-xl">
+                        <div className="h-12 w-12 animate-spin rounded-full border-4 border-blue-200 border-t-blue-600" />
+                        <p className="mt-4 text-sm font-semibold text-gray-700">
+                            {mode === 'edit' ? '수정 중...' : '저장 중...'}
+                        </p>
+                    </div>
+                </div>
+            )}
+
             {step === 1 && (
                 <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
                     <h3 className="text-2xl font-bold mb-2 text-gray-800">🌟 지니 QnA</h3>

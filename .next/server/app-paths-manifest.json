@@ -1,11 +1,10 @@
 {
   "/page": "app/page.js",
+  "/api/auth/login/route": "app/api/auth/login/route.js",
+  "/api/auth/me/route": "app/api/auth/me/route.js",
   "/api/interview/route": "app/api/interview/route.js",
-  "/api/interview/[id]/route": "app/api/interview/[id]/route.js",
-  "/interview/page": "app/interview/page.js",
-  "/interview/participant/[id]/edit/page": "app/interview/participant/[id]/edit/page.js",
   "/login/page": "app/login/page.js",
-  "/dashboard/page": "app/dashboard/page.js",
   "/interview/participant/new/page": "app/interview/participant/new/page.js",
-  "/interview/participant/[id]/page": "app/interview/participant/[id]/page.js"
+  "/interview/page": "app/interview/page.js",
+  "/dashboard/page": "app/dashboard/page.js"
 }
