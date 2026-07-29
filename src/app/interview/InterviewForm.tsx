@@ -75,6 +75,7 @@ export function InterviewForm({ mode, interviewId, initialInterview }: Interview
     const router = useRouter();
     const [step, setStep] = useState(1);
     const [loading, setLoading] = useState(false);
+    const [submitError, setSubmitError] = useState<string | null>(null);
     const [form, setForm] = useState<InterviewFormState>(() => toFormState(initialInterview));
     const [survey, setSurvey] = useState<SurveyState>(() => toSurveyState(initialInterview));
     const [eventEtcChecked, setEventEtcChecked] = useState(!!initialInterview?.event_types_etc);
@@ -129,47 +130,60 @@ export function InterviewForm({ mode, interviewId, initialInterview }: Interview
     const handleSubmit = async () => {
         if (!validateBasicInfo()) return;
 
+        setSubmitError(null);
         setLoading(true);
 
-        if (mode === 'edit') {
-            if (!interviewId) {
-                setLoading(false);
-                alert('수정할 인터뷰를 찾을 수 없습니다.');
+        try {
+            if (mode === 'edit') {
+                if (!interviewId) {
+                    setSubmitError('수정할 인터뷰를 찾을 수 없습니다.');
+                    return;
+                }
+
+                const { error } = await updateGenieInterview(interviewId, buildPayload());
+
+                if (error) {
+                    setSubmitError(error.message ?? '수정 중 오류가 발생했습니다.');
+                    return;
+                }
+
+                alert('인터뷰 수정이 완료되었습니다.');
+                router.push('/interview');
                 return;
             }
 
-            const { error } = await updateGenieInterview(interviewId, buildPayload());
-            setLoading(false);
+            const {
+                data: { user },
+                error: userError,
+            } = await supabase.auth.getUser();
+
+            if (userError || !user) {
+                setSubmitError(userError?.message ?? '로그인 정보를 확인할 수 없습니다.');
+                return;
+            }
+
+            const { error } = await addGenieInterview({
+                ...buildPayload(),
+                counselorId: user.id,
+            });
 
             if (error) {
-                alert(error.message ?? '수정 중 오류가 발생했습니다.');
-            } else {
-                alert('인터뷰 수정이 완료되었습니다.');
-                router.push('/interview');
+                setSubmitError(error.message ?? '등록 중 오류가 발생했습니다.');
+                return;
             }
-            return;
-        }
 
-        const {
-            data: { user },
-        } = await supabase.auth.getUser();
-
-        const { error } = await addGenieInterview({
-            ...buildPayload(),
-            counselorId: user?.id ?? '',
-        });
-
-        setLoading(false);
-
-        if (error) {
-            const message =
-                error && typeof error === 'object' && 'message' in error
-                    ? String(error.message)
-                    : '등록 중 오류가 발생했습니다.';
-            alert(message);
-        } else {
             alert('인터뷰 등록이 완료되었습니다.');
             router.push('/dashboard');
+        } catch (error) {
+            setSubmitError(
+                error instanceof Error
+                    ? error.message
+                    : mode === 'edit'
+                      ? '수정 중 오류가 발생했습니다.'
+                      : '등록 중 오류가 발생했습니다.',
+            );
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -196,6 +210,35 @@ export function InterviewForm({ mode, interviewId, initialInterview }: Interview
 
     return (
         <div className="relative p-6 max-w-2xl mx-auto min-h-screen">
+            {submitError && (
+                <div
+                    className="fixed inset-0 z-[210] flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="submit-error-title"
+                >
+                    <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl">
+                        <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-100 text-2xl text-red-600">
+                            !
+                        </div>
+                        <h2 id="submit-error-title" className="text-lg font-bold text-gray-900">
+                            저장하지 못했습니다
+                        </h2>
+                        <p className="mt-2 break-words text-sm leading-6 text-gray-600">
+                            {submitError}
+                        </p>
+                        <button
+                            type="button"
+                            onClick={() => setSubmitError(null)}
+                            className="mt-6 w-full rounded-md bg-red-600 py-2.5 text-sm font-semibold text-white transition hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                            autoFocus
+                        >
+                            확인
+                        </button>
+                    </div>
+                </div>
+            )}
+
             {loading && (
                 <div className="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm">
                     <div className="flex flex-col items-center rounded-2xl bg-white px-10 py-8 shadow-xl">
