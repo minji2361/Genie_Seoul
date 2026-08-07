@@ -35,6 +35,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     refreshAuth();
+
+    // 페이지 이동 없이 한 화면에 오래 머물러도 세션이 끊기지 않도록
+    // 주기적으로 /api/auth/me 를 호출해 슬라이딩 세션을 갱신한다.
+    const heartbeat = setInterval(refreshAuth, 5 * 60 * 1000);
+    return () => clearInterval(heartbeat);
   }, [refreshAuth]);
 
   const login = async (id: string, password: string) => {
