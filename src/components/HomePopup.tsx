@@ -10,7 +10,7 @@ const POPUP = {
     imageSrc: '/Perfume_poster.jpg',
     imageAlt: '향수 팝업 포스터',
     title: '취\'향\'저격',
-    description: ['향으로 알아보는', '나만의 성향과 방향성', '7월 25일(토) 13:00 ~ 18:00'],
+    description: ['향으로 알아보는', '나만의 성향과 방향성'],
 };
 function isHiddenForToday(): boolean {
     try {
