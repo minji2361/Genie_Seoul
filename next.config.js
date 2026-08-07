@@ -14,6 +14,9 @@ const supabaseHost = supabaseImageHostname();
 
 const nextConfig = {
   reactStrictMode: true,
+  experimental: {
+    staleTimes: { dynamic: 0, static: 0 },
+  },
   images: {
     remotePatterns: supabaseHost
       ? [{ protocol: "https", hostname: supabaseHost, pathname: "/**" }]

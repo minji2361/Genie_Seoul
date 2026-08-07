@@ -1,3 +1,5 @@
+import packageJson from '../../package.json';
+
 export function FooterBanner() {
   return (
     <footer className="bg-genie-lavender py-6 text-center max-[390px]:py-5">
@@ -8,6 +10,7 @@ export function FooterBanner() {
         <p className="font-medium max-[390px]:text-xs">
           가까운 동네에서 시작하는 취향 여정 — 플레이그라운드 genie
         </p>
+        <span className="text-xs text-genie-purple/60">v{packageJson.version}</span>
       </div>
     </footer>
   );
