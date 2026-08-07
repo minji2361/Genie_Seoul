@@ -84,3 +84,5 @@ Never run `git commit` or `git push` automatically — both require explicit use
 - **genie-assessment-page** — dashboard assessment pages; enforces the questionnaire/results/scoring pattern above.
 - **genie-auth-review** — read-only review of anything touching auth/sessions/API routes; checks the middleware-matcher and RLS-bypass gaps above.
 - **genie-supabase-schema** — schema/migration changes; keeps new SQL consistent with `supabase/migrations/` and flags RLS-bypass implications.
+
+-
