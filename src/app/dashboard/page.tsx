@@ -38,7 +38,7 @@ export default function Dashboard() {
         const { error } = await deleteParticipant(id);
         if (error) {
             console.error('삭제 오류:', error.message);
-            alert('삭제에 실패했습니다.');
+            alert(error.message || '삭제에 실패했습니다.');
         } else {
             setParticipant((prev) => prev.filter((p) => p.id !== id));
         }

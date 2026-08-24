@@ -13,5 +13,10 @@ export function createAdminClient() {
       autoRefreshToken: false,
       persistSession: false,
     },
+    // Next.js patches global fetch to cache GET requests by default;
+    // admin queries must always see the latest row, so opt every request out.
+    global: {
+      fetch: (input, init) => fetch(input, { ...init, cache: "no-store" }),
+    },
   });
 }

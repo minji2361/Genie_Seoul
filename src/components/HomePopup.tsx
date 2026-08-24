@@ -5,13 +5,21 @@ import { useEffect, useState } from 'react';
 
 const STORAGE_KEY = 'genie-home-popup-hide-until';
 
-/** 나중에 이미지·문구로 교체하세요 */
-const POPUP = {
+/** 관리자 화면에서 설정하지 않았을 때 쓰는 기본값 */
+const DEFAULT_POPUP = {
     imageSrc: '/Perfume_poster.jpg',
-    imageAlt: '향수 팝업 포스터',
-    title: '취\'향\'저격',
-    description: ['향으로 알아보는', '나만의 성향과 방향성'],
+    imageAlt: '팝업 이미지',
+    title: '',
+    description: [] as string[],
 };
+
+type HomePopupConfig = {
+    title: string;
+    description: string[];
+    image_url: string | null;
+    is_active: boolean;
+};
+
 function isHiddenForToday(): boolean {
     try {
         const raw = localStorage.getItem(STORAGE_KEY);
@@ -34,9 +42,26 @@ function hideForToday() {
 
 export function HomePopup() {
     const [open, setOpen] = useState(false);
+    const [config, setConfig] = useState<HomePopupConfig | null>(null);
 
     useEffect(() => {
-        if (!isHiddenForToday()) setOpen(true);
+        let cancelled = false;
+
+        fetch('/api/popup')
+            .then((res) => res.json())
+            .then((json) => {
+                if (cancelled) return;
+                const data = json?.data as HomePopupConfig | null | undefined;
+                setConfig(data ?? null);
+                if (data?.is_active && !isHiddenForToday()) setOpen(true);
+            })
+            .catch(() => {
+                // 팝업 설정을 못 불러오면 그냥 띄우지 않는다
+            });
+
+        return () => {
+            cancelled = true;
+        };
     }, []);
 
     useEffect(() => {
@@ -56,7 +81,7 @@ export function HomePopup() {
         };
     }, [open]);
 
-    if (!open) return null;
+    if (!open || !config) return null;
 
     const close = () => setOpen(false);
 
@@ -64,6 +89,10 @@ export function HomePopup() {
         hideForToday();
         setOpen(false);
     };
+
+    const imageSrc = config.image_url || DEFAULT_POPUP.imageSrc;
+    const title = config.title || DEFAULT_POPUP.title;
+    const description = config.description.length > 0 ? config.description : DEFAULT_POPUP.description;
 
     return (
         <div
@@ -92,8 +121,8 @@ export function HomePopup() {
                 <div className="relative w-full bg-black">
                     <div className="relative w-full aspect-[3/4] max-h-[68vh] bg-neutral-900">
                         <Image
-                            src={POPUP.imageSrc}
-                            alt={POPUP.imageAlt}
+                            src={imageSrc}
+                            alt={title || DEFAULT_POPUP.imageAlt}
                             fill
                             className="object-contain"
                             sizes="(max-width: 640px) 92vw, 440px"
@@ -112,15 +141,17 @@ export function HomePopup() {
                 </div>
 
                 <div className="px-5 pb-5 pt-4 text-center sm:px-6 sm:pb-6">
-                    <h2
-                        id="home-popup-title"
-                        className="text-lg font-semibold tracking-wide text-white sm:text-xl"
-                    >
-                        취&apos;향&apos;저격
-                    </h2>
+                    {title && (
+                        <h2
+                            id="home-popup-title"
+                            className="text-lg font-semibold tracking-wide text-white sm:text-xl"
+                        >
+                            {title}
+                        </h2>
+                    )}
                     <p className="mt-2 text-sm font-light leading-relaxed text-white/80 sm:text-[15px]">
-                        {POPUP.description.map((line) => (
-                            <span key={line} className="block">
+                        {description.map((line, i) => (
+                            <span key={`${i}-${line}`} className="block">
                                 {line}
                             </span>
                         ))}

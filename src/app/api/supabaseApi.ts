@@ -139,7 +139,17 @@ export const uploadSignature = async (dataUrl: string, fileName: string) => {
     return { url: data.url as string, error: null };
 };
 export async function deleteParticipant(id: string) {
-    return await supabase.from('participant').delete().eq('id', id);
+    const res = await fetch(`/api/participant/${id}`, {
+        method: 'DELETE',
+        credentials: 'include',
+    });
+    const json = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+        return { error: { message: json.error ?? '삭제할 수 없습니다. 데이터가 없거나 관리자가 보관 처리한 항목입니다.' } };
+    }
+
+    return { error: null };
 }
 
 export type GenieInterview = {
@@ -257,3 +267,145 @@ export async function deleteGenieInterview(id: string) {
 
     return { error: null };
 }
+
+export type AdminParticipant = {
+    id: string;
+    name: string;
+    birth_date: string;
+    stress: string;
+    religion: string;
+    counselors: string;
+    counselor_name: string;
+    created_at: string;
+    retain?: boolean;
+};
+
+export const getAdminParticipants = async () => {
+    const res = await fetch('/api/admin/participants', { credentials: 'include' });
+    const json = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+        return { data: [] as AdminParticipant[], error: { message: json.error ?? '대상자 전체 목록을 불러오지 못했습니다.' } };
+    }
+
+    return { data: (json.data ?? []) as AdminParticipant[], error: null };
+};
+
+export type AdminInterview = GenieInterview & { counselor_name: string; retain?: boolean };
+
+export const getAdminInterviews = async () => {
+    const res = await fetch('/api/admin/interviews', { credentials: 'include' });
+    const json = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+        return { data: [] as AdminInterview[], error: { message: json.error ?? '인터뷰 전체 목록을 불러오지 못했습니다.' } };
+    }
+
+    return { data: (json.data ?? []) as AdminInterview[], error: null };
+};
+
+export const updateAdminParticipantRetain = async (id: string, retain: boolean) => {
+    const res = await fetch(`/api/admin/participants/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ retain }),
+    });
+    const json = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+        return { error: { message: json.error ?? '보관 상태 변경에 실패했습니다.' } };
+    }
+
+    return { error: null };
+};
+
+export const updateAdminInterviewRetain = async (id: string, retain: boolean) => {
+    const res = await fetch(`/api/admin/interviews/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ retain }),
+    });
+    const json = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+        return { error: { message: json.error ?? '보관 상태 변경에 실패했습니다.' } };
+    }
+
+    return { error: null };
+};
+
+export type AdminDeleteResult = {
+    deletedParticipants: number;
+    deletedInterviews: number;
+    skippedRetainCount: number;
+};
+
+export const deleteAdminRecords = async (participantIds: string[], interviewIds: string[]) => {
+    const res = await fetch('/api/admin/records', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ participantIds, interviewIds }),
+    });
+    const json = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+        return { data: null as AdminDeleteResult | null, error: { message: json.error ?? '삭제에 실패했습니다.' } };
+    }
+
+    return { data: json as AdminDeleteResult, error: null };
+};
+
+export type HomePopupConfig = {
+    title: string;
+    description: string[];
+    image_url: string | null;
+    is_active: boolean;
+};
+
+export const getAdminPopupConfig = async () => {
+    const res = await fetch('/api/admin/popup', { credentials: 'include' });
+    const json = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+        return { data: null as HomePopupConfig | null, error: { message: json.error ?? '팝업 설정을 불러오지 못했습니다.' } };
+    }
+
+    return { data: (json.data ?? null) as HomePopupConfig | null, error: null };
+};
+
+export const updateAdminPopupConfig = async (update: Partial<HomePopupConfig>) => {
+    const res = await fetch('/api/admin/popup', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(update),
+    });
+    const json = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+        return { data: null as HomePopupConfig | null, error: { message: json.error ?? '팝업 설정 저장에 실패했습니다.' } };
+    }
+
+    return { data: (json.data ?? null) as HomePopupConfig | null, error: null };
+};
+
+export const uploadAdminPopupImage = async (file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const res = await fetch('/api/admin/popup/upload-image', {
+        method: 'POST',
+        credentials: 'include',
+        body: formData,
+    });
+    const json = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+        return { url: null as string | null, error: { message: json.error ?? '이미지 업로드에 실패했습니다.' } };
+    }
+
+    return { url: (json.url ?? null) as string | null, error: null };
+};

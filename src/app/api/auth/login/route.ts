@@ -6,6 +6,7 @@ import {
   SESSION_COOKIE,
   createSessionToken,
   validateAdminCredentials,
+  validateSuperAdminCredentials,
 } from "@/lib/auth";
 
 export async function POST(request: Request) {
@@ -15,6 +16,30 @@ export async function POST(request: Request) {
 
   if (!id || !password) {
     return NextResponse.json({ error: "아이디와 비밀번호를 입력해 주세요." }, { status: 400 });
+  }
+
+  // 관리자 전용 계정도 코치와 동일하게 Supabase Auth에 연결해 counselors 테이블에 등록해 둔다.
+  // (역할 판정 자체는 아래 커스텀 세션 쿠키가 담당하므로, Supabase 연결 실패가 로그인을 막지는 않는다.)
+  if (validateSuperAdminCredentials(id, password)) {
+    const { supabaseConnected, supabaseError } = await connectSupabaseAndEnsureCounselor(id, password, {
+      name: "관리자",
+      region: "관리자",
+    });
+
+    const response = NextResponse.json({
+      ok: true,
+      role: "admin",
+      supabaseConnected,
+      supabaseError: supabaseConnected ? null : supabaseError,
+    });
+    response.cookies.set(SESSION_COOKIE, createSessionToken("admin"), {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 12 * 60 * 60,
+    });
+    return response;
   }
 
   if (!process.env.ADMIN_ID || !process.env.ADMIN_PASSWORD) {
@@ -31,75 +56,16 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "아이디 또는 비밀번호가 올바르지 않습니다." }, { status: 401 });
   }
 
-  let supabaseConnected = false;
-  let supabaseError: string | null = null;
-
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-  if (!supabaseUrl || !supabaseKey) {
-    supabaseError = "NEXT_PUBLIC_SUPABASE_URL / ANON_KEY가 .env.local에 설정되지 않았습니다.";
-  } else if (!id.includes("@")) {
-    supabaseError = "이메일 형식의 아이디가 필요합니다.";
-  } else {
-    const supabase = createRouteHandlerClient({ cookies });
-
-    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-      email: id,
-      password,
-    });
-
-    if (!signInError && signInData.session) {
-      supabaseConnected = true;
-    } else {
-      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
-        email: id,
-        password,
-      });
-
-      if (!signUpError && signUpData.user) {
-        const { data: retryData, error: retryError } = await supabase.auth.signInWithPassword({
-          email: id,
-          password,
-        });
-        if (!retryError && retryData.session) {
-          supabaseConnected = true;
-        } else {
-          supabaseError =
-            retryError?.message ??
-            "회원가입은 되었지만 로그인에 실패했습니다. Supabase에서 이메일 인증(Confirm)을 끄거나 사용자를 확인해 주세요.";
-        }
-      } else if (signUpError?.message?.includes("already") || signUpError?.message?.includes("registered")) {
-        supabaseError =
-          "Supabase에 jn@jn.com 계정은 있지만 비밀번호가 일치하지 않습니다. Supabase 대시보드 → Authentication → Users → 해당 사용자 → Reset password 를 Jn1234! 로 맞춘 뒤 다시 로그인하세요.";
-      } else if (signInError?.message?.includes("Invalid login") || signInError?.message?.includes("invalid_credentials")) {
-        supabaseError =
-          "Supabase 비밀번호가 .env.local 의 Jn1234! 와 다릅니다. Supabase 대시보드에서 비밀번호를 재설정해 주세요.";
-      } else {
-        supabaseError =
-          signInError?.message ??
-          signUpError?.message ??
-          "Supabase 로그인/가입에 실패했습니다.";
-      }
-    }
-
-    if (supabaseConnected) {
-      const { data: sessionData } = await supabase.auth.getSession();
-      const uid = sessionData.session?.user.id;
-      const email = sessionData.session?.user.email ?? id;
-      if (uid) {
-        await ensureCounselorRow(supabase, uid, email);
-      }
-    }
-  }
+  const { supabaseConnected, supabaseError } = await connectSupabaseAndEnsureCounselor(id, password);
 
   const response = NextResponse.json({
     ok: true,
+    role: "coach",
     supabaseConnected,
     supabaseError: supabaseConnected ? null : supabaseError,
   });
 
-  response.cookies.set(SESSION_COOKIE, createSessionToken(), {
+  response.cookies.set(SESSION_COOKIE, createSessionToken("coach"), {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
@@ -110,10 +76,78 @@ export async function POST(request: Request) {
   return response;
 }
 
+async function connectSupabaseAndEnsureCounselor(
+  id: string,
+  password: string,
+  counselorOverrides?: { name: string; region: string },
+): Promise<{ supabaseConnected: boolean; supabaseError: string | null }> {
+  let supabaseConnected = false;
+  let supabaseError: string | null = null;
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseKey) {
+    return { supabaseConnected: false, supabaseError: "NEXT_PUBLIC_SUPABASE_URL / ANON_KEY가 .env.local에 설정되지 않았습니다." };
+  }
+  if (!id.includes("@")) {
+    return { supabaseConnected: false, supabaseError: "이메일 형식의 아이디가 필요합니다." };
+  }
+
+  const supabase = createRouteHandlerClient({ cookies });
+
+  const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+    email: id,
+    password,
+  });
+
+  if (!signInError && signInData.session) {
+    supabaseConnected = true;
+  } else {
+    const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+      email: id,
+      password,
+    });
+
+    if (!signUpError && signUpData.user) {
+      const { data: retryData, error: retryError } = await supabase.auth.signInWithPassword({
+        email: id,
+        password,
+      });
+      if (!retryError && retryData.session) {
+        supabaseConnected = true;
+      } else {
+        supabaseError =
+          retryError?.message ??
+          "회원가입은 되었지만 로그인에 실패했습니다. Supabase에서 이메일 인증(Confirm)을 끄거나 사용자를 확인해 주세요.";
+      }
+    } else if (signUpError?.message?.includes("already") || signUpError?.message?.includes("registered")) {
+      supabaseError =
+        "Supabase에 해당 계정은 있지만 비밀번호가 일치하지 않습니다. Supabase 대시보드 → Authentication → Users → 해당 사용자 → Reset password 로 비밀번호를 맞춘 뒤 다시 로그인하세요.";
+    } else if (signInError?.message?.includes("Invalid login") || signInError?.message?.includes("invalid_credentials")) {
+      supabaseError = "Supabase 비밀번호가 .env.local 의 값과 다릅니다. Supabase 대시보드에서 비밀번호를 재설정해 주세요.";
+    } else {
+      supabaseError = signInError?.message ?? signUpError?.message ?? "Supabase 로그인/가입에 실패했습니다.";
+    }
+  }
+
+  if (supabaseConnected) {
+    const { data: sessionData } = await supabase.auth.getSession();
+    const uid = sessionData.session?.user.id;
+    const email = sessionData.session?.user.email ?? id;
+    if (uid) {
+      await ensureCounselorRow(supabase, uid, email, counselorOverrides);
+    }
+  }
+
+  return { supabaseConnected, supabaseError };
+}
+
 async function ensureCounselorRow(
   supabase: ReturnType<typeof createRouteHandlerClient>,
   userId: string,
   email: string,
+  overrides?: { name: string; region: string },
 ) {
   const { data: existing } = await supabase
     .from("counselors")
@@ -126,9 +160,9 @@ async function ensureCounselorRow(
   await supabase.from("counselors").insert([
     {
       user_id: userId,
-      name: email.split("@")[0] || "코치",
+      name: overrides?.name ?? email.split("@")[0] ?? "코치",
       email,
-      region: "미지정",
+      region: overrides?.region ?? "미지정",
     },
   ]);
 }
