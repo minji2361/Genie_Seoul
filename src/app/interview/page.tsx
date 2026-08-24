@@ -30,8 +30,8 @@ export default function Interview() {
 
         const { error } = await deleteGenieInterview(id);
         if (error) {
-            console.error('?? ??:', error.message);
-            alert(t.deleteFailed);
+            console.error('삭제 오류:', error.message);
+            alert(error.message || t.deleteFailed);
         } else {
             setInterviews((prev) => prev.filter((item) => item.id !== id));
         }

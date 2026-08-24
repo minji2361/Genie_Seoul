@@ -5,10 +5,23 @@ import Link from "next/link";
 import { useAuth } from "@/app/context/AuthContext";
 
 export function DashboardNavItem() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, role } = useAuth();
 
   if (!isAuthenticated) {
     return null;
+  }
+
+  if (role === "admin") {
+    return (
+      <li className="shrink-0">
+        <Link
+          href="/admin"
+          className="block whitespace-nowrap hover:text-genie-yellow"
+        >
+          Admin
+        </Link>
+      </li>
+    );
   }
 
   return (

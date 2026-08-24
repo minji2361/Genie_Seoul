@@ -10,8 +10,11 @@ import {
 } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
+type SessionRole = "coach" | "admin";
+
 type AuthContextType = {
   isAuthenticated: boolean;
+  role: SessionRole | null;
   login: (id: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 };
@@ -20,6 +23,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [role, setRole] = useState<SessionRole | null>(null);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -28,8 +32,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const res = await fetch("/api/auth/me", { credentials: "include" });
       const data = await res.json();
       setIsAuthenticated(Boolean(data.authenticated));
+      setRole(data.role === "admin" || data.role === "coach" ? data.role : null);
     } catch {
       setIsAuthenticated(false);
+      setRole(null);
     }
   }, []);
 
@@ -58,19 +64,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     if (data.supabaseConnected === false) {
       const detail = data.supabaseError ? `\n\n${data.supabaseError}` : "";
-      alert(
-        `사이트 로그인은 되었지만 Supabase 연결에 실패했습니다. 서명 업로드·대상자 등록을 쓰려면 Supabase에 코치 계정을 등록한 뒤 다시 로그인해 주세요.${detail}`,
-      );
+      const guidance =
+        data.role === "admin"
+          ? "Supabase에 관리자 계정을 등록한 뒤 다시 로그인해 주세요."
+          : "서명 업로드·대상자 등록을 쓰려면 Supabase에 코치 계정을 등록한 뒤 다시 로그인해 주세요.";
+      alert(`사이트 로그인은 되었지만 Supabase 연결에 실패했습니다. ${guidance}${detail}`);
     }
 
-    setIsAuthenticated(true);
+    await refreshAuth();
     router.replace("/");
   };
 
   const logout = async () => {
     await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
     setIsAuthenticated(false);
-    if (pathname?.startsWith("/dashboard") || pathname?.startsWith("/interview")) {
+    setRole(null);
+    if (
+      pathname?.startsWith("/dashboard") ||
+      pathname?.startsWith("/interview") ||
+      pathname?.startsWith("/admin")
+    ) {
       router.replace("/login");
     } else {
       router.replace("/");
@@ -78,7 +91,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, role, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

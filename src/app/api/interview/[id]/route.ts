@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 import { isAuthenticated } from "@/lib/auth";
+import { deleteSignatureFiles } from "@/lib/signature-storage";
 import { createAdminClient } from "@/lib/supabase-admin";
 
 const INTERVIEW_FIELDS = [
@@ -189,15 +190,28 @@ export async function DELETE(_request: Request, { params }: { params: { id: stri
   const admin = createAdminClient();
   const supabase = admin ?? createRouteHandlerClient({ cookies });
 
-  const { error } = await supabase
+  // admin 클라이언트(서비스 롤)는 RLS를 우회하므로, 관리자가 "보관" 처리한 데이터는
+  // 여기서 직접 retain 조건을 걸어서 코치가 지울 수 없도록 막는다.
+  const { data, error } = await supabase
     .from("int_interviews")
     .delete()
     .eq("id", params.id)
-    .eq("counselors", counselorId);
+    .eq("counselors", counselorId)
+    .eq("retain", false)
+    .select("id, signatureurl");
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
+
+  if (!data || data.length === 0) {
+    return NextResponse.json(
+      { error: "삭제할 수 없습니다. 데이터가 없거나 관리자가 보관 처리한 항목입니다." },
+      { status: 403 },
+    );
+  }
+
+  await deleteSignatureFiles(supabase, data.map((row) => row.signatureurl));
 
   return NextResponse.json({ ok: true });
 }

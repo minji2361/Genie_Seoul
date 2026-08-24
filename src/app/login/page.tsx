@@ -55,7 +55,7 @@ export default function LoginPage() {
           onSubmit={handleSubmit}
           className="rounded-2xl bg-white p-6 shadow-xl tablet:p-8"
         >
-          <h1 className="mb-6 text-center text-xl font-bold text-neutral-900">코치 로그인</h1>
+          <h1 className="mb-6 text-center text-xl font-bold text-neutral-900">로그인</h1>
 
           <label className="mb-4 block">
             {/* <span className="mb-1.5 block text-sm font-medium text-neutral-700">아이디</span> */}
