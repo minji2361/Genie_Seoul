@@ -1,14 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 import { useAuth } from "@/app/context/AuthContext";
 
 export function DashboardNav() {
-  const pathname = usePathname();
   const { logout } = useAuth();
-  const isDashboard = pathname?.startsWith("/dashboard");
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-genie-purple">
@@ -33,16 +30,6 @@ export function DashboardNav() {
                 인터뷰
               </Link>
             </li>
-            {isDashboard ? (
-              <li className="shrink-0">
-                <Link
-                  href="/dashboard/participant/new"
-                  className="whitespace-nowrap hover:text-genie-yellow"
-                >
-                  대상자 등록
-                </Link>
-              </li>
-            ) : null}
             <li className="shrink-0">
               <button
                 type="button"
