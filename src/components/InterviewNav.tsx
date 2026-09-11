@@ -1,14 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 import { useAuth } from "@/app/context/AuthContext";
 
 export function InterviewNav() {
-  const pathname = usePathname();
   const { logout } = useAuth();
-  const isInterview = pathname?.startsWith("/interview");
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-genie-purple">
@@ -33,16 +30,6 @@ export function InterviewNav() {
                 인터뷰
               </Link>
             </li>
-            {isInterview ? (
-              <li className="shrink-0">
-                <Link
-                  href="/interview/participant/new"
-                  className="whitespace-nowrap hover:text-genie-yellow"
-                >
-                  대상자 등록
-                </Link>
-              </li>
-            ) : null}
             <li className="shrink-0">
               <button
                 type="button"
