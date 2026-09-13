@@ -363,6 +363,8 @@ export type HomePopupConfig = {
     description: string[];
     image_url: string | null;
     is_active: boolean;
+    content_type: 'text' | 'link';
+    link_url: string | null;
 };
 
 export const getAdminPopupConfig = async () => {
