@@ -18,6 +18,8 @@ type HomePopupConfig = {
     description: string[];
     image_url: string | null;
     is_active: boolean;
+    content_type: 'text' | 'link';
+    link_url: string | null;
 };
 
 function isHiddenForToday(): boolean {
@@ -149,13 +151,28 @@ export function HomePopup() {
                             {title}
                         </h2>
                     )}
-                    <p className="mt-2 text-sm font-light leading-relaxed text-white/80 sm:text-[15px]">
-                        {description.map((line, i) => (
-                            <span key={`${i}-${line}`} className="block">
-                                {line}
-                            </span>
-                        ))}
-                    </p>
+                    {config.content_type === 'link' && config.link_url ? (
+                        <a
+                            href={config.link_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mt-2 inline-block text-sm font-light leading-relaxed text-white/80 underline underline-offset-4 transition hover:text-white sm:text-[15px]"
+                        >
+                            {description.map((line, i) => (
+                                <span key={`${i}-${line}`} className="block">
+                                    {line}
+                                </span>
+                            ))}
+                        </a>
+                    ) : (
+                        <p className="mt-2 text-sm font-light leading-relaxed text-white/80 sm:text-[15px]">
+                            {description.map((line, i) => (
+                                <span key={`${i}-${line}`} className="block">
+                                    {line}
+                                </span>
+                            ))}
+                        </p>
+                    )}
 
                     <button
                         type="button"

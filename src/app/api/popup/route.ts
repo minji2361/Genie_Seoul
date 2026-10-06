@@ -12,7 +12,7 @@ export async function GET() {
 
   const { data, error } = await admin
     .from("home_popup_config")
-    .select("title, description, image_url, is_active")
+    .select("title, description, image_url, is_active, content_type, link_url")
     .eq("id", 1)
     .maybeSingle();
 

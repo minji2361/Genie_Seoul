@@ -17,6 +17,8 @@ const EMPTY_CONFIG: HomePopupConfig = {
     description: [],
     image_url: null,
     is_active: false,
+    content_type: 'text',
+    link_url: null,
 };
 
 export default function AdminPopupPage() {
@@ -70,16 +72,21 @@ export default function AdminPopupPage() {
         setError(null);
         setMessage(null);
 
-        const description = descriptionText
-            .split('\n')
-            .map((line) => line.trim())
-            .filter((line) => line.length > 0);
+        const description =
+            config.content_type === 'link'
+                ? [descriptionText.trim()].filter((line) => line.length > 0)
+                : descriptionText
+                      .split('\n')
+                      .map((line) => line.trim())
+                      .filter((line) => line.length > 0);
 
         const { data, error: saveError } = await updateAdminPopupConfig({
             title: config.title,
             description,
             image_url: config.image_url,
             is_active: config.is_active,
+            content_type: config.content_type,
+            link_url: config.content_type === 'link' ? config.link_url : null,
         });
 
         setSaving(false);
@@ -159,16 +166,73 @@ export default function AdminPopupPage() {
                     </section>
 
                     <section className="flex flex-col gap-2">
-                        <label className="font-semibold text-sm">팝업 문구 (줄바꿈으로 여러 줄 입력)</label>
-                        <textarea
-                            value={descriptionText}
-                            onChange={(e) => setDescriptionText(e.target.value)}
-                            placeholder={'예: 향으로 알아보는\n나만의 성향과 방향성'}
-                            rows={4}
-                            className="px-4 py-2.5 rounded-lg shadow-sm focus:outline-none resize-y"
-                            style={inputStyle}
-                        />
+                        <label className="font-semibold text-sm">팝업 문구 타입</label>
+                        <div className="flex gap-2">
+                            <button
+                                type="button"
+                                onClick={() => setConfig((prev) => ({ ...prev, content_type: 'text' }))}
+                                className="px-4 py-2 rounded-lg text-sm font-medium border transition-colors"
+                                style={
+                                    config.content_type === 'text'
+                                        ? { backgroundColor: brandColor.deepmoss, color: '#fff', borderColor: brandColor.deepmoss }
+                                        : { backgroundColor: '#fff', color: brandColor.deepmoss, borderColor: brandColor.deepmoss }
+                                }
+                            >
+                                텍스트
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => setConfig((prev) => ({ ...prev, content_type: 'link' }))}
+                                className="px-4 py-2 rounded-lg text-sm font-medium border transition-colors"
+                                style={
+                                    config.content_type === 'link'
+                                        ? { backgroundColor: brandColor.deepmoss, color: '#fff', borderColor: brandColor.deepmoss }
+                                        : { backgroundColor: '#fff', color: brandColor.deepmoss, borderColor: brandColor.deepmoss }
+                                }
+                            >
+                                링크
+                            </button>
+                        </div>
                     </section>
+
+                    {config.content_type === 'text' ? (
+                        <section className="flex flex-col gap-2">
+                            <label className="font-semibold text-sm">팝업 문구 (줄바꿈으로 여러 줄 입력)</label>
+                            <textarea
+                                value={descriptionText}
+                                onChange={(e) => setDescriptionText(e.target.value)}
+                                placeholder={'예: 향으로 알아보는\n나만의 성향과 방향성'}
+                                rows={4}
+                                className="px-4 py-2.5 rounded-lg shadow-sm focus:outline-none resize-y"
+                                style={inputStyle}
+                            />
+                        </section>
+                    ) : (
+                        <>
+                            <section className="flex flex-col gap-2">
+                                <label className="font-semibold text-sm">표시 문구</label>
+                                <input
+                                    type="text"
+                                    value={descriptionText}
+                                    onChange={(e) => setDescriptionText(e.target.value)}
+                                    placeholder="예: 자세히 보러 가기"
+                                    className="px-4 py-2.5 rounded-lg shadow-sm focus:outline-none"
+                                    style={inputStyle}
+                                />
+                            </section>
+                            <section className="flex flex-col gap-2">
+                                <label className="font-semibold text-sm">이동할 URL</label>
+                                <input
+                                    type="text"
+                                    value={config.link_url ?? ''}
+                                    onChange={(e) => setConfig((prev) => ({ ...prev, link_url: e.target.value }))}
+                                    placeholder="예: https://genie-land.com/program"
+                                    className="px-4 py-2.5 rounded-lg shadow-sm focus:outline-none"
+                                    style={inputStyle}
+                                />
+                            </section>
+                        </>
+                    )}
 
                     <section className="flex flex-col gap-3">
                         <label className="font-semibold text-sm">팝업 이미지</label>

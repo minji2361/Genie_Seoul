@@ -7076,6 +7076,9 @@ video {
 .underline {
   text-decoration-line: underline;
 }
+.underline-offset-4 {
+  text-underline-offset: 4px;
+}
 .accent-blue-500 {
   accent-color: #3b82f6;
 }

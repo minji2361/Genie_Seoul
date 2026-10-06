@@ -31,30 +31,15 @@
       "static/chunks/main-app.js",
       "static/chunks/app/login/layout.js"
     ],
-    "/dashboard/page": [
+    "/admin/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/dashboard/page.js"
+      "static/chunks/app/admin/page.js"
     ],
-    "/dashboard/layout": [
+    "/admin/popup/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/dashboard/layout.js"
-    ],
-    "/interview/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/interview/page.js"
-    ],
-    "/interview/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/interview/layout.js"
-    ],
-    "/interview/participant/new/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/interview/participant/new/page.js"
+      "static/chunks/app/admin/popup/page.js"
     ]
   }
 }
