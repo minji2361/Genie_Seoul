@@ -15,6 +15,14 @@ import {
     textAreaClass,
     type InterviewFormState,
 } from '@/app/interview/interviewFormConfig';
+import { getFormSpec } from '@/app/interview/formSpecs';
+import { CollegeQuestions } from '@/app/interview/CollegeQuestions';
+import {
+    INTERVIEW_TYPE_LABEL,
+    type CollegeAnswers,
+    type InterviewType,
+    type StoredInterviewType,
+} from '@/app/interview/collegeFormConfig';
 import {
     CLUBS,
     EVENT_TYPES,
@@ -27,6 +35,9 @@ import {
 
 type InterviewFormProps = {
     mode: 'create' | 'edit';
+    interviewType?: InterviewType;
+    /** 구 인터뷰지(q1~q12) 레이아웃으로 열기 */
+    legacyLayout?: boolean;
     interviewId?: string;
     initialInterview?: GenieInterview;
 };
@@ -71,8 +82,12 @@ function toSurveyState(interview?: GenieInterview): SurveyState {
     };
 }
 
-export function InterviewForm({ mode, interviewId, initialInterview }: InterviewFormProps) {
+export function InterviewForm({ mode, interviewType = 'adult', legacyLayout = false, interviewId, initialInterview }: InterviewFormProps) {
     const router = useRouter();
+    const spec = getFormSpec(interviewType);
+    const [collegeAnswers, setCollegeAnswers] = useState<CollegeAnswers>(
+        () => (initialInterview?.answers as CollegeAnswers | undefined) ?? {},
+    );
     const [step, setStep] = useState(1);
     const [loading, setLoading] = useState(false);
     const [submitError, setSubmitError] = useState<string | null>(null);
@@ -117,6 +132,8 @@ export function InterviewForm({ mode, interviewId, initialInterview }: Interview
 
     const buildPayload = () => ({
         ...form,
+        interview_type: (initialInterview?.interview_type === 'legacy' ? 'legacy' : interviewType) as StoredInterviewType,
+        answers: legacyLayout ? {} : collegeAnswers,
         event_types: survey.event_types,
         event_types_etc: survey.event_types_etc.trim(),
         meeting_times: survey.meeting_times,
@@ -254,11 +271,12 @@ export function InterviewForm({ mode, interviewId, initialInterview }: Interview
                 <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
                     <h3 className="text-2xl font-bold mb-2 text-gray-800">🌟 지니 QnA</h3>
                     <p className="text-sm text-gray-500 mb-6">
-                        * 기본정보파악{mode === 'edit' ? ' (수정)' : ''}
+                        * 기본정보파악 · {legacyLayout ? '기타(구 인터뷰지)' : INTERVIEW_TYPE_LABEL[interviewType]}
+                        {mode === 'edit' ? ' (수정)' : ''}
                     </p>
 
                     <div className="space-y-6 mb-8">
-                        {BASIC_FIELDS.map((field) => (
+                        {(legacyLayout ? BASIC_FIELDS : spec.basicFields).map((field) => (
                             <div key={field.name}>
                                 <label
                                     htmlFor={field.name}
@@ -279,6 +297,11 @@ export function InterviewForm({ mode, interviewId, initialInterview }: Interview
                         ))}
                     </div>
 
+                    {!legacyLayout && (
+                        <CollegeQuestions answers={collegeAnswers} onChange={setCollegeAnswers} sections={spec.sections} />
+                    )}
+
+                    {legacyLayout && (
                     <div className="space-y-6 mb-8">
                         {INTERVIEW_QUESTIONS.map(({ name, label, placeholder }) => (
                             <div key={name}>
@@ -300,6 +323,7 @@ export function InterviewForm({ mode, interviewId, initialInterview }: Interview
                             </div>
                         ))}
                     </div>
+                    )}
 
                     <button
                         type="button"
