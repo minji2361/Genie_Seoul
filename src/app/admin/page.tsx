@@ -257,6 +257,9 @@ export default function AdminPage() {
                     <Link href="/" className="text-sm font-medium hover:underline" style={{ color: brandColor.deepmoss }}>
                         홈으로
                     </Link>
+                    <Link href="/admin/stats" className="text-sm font-medium hover:underline" style={{ color: brandColor.deepmoss }}>
+                        신청 통계 →
+                    </Link>
                     <Link href="/admin/popup" className="text-sm font-medium hover:underline" style={{ color: brandColor.deepmoss }}>
                         팝업 관리 →
                     </Link>

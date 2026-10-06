@@ -183,6 +183,8 @@ export type GenieInterview = {
     oneday_classes_etc: string;
     clubs: string[];
     clubs_etc: string;
+    interview_type?: 'adult' | 'college' | 'legacy';
+    answers?: Record<string, string | string[]>;
     signatureurl: string;
     created_at: string;
 };

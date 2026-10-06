@@ -67,6 +67,25 @@ function pickSurveyPayload(body: Record<string, unknown>) {
   return survey;
 }
 
+function pickTypeAndAnswers(body: Record<string, unknown>) {
+  const requestedType = body["interview_type"];
+  const interviewType = requestedType === "college" || requestedType === "legacy" ? requestedType : "adult";
+  const rawAnswers = body["answers"];
+  const answers: Record<string, string | string[]> = {};
+
+  if (interviewType !== "legacy" && rawAnswers && typeof rawAnswers === "object" && !Array.isArray(rawAnswers)) {
+    for (const [key, value] of Object.entries(rawAnswers as Record<string, unknown>)) {
+      if (typeof value === "string") {
+        answers[key] = value;
+      } else if (Array.isArray(value)) {
+        answers[key] = value.filter((item): item is string => typeof item === "string");
+      }
+    }
+  }
+
+  return { interview_type: interviewType, answers };
+}
+
 async function getCounselorId() {
   const supabase = createRouteHandlerClient({ cookies });
   const {
@@ -125,6 +144,7 @@ export async function PATCH(request: Request, { params }: { params: { id: string
 
   const payload = pickInterviewPayload(body as Record<string, unknown>);
   const surveyPayload = pickSurveyPayload(body as Record<string, unknown>);
+  const typePayload = pickTypeAndAnswers(body as Record<string, unknown>);
   const required = ["name", "age", "gender", "mbti", "region"] as const;
 
   for (const field of required) {
@@ -163,6 +183,7 @@ export async function PATCH(request: Request, { params }: { params: { id: string
       q12_interview_thoughts: payload.q12_interview_thoughts ?? "",
       signatureurl: payload.signatureurl ?? "",
       ...surveyPayload,
+        ...typePayload,
     })
     .eq("id", params.id)
     .eq("counselors", counselorId)

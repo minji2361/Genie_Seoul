@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { deleteGenieInterview, getGenieInterviews, type GenieInterview } from '@/app/api/supabaseApi';
+import { STORED_TYPE_LABEL, type StoredInterviewType } from '@/app/interview/collegeFormConfig';
 import { interviewLabels as t } from '@/app/interview/labels';
 import { brandColor } from '@/lib/brandcolor';
 
@@ -10,6 +11,7 @@ export default function Interview() {
     const [interviews, setInterviews] = useState<GenieInterview[]>([]);
     const [showList, setShowList] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
+    const [category, setCategory] = useState<'all' | StoredInterviewType>('all');
     const router = useRouter();
 
     useEffect(() => {
@@ -37,8 +39,15 @@ export default function Interview() {
         }
     };
 
-    const filteredInterviews = interviews.filter((item) =>
-        item.name.toLowerCase().includes(searchTerm.toLowerCase()),
+    const categoryOf = (item: GenieInterview): StoredInterviewType => item.interview_type ?? 'legacy';
+
+    const categoryCount = (key: 'all' | StoredInterviewType) =>
+        key === 'all' ? interviews.length : interviews.filter((item) => categoryOf(item) === key).length;
+
+    const filteredInterviews = interviews.filter(
+        (item) =>
+            (category === 'all' || categoryOf(item) === category) &&
+            item.name.toLowerCase().includes(searchTerm.toLowerCase()),
     );
 
     const baseButtonStyle = {
@@ -145,6 +154,27 @@ export default function Interview() {
 
             {showList && (
                 <>
+                    <section className="mb-4 flex flex-wrap gap-2">
+                        {(['all', 'adult', 'college', 'legacy'] as const).map((key) => {
+                            const active = category === key;
+                            return (
+                                <button
+                                    key={key}
+                                    type="button"
+                                    onClick={() => setCategory(key)}
+                                    className="rounded-full border px-4 py-1.5 text-sm font-semibold"
+                                    style={{
+                                        borderColor: brandColor.deepmoss,
+                                        backgroundColor: active ? brandColor.deepmoss : '#fff',
+                                        color: active ? '#fff' : brandColor.deepmoss,
+                                    }}
+                                >
+                                    {key === 'all' ? '전체' : STORED_TYPE_LABEL[key]} ({categoryCount(key)})
+                                </button>
+                            );
+                        })}
+                    </section>
+
                     <section className="mb-6">
                         <label htmlFor="search" className="block mb-2 font-semibold">
                             {t.search}

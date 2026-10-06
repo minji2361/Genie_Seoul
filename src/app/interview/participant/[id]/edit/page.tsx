@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { getGenieInterviewById, type GenieInterview } from '@/app/api/supabaseApi';
 import { InterviewForm } from '@/app/interview/InterviewForm';
+import { usesLegacyLayout } from '@/app/interview/formSpecs';
 import { brandColor } from '@/lib/brandcolor';
 
 export default function EditInterviewPage() {
@@ -52,5 +53,5 @@ export default function EditInterviewPage() {
         );
     }
 
-    return <InterviewForm mode="edit" interviewId={id} initialInterview={interview} />;
+    return <InterviewForm mode="edit" interviewType={interview.interview_type === 'college' ? 'college' : 'adult'} legacyLayout={usesLegacyLayout(interview)} interviewId={id} initialInterview={interview} />;
 }

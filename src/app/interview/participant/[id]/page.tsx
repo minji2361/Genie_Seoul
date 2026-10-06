@@ -5,6 +5,13 @@ import { useParams, useRouter } from 'next/navigation';
 import { getGenieInterviewById, type GenieInterview } from '@/app/api/supabaseApi';
 import { brandColor } from '@/lib/brandcolor';
 import { BASIC_FIELDS, INTERVIEW_QUESTIONS, textAreaClass } from '@/app/interview/interviewFormConfig';
+import { getFormSpec, usesLegacyLayout } from '@/app/interview/formSpecs';
+import { CollegeQuestions } from '@/app/interview/CollegeQuestions';
+import {
+    INTERVIEW_TYPE_LABEL,
+    formatCollegeAnswer,
+    type CollegeAnswers,
+} from '@/app/interview/collegeFormConfig';
 import { CLUBS, EVENT_TYPES, MEETING_TIMES, ONEDAY_CLASSES } from '@/app/interview/surveyConfig';
 
 const readOnlyClass = `${textAreaClass} bg-gray-50 text-gray-700 cursor-not-allowed focus:outline-none resize-none`;
@@ -25,13 +32,26 @@ function buildInterviewCopyText(interview: GenieInterview) {
         index += 1;
     };
 
-    for (const field of BASIC_FIELDS) {
-        pushLine(field.label, interview[field.name] || '');
-    }
+    if (!usesLegacyLayout(interview)) {
+        const answers = (interview.answers ?? {}) as CollegeAnswers;
+        const spec = getFormSpec(interview.interview_type === 'college' ? 'college' : 'adult');
+        for (const field of spec.basicFields) {
+            pushLine(field.label, interview[field.name] || '');
+        }
+        for (const section of spec.sections) {
+            for (const field of section.fields) {
+                pushLine(field.label, formatCollegeAnswer(field, answers));
+            }
+        }
+    } else {
+        for (const field of BASIC_FIELDS) {
+            pushLine(field.label, interview[field.name] || '');
+        }
 
-    for (const question of INTERVIEW_QUESTIONS) {
-        const label = question.label.replace(/^\d+\.\s*/, '');
-        pushLine(label, interview[question.name] || '');
+        for (const question of INTERVIEW_QUESTIONS) {
+            const label = question.label.replace(/^\d+\.\s*/, '');
+            pushLine(label, interview[question.name] || '');
+        }
     }
 
     pushLine('관심 있는 행사 유형', joinChecked(interview.event_types, interview.event_types_etc));
@@ -129,6 +149,8 @@ export default function InterviewDetailPage() {
         );
     }
 
+    const legacyLayout = usesLegacyLayout(interview);
+    const spec = getFormSpec(interview.interview_type === 'college' ? 'college' : 'adult');
     const eventTypes = interview.event_types ?? [];
     const meetingTimes = interview.meeting_times ?? [];
     const onedayClasses = interview.oneday_classes ?? [];
@@ -179,10 +201,12 @@ export default function InterviewDetailPage() {
             {!showSurvey && (
                 <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
                     <h3 className="text-2xl font-bold mb-2 text-gray-800">🌟 지니 QnA</h3>
-                    <p className="text-sm text-gray-500 mb-6">* 기본정보파악</p>
+                    <p className="text-sm text-gray-500 mb-6">
+                        * 기본정보파악 · {legacyLayout ? '기타(구 인터뷰지)' : INTERVIEW_TYPE_LABEL[interview.interview_type === 'college' ? 'college' : 'adult']}
+                    </p>
 
                     <div className="space-y-6 mb-8">
-                        {BASIC_FIELDS.map((field) => (
+                        {(legacyLayout ? BASIC_FIELDS : spec.basicFields).map((field) => (
                             <div key={field.name}>
                                 <label
                                     htmlFor={field.name}
@@ -203,6 +227,15 @@ export default function InterviewDetailPage() {
                         ))}
                     </div>
 
+                    {!legacyLayout && (
+                        <CollegeQuestions
+                            answers={(interview.answers ?? {}) as CollegeAnswers}
+                            sections={spec.sections}
+                            readOnly
+                        />
+                    )}
+
+                    {legacyLayout && (
                     <div className="space-y-6 mb-8">
                         {INTERVIEW_QUESTIONS.map(({ name, label }) => (
                             <div key={name}>
@@ -224,6 +257,7 @@ export default function InterviewDetailPage() {
                             </div>
                         ))}
                     </div>
+                    )}
 
                     <button
                         onClick={() => setShowSurvey(true)}
