@@ -1,13 +1,13 @@
 export const BASIC_FIELDS = [
-    { name: 'name', label: '이름', placeholder: '' },
-    { name: 'age', label: '나이', placeholder: '' },
-    { name: 'gender', label: '성별', placeholder: '' },
-    { name: 'mbti', label: 'MBTI', placeholder: '' },
-    { name: 'region', label: '현재 거주 지역', placeholder: 'ex. 노원구 상계동' },
-    { name: 'hobby', label: '취미', placeholder: '' },
-    { name: 'dream', label: '목표나 꿈', placeholder: '' },
-    { name: 'major_job', label: '전공/직업', placeholder: '' },
-    { name: 'schedule', label: '일정/스케줄', placeholder: '' },
+    { name: 'name', label: '이름', placeholder: '', kind: undefined, options: undefined },
+    { name: 'age', label: '나이', placeholder: '', kind: undefined, options: undefined },
+    { name: 'gender', label: '성별', placeholder: '', kind: undefined, options: undefined },
+    { name: 'mbti', label: 'MBTI', placeholder: '', kind: undefined, options: undefined },
+    { name: 'region', label: '현재 거주 지역', placeholder: 'ex. 노원구 상계동', kind: undefined, options: undefined },
+    { name: 'hobby', label: '취미', placeholder: '', kind: undefined, options: undefined },
+    { name: 'dream', label: '목표나 꿈', placeholder: '', kind: undefined, options: undefined },
+    { name: 'major_job', label: '전공/직업', placeholder: '', kind: undefined, options: undefined },
+    { name: 'schedule', label: '일정/스케줄', placeholder: '', kind: undefined, options: undefined },
 ] as const;
 
 export const INTERVIEW_QUESTIONS = [
@@ -123,3 +123,6 @@ export const INITIAL_INTERVIEW_FORM: InterviewFormState = {
 
 export const textAreaClass =
     'w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500 resize-y min-h-[80px]';
+
+export const selectClass =
+    'w-full border border-gray-300 rounded-md p-2 bg-white focus:ring-blue-500 focus:border-blue-500';
