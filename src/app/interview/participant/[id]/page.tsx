@@ -9,6 +9,7 @@ import { getFormSpec, usesLegacyLayout } from '@/app/interview/formSpecs';
 import { CollegeQuestions } from '@/app/interview/CollegeQuestions';
 import {
     INTERVIEW_TYPE_LABEL,
+    formatBasicFieldValue,
     formatCollegeAnswer,
     type CollegeAnswers,
 } from '@/app/interview/collegeFormConfig';
@@ -36,7 +37,7 @@ function buildInterviewCopyText(interview: GenieInterview) {
         const answers = (interview.answers ?? {}) as CollegeAnswers;
         const spec = getFormSpec(interview.interview_type === 'college' ? 'college' : 'adult');
         for (const field of spec.basicFields) {
-            pushLine(field.label, interview[field.name] || '');
+            pushLine(field.label, formatBasicFieldValue(field, interview[field.name] || ''));
         }
         for (const section of spec.sections) {
             for (const field of section.fields) {
@@ -218,7 +219,7 @@ export default function InterviewDetailPage() {
                                     id={field.name}
                                     name={field.name}
                                     rows={3}
-                                    value={interview[field.name] || ''}
+                                    value={formatBasicFieldValue(field, interview[field.name] || '')}
                                     readOnly
                                     tabIndex={-1}
                                     className={readOnlyClass}

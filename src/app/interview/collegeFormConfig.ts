@@ -14,14 +14,39 @@ export const INTERVIEW_TYPE_LABEL: Record<InterviewType, string> = {
     college: '대학생',
 };
 
+export type BasicFieldOption = { value: string; label: string };
+
+/** 드롭다운으로 보여줄 텍스트(label)와 저장될 값(value)이 다른 경우를 위한 옵션 목록 */
+export const GENDER_OPTIONS: readonly BasicFieldOption[] = [
+    { value: 'M', label: '남' },
+    { value: 'F', label: '여' },
+];
+
+export const MBTI_OPTIONS: readonly BasicFieldOption[] = [
+    'ISTJ', 'ISFJ', 'INFJ', 'INTJ',
+    'ISTP', 'ISFP', 'INFP', 'INTP',
+    'ESTP', 'ESFP', 'ENFP', 'ENTP',
+    'ESTJ', 'ESFJ', 'ENFJ', 'ENTJ',
+].map((type) => ({ value: type, label: type }));
+
+export const AGE_OPTIONS: readonly BasicFieldOption[] = Array.from({ length: 60 - 15 + 1 }, (_, i) => {
+    const age = String(15 + i);
+    return { value: age, label: age };
+});
+
+/** 드롭다운 값(value)을 사람이 읽는 라벨로 변환. 옵션이 없거나 매칭 안 되면 원값 그대로 */
+export function formatBasicFieldValue(field: { options?: readonly BasicFieldOption[] }, raw: string): string {
+    return field.options?.find((opt) => opt.value === raw)?.label ?? raw;
+}
+
 // 대학생 인터뷰 기본정보 (int_interviews 의 기존 컬럼에 저장 → 통계 공통 집계 가능)
 export const COLLEGE_BASIC_FIELDS = [
-    { name: 'name', label: '성함', placeholder: '' },
-    { name: 'age', label: '나이', placeholder: '' },
-    { name: 'gender', label: '성별', placeholder: '' },
-    { name: 'mbti', label: 'MBTI', placeholder: '' },
-    { name: 'major_job', label: '학과(학년)', placeholder: '' },
-    { name: 'region', label: '주 활동 동네', placeholder: '학교 근처, 자취방 근처 등' },
+    { name: 'name', label: '성함', placeholder: '', kind: undefined, options: undefined },
+    { name: 'age', label: '나이', placeholder: '', kind: 'select', options: AGE_OPTIONS },
+    { name: 'gender', label: '성별', placeholder: '', kind: 'select', options: GENDER_OPTIONS },
+    { name: 'mbti', label: 'MBTI', placeholder: '', kind: 'select', options: MBTI_OPTIONS },
+    { name: 'major_job', label: '학과(학년)', placeholder: '', kind: undefined, options: undefined },
+    { name: 'region', label: '주 활동 동네', placeholder: '학교 근처, 자취방 근처 등', kind: undefined, options: undefined },
 ] as const;
 
 export type CollegeField = {

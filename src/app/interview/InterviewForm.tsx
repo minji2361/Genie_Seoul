@@ -12,6 +12,7 @@ import {
     BASIC_FIELDS,
     INITIAL_INTERVIEW_FORM,
     INTERVIEW_QUESTIONS,
+    selectClass,
     textAreaClass,
     type InterviewFormState,
 } from '@/app/interview/interviewFormConfig';
@@ -108,7 +109,7 @@ export function InterviewForm({ mode, interviewType = 'adult', legacyLayout = fa
         });
     };
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setForm((prev) => ({ ...prev, [name]: value }));
     };
@@ -284,15 +285,32 @@ export function InterviewForm({ mode, interviewType = 'adult', legacyLayout = fa
                                 >
                                     ✨ {field.label}
                                 </label>
-                                <textarea
-                                    id={field.name}
-                                    name={field.name}
-                                    rows={3}
-                                    value={form[field.name]}
-                                    placeholder={field.placeholder}
-                                    onChange={handleChange}
-                                    className={textAreaClass}
-                                />
+                                {field.kind === 'select' ? (
+                                    <select
+                                        id={field.name}
+                                        name={field.name}
+                                        value={form[field.name]}
+                                        onChange={handleChange}
+                                        className={selectClass}
+                                    >
+                                        <option value="">선택</option>
+                                        {field.options.map((opt) => (
+                                            <option key={opt.value} value={opt.value}>
+                                                {opt.label}
+                                            </option>
+                                        ))}
+                                    </select>
+                                ) : (
+                                    <textarea
+                                        id={field.name}
+                                        name={field.name}
+                                        rows={3}
+                                        value={form[field.name]}
+                                        placeholder={field.placeholder}
+                                        onChange={handleChange}
+                                        className={textAreaClass}
+                                    />
+                                )}
                             </div>
                         ))}
                     </div>

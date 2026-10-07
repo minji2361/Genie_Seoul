@@ -1,6 +1,6 @@
 {
   "name": "genie-site",
-  "version": "v 1.0.20260808.01",
+  "version": "v 1.0.20261008.01",
   "private": true,
   "scripts": {
     "dev": "next dev",
