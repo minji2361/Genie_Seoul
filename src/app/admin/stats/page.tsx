@@ -15,7 +15,7 @@ import { brandColor } from '@/lib/brandcolor';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
 
-type TypeFilter = 'all' | 'adult' | 'college' | 'legacy';
+type TypeFilter = 'all' | 'current' | 'legacy';
 type DimensionKey = 'age' | 'gender' | 'mbti';
 type SurveyKey = 'event_types' | 'meeting_times' | 'oneday_classes' | 'clubs';
 
@@ -25,7 +25,7 @@ type CrosstabRow = { group: string; n: number; counts: number[] };
 type Stats = {
     type: TypeFilter;
     total: number;
-    typeCounts: { adult: number; college: number; legacy: number };
+    typeCounts: { current: number; legacy: number };
     surveyLabels: Record<SurveyKey, string>;
     distribution: Record<DimensionKey, Count[]>;
     totals: Record<SurveyKey, Count[]>;
@@ -34,9 +34,8 @@ type Stats = {
 
 const TYPE_TABS: { key: TypeFilter; label: string }[] = [
     { key: 'all', label: '전체' },
-    { key: 'adult', label: '성인' },
-    { key: 'college', label: '대학생' },
-    { key: 'legacy', label: '기타(구 인터뷰지)' },
+    { key: 'current', label: '인터뷰지' },
+    { key: 'legacy', label: '인터뷰지(구)' },
 ];
 
 const DIMENSIONS: { key: DimensionKey; label: string }[] = [

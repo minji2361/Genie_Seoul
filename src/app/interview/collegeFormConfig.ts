@@ -1,19 +1,3 @@
-export type InterviewType = 'adult' | 'college';
-
-/** DB 저장값: 'legacy' 는 직장인/대학생 구분 이전에 작성된 구 인터뷰지 */
-export type StoredInterviewType = InterviewType | 'legacy';
-
-export const STORED_TYPE_LABEL: Record<StoredInterviewType, string> = {
-    adult: '성인',
-    college: '대학생',
-    legacy: '기타(구 인터뷰지)',
-};
-
-export const INTERVIEW_TYPE_LABEL: Record<InterviewType, string> = {
-    adult: '직장인/성인',
-    college: '대학생',
-};
-
 // 대학생 인터뷰 기본정보 (int_interviews 의 기존 컬럼에 저장 → 통계 공통 집계 가능)
 export const COLLEGE_BASIC_FIELDS = [
     { name: 'name', label: '성함', placeholder: '' },

@@ -5,13 +5,10 @@ import { useParams, useRouter } from 'next/navigation';
 import { getGenieInterviewById, type GenieInterview } from '@/app/api/supabaseApi';
 import { brandColor } from '@/lib/brandcolor';
 import { BASIC_FIELDS, INTERVIEW_QUESTIONS, textAreaClass } from '@/app/interview/interviewFormConfig';
-import { getFormSpec, usesLegacyLayout } from '@/app/interview/formSpecs';
+import { getFormKind, getFormSpec, STORED_TYPE_LABEL } from '@/app/interview/formSpecs';
 import { CollegeQuestions } from '@/app/interview/CollegeQuestions';
-import {
-    INTERVIEW_TYPE_LABEL,
-    formatCollegeAnswer,
-    type CollegeAnswers,
-} from '@/app/interview/collegeFormConfig';
+import { formatCollegeAnswer, type CollegeAnswers } from '@/app/interview/collegeFormConfig';
+import { MAJOR_JOB_LABEL, OCCUPATION_TYPE_KEY } from '@/app/interview/lifestyleFormConfig';
 import { CLUBS, EVENT_TYPES, MEETING_TIMES, ONEDAY_CLASSES } from '@/app/interview/surveyConfig';
 
 const readOnlyClass = `${textAreaClass} bg-gray-50 text-gray-700 cursor-not-allowed focus:outline-none resize-none`;
@@ -23,6 +20,14 @@ function joinChecked(selected: string[] | null | undefined, etc?: string | null)
     return items.length > 0 ? items.join(', ') : '-';
 }
 
+function basicLabel(kind: string, field: { name: string; label: string }, answers: CollegeAnswers) {
+    if (kind === 'current' && field.name === 'major_job') {
+        const occupation = answers[OCCUPATION_TYPE_KEY] as keyof typeof MAJOR_JOB_LABEL | undefined;
+        return (occupation && MAJOR_JOB_LABEL[occupation]) || field.label;
+    }
+    return field.label;
+}
+
 function buildInterviewCopyText(interview: GenieInterview) {
     const lines: string[] = [];
     let index = 1;
@@ -32,11 +37,15 @@ function buildInterviewCopyText(interview: GenieInterview) {
         index += 1;
     };
 
-    if (!usesLegacyLayout(interview)) {
+    const kind = getFormKind(interview);
+    if (kind !== 'q12') {
         const answers = (interview.answers ?? {}) as CollegeAnswers;
-        const spec = getFormSpec(interview.interview_type === 'college' ? 'college' : 'adult');
+        const spec = getFormSpec(kind);
+        if (kind === 'current') {
+            pushLine('구분', typeof answers[OCCUPATION_TYPE_KEY] === 'string' ? (answers[OCCUPATION_TYPE_KEY] as string) : '');
+        }
         for (const field of spec.basicFields) {
-            pushLine(field.label, interview[field.name] || '');
+            pushLine(basicLabel(kind, field, answers), interview[field.name] || '');
         }
         for (const section of spec.sections) {
             for (const field of section.fields) {
@@ -149,8 +158,10 @@ export default function InterviewDetailPage() {
         );
     }
 
-    const legacyLayout = usesLegacyLayout(interview);
-    const spec = getFormSpec(interview.interview_type === 'college' ? 'college' : 'adult');
+    const kind = getFormKind(interview);
+    const legacyLayout = kind === 'q12';
+    const spec = getFormSpec(kind === 'q12' ? 'current' : kind);
+    const detailAnswers = (interview.answers ?? {}) as CollegeAnswers;
     const eventTypes = interview.event_types ?? [];
     const meetingTimes = interview.meeting_times ?? [];
     const onedayClasses = interview.oneday_classes ?? [];
@@ -202,17 +213,29 @@ export default function InterviewDetailPage() {
                 <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
                     <h3 className="text-2xl font-bold mb-2 text-gray-800">🌟 지니 QnA</h3>
                     <p className="text-sm text-gray-500 mb-6">
-                        * 기본정보파악 · {legacyLayout ? '기타(구 인터뷰지)' : INTERVIEW_TYPE_LABEL[interview.interview_type === 'college' ? 'college' : 'adult']}
+                        * 기본정보파악 · {STORED_TYPE_LABEL[interview.interview_type ?? 'legacy']}
                     </p>
 
                     <div className="space-y-6 mb-8">
+                        {kind === 'current' && (
+                            <div>
+                                <p className="block text-sm font-medium text-gray-700 mb-1">✨ 구분</p>
+                                <input
+                                    type="text"
+                                    value={(detailAnswers[OCCUPATION_TYPE_KEY] as string) || ''}
+                                    readOnly
+                                    tabIndex={-1}
+                                    className="w-full border border-gray-300 rounded-md p-2 bg-gray-50 text-gray-700 cursor-not-allowed focus:outline-none"
+                                />
+                            </div>
+                        )}
                         {(legacyLayout ? BASIC_FIELDS : spec.basicFields).map((field) => (
                             <div key={field.name}>
                                 <label
                                     htmlFor={field.name}
                                     className="block text-sm font-medium text-gray-700 mb-1"
                                 >
-                                    ✨ {field.label}
+                                    ✨ {basicLabel(kind, field, detailAnswers)}
                                 </label>
                                 <textarea
                                     id={field.name}

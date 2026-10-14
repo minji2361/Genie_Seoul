@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { deleteGenieInterview, getGenieInterviews, type GenieInterview } from '@/app/api/supabaseApi';
-import { STORED_TYPE_LABEL, type StoredInterviewType } from '@/app/interview/collegeFormConfig';
+import { STORED_TYPE_LABEL, storedTypeOf, type StoredInterviewType } from '@/app/interview/formSpecs';
 import { interviewLabels as t } from '@/app/interview/labels';
 import { brandColor } from '@/lib/brandcolor';
 
@@ -39,7 +39,7 @@ export default function Interview() {
         }
     };
 
-    const categoryOf = (item: GenieInterview): StoredInterviewType => item.interview_type ?? 'legacy';
+    const categoryOf = (item: GenieInterview): StoredInterviewType => storedTypeOf(item);
 
     const categoryCount = (key: 'all' | StoredInterviewType) =>
         key === 'all' ? interviews.length : interviews.filter((item) => categoryOf(item) === key).length;
@@ -155,7 +155,7 @@ export default function Interview() {
             {showList && (
                 <>
                     <section className="mb-4 flex flex-wrap gap-2">
-                        {(['all', 'adult', 'college', 'legacy'] as const).map((key) => {
+                        {(['all', 'current', 'legacy'] as const).map((key) => {
                             const active = category === key;
                             return (
                                 <button

@@ -15,14 +15,16 @@ import {
     textAreaClass,
     type InterviewFormState,
 } from '@/app/interview/interviewFormConfig';
-import { getFormSpec } from '@/app/interview/formSpecs';
+import { getFormKind, getFormSpec, STORED_TYPE_LABEL } from '@/app/interview/formSpecs';
 import { CollegeQuestions } from '@/app/interview/CollegeQuestions';
+import { type CollegeAnswers } from '@/app/interview/collegeFormConfig';
 import {
-    INTERVIEW_TYPE_LABEL,
-    type CollegeAnswers,
-    type InterviewType,
-    type StoredInterviewType,
-} from '@/app/interview/collegeFormConfig';
+    BASIC_SELECT_OPTIONS,
+    MAJOR_JOB_DEFAULT_LABEL,
+    MAJOR_JOB_LABEL,
+    OCCUPATION_TYPES,
+    OCCUPATION_TYPE_KEY,
+} from '@/app/interview/lifestyleFormConfig';
 import {
     CLUBS,
     EVENT_TYPES,
@@ -35,9 +37,6 @@ import {
 
 type InterviewFormProps = {
     mode: 'create' | 'edit';
-    interviewType?: InterviewType;
-    /** 구 인터뷰지(q1~q12) 레이아웃으로 열기 */
-    legacyLayout?: boolean;
     interviewId?: string;
     initialInterview?: GenieInterview;
 };
@@ -82,9 +81,13 @@ function toSurveyState(interview?: GenieInterview): SurveyState {
     };
 }
 
-export function InterviewForm({ mode, interviewType = 'adult', legacyLayout = false, interviewId, initialInterview }: InterviewFormProps) {
+export function InterviewForm({ mode, interviewId, initialInterview }: InterviewFormProps) {
     const router = useRouter();
-    const spec = getFormSpec(interviewType);
+    // 신규 작성 → 통합 인터뷰지, 수정 → 저장된 양식(인터뷰지(구)는 예전 양식 그대로)
+    const formKind = getFormKind(initialInterview);
+    const legacyLayout = formKind === 'q12';
+    const spec = getFormSpec(formKind === 'q12' ? 'current' : formKind);
+    const isCurrent = formKind === 'current';
     const [collegeAnswers, setCollegeAnswers] = useState<CollegeAnswers>(
         () => (initialInterview?.answers as CollegeAnswers | undefined) ?? {},
     );
@@ -117,6 +120,11 @@ export function InterviewForm({ mode, interviewType = 'adult', legacyLayout = fa
         const requiredBasic = ['name', 'age', 'gender', 'mbti', 'region'] as const;
         const missingBasic = requiredBasic.some((key) => !form[key].trim());
 
+        if (isCurrent && !collegeAnswers[OCCUPATION_TYPE_KEY]) {
+            alert('구분(대학생 / 직장인·기타)을 선택해주세요.');
+            return false;
+        }
+
         if (missingBasic) {
             alert('기본정보(이름, 나이, 성별, MBTI, 거주 지역)를 모두 작성해주세요.');
             return false;
@@ -132,7 +140,8 @@ export function InterviewForm({ mode, interviewType = 'adult', legacyLayout = fa
 
     const buildPayload = () => ({
         ...form,
-        interview_type: (initialInterview?.interview_type === 'legacy' ? 'legacy' : interviewType) as StoredInterviewType,
+        interview_type: initialInterview?.interview_type ?? ('current' as const),
+        legacy_form: initialInterview?.legacy_form ?? null,
         answers: legacyLayout ? {} : collegeAnswers,
         event_types: survey.event_types,
         event_types_etc: survey.event_types_etc.trim(),
@@ -271,28 +280,76 @@ export function InterviewForm({ mode, interviewType = 'adult', legacyLayout = fa
                 <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
                     <h3 className="text-2xl font-bold mb-2 text-gray-800">🌟 지니 QnA</h3>
                     <p className="text-sm text-gray-500 mb-6">
-                        * 기본정보파악 · {legacyLayout ? '기타(구 인터뷰지)' : INTERVIEW_TYPE_LABEL[interviewType]}
+                        * 기본정보파악 · {STORED_TYPE_LABEL[initialInterview?.interview_type ?? 'current']}
                         {mode === 'edit' ? ' (수정)' : ''}
                     </p>
 
                     <div className="space-y-6 mb-8">
                         {(legacyLayout ? BASIC_FIELDS : spec.basicFields).map((field) => (
                             <div key={field.name}>
+                                {isCurrent && field.name === 'major_job' && (
+                                    <div className="mb-6">
+                                        <p className="block text-sm font-medium text-gray-700 mb-2">✨ 구분</p>
+                                        <div className="flex gap-6">
+                                            {OCCUPATION_TYPES.map((opt) => (
+                                                <label key={opt} className="flex items-center gap-2 cursor-pointer">
+                                                    <input
+                                                        type="radio"
+                                                        name={OCCUPATION_TYPE_KEY}
+                                                        checked={collegeAnswers[OCCUPATION_TYPE_KEY] === opt}
+                                                        onChange={() =>
+                                                            setCollegeAnswers((prev) => ({
+                                                                ...prev,
+                                                                [OCCUPATION_TYPE_KEY]: opt,
+                                                            }))
+                                                        }
+                                                        className="w-4 h-4"
+                                                    />
+                                                    <span>{opt}</span>
+                                                </label>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
                                 <label
                                     htmlFor={field.name}
                                     className="block text-sm font-medium text-gray-700 mb-1"
                                 >
-                                    ✨ {field.label}
+                                    ✨{' '}
+                                    {isCurrent && field.name === 'major_job'
+                                        ? (MAJOR_JOB_LABEL[collegeAnswers[OCCUPATION_TYPE_KEY] as keyof typeof MAJOR_JOB_LABEL] ??
+                                          MAJOR_JOB_DEFAULT_LABEL)
+                                        : field.label}
                                 </label>
-                                <textarea
-                                    id={field.name}
-                                    name={field.name}
-                                    rows={3}
-                                    value={form[field.name]}
-                                    placeholder={field.placeholder}
-                                    onChange={handleChange}
-                                    className={textAreaClass}
-                                />
+                                {isCurrent && BASIC_SELECT_OPTIONS[field.name] ? (
+                                    <select
+                                        id={field.name}
+                                        name={field.name}
+                                        value={form[field.name]}
+                                        onChange={(e) => setForm((prev) => ({ ...prev, [field.name]: e.target.value }))}
+                                        className="w-full border border-gray-300 rounded-md p-2 bg-white focus:ring-blue-500 focus:border-blue-500"
+                                    >
+                                        <option value="">선택</option>
+                                        {BASIC_SELECT_OPTIONS[field.name].map((opt) => (
+                                            <option key={opt} value={opt}>
+                                                {opt}
+                                            </option>
+                                        ))}
+                                        {form[field.name] && !BASIC_SELECT_OPTIONS[field.name].includes(form[field.name]) && (
+                                            <option value={form[field.name]}>{form[field.name]}</option>
+                                        )}
+                                    </select>
+                                ) : (
+                                    <textarea
+                                        id={field.name}
+                                        name={field.name}
+                                        rows={3}
+                                        value={form[field.name]}
+                                        placeholder={field.placeholder}
+                                        onChange={handleChange}
+                                        className={textAreaClass}
+                                    />
+                                )}
                             </div>
                         ))}
                     </div>
