@@ -67,13 +67,11 @@ function pickSurveyPayload(body: Record<string, unknown>) {
   return survey;
 }
 
-function pickTypeAndAnswers(body: Record<string, unknown>) {
-  const requestedType = body["interview_type"];
-  const interviewType = requestedType === "college" || requestedType === "legacy" ? requestedType : "adult";
+function pickAnswers(body: Record<string, unknown>) {
   const rawAnswers = body["answers"];
   const answers: Record<string, string | string[]> = {};
 
-  if (interviewType !== "legacy" && rawAnswers && typeof rawAnswers === "object" && !Array.isArray(rawAnswers)) {
+  if (rawAnswers && typeof rawAnswers === "object" && !Array.isArray(rawAnswers)) {
     for (const [key, value] of Object.entries(rawAnswers as Record<string, unknown>)) {
       if (typeof value === "string") {
         answers[key] = value;
@@ -83,7 +81,7 @@ function pickTypeAndAnswers(body: Record<string, unknown>) {
     }
   }
 
-  return { interview_type: interviewType, answers };
+  return answers;
 }
 
 async function getCounselorId() {
@@ -144,7 +142,7 @@ export async function PATCH(request: Request, { params }: { params: { id: string
 
   const payload = pickInterviewPayload(body as Record<string, unknown>);
   const surveyPayload = pickSurveyPayload(body as Record<string, unknown>);
-  const typePayload = pickTypeAndAnswers(body as Record<string, unknown>);
+  const answers = pickAnswers(body as Record<string, unknown>);
   const required = ["name", "age", "gender", "mbti", "region"] as const;
 
   for (const field of required) {
@@ -183,7 +181,8 @@ export async function PATCH(request: Request, { params }: { params: { id: string
       q12_interview_thoughts: payload.q12_interview_thoughts ?? "",
       signatureurl: payload.signatureurl ?? "",
       ...surveyPayload,
-        ...typePayload,
+      // interview_type / legacy_form 은 수정하지 않음 (작성 시점의 양식 유지)
+      answers,
     })
     .eq("id", params.id)
     .eq("counselors", counselorId)

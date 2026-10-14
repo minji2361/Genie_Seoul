@@ -4,7 +4,7 @@ import { isAdmin } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase-admin";
 import { CLUBS, EVENT_TYPES, MEETING_TIMES, ONEDAY_CLASSES } from "@/app/interview/surveyConfig";
 
-type TypeFilter = "all" | "adult" | "college" | "legacy";
+type TypeFilter = "all" | "current" | "legacy";
 
 const AGE_GROUPS = ["10대", "20대 초반", "20대 중반", "20대 후반", "30대", "40대 이상", "미상"] as const;
 const GENDERS = ["여성", "남성", "기타/미상"] as const;
@@ -80,7 +80,7 @@ export async function GET(request: Request) {
 
   const typeParam = new URL(request.url).searchParams.get("type");
   const type: TypeFilter =
-    typeParam === "adult" || typeParam === "college" || typeParam === "legacy" ? typeParam : "all";
+    typeParam === "current" || typeParam === "legacy" ? typeParam : "all";
 
   const { data, error } = await admin
     .from("int_interviews")
@@ -93,10 +93,9 @@ export async function GET(request: Request) {
   }
 
   const allRows = (data ?? []) as Row[];
-  const typeOf = (r: Row) => (r.interview_type === "adult" || r.interview_type === "college" ? r.interview_type : "legacy");
+  const typeOf = (r: Row) => (r.interview_type === "current" ? "current" : "legacy");
   const typeCounts = {
-    adult: allRows.filter((r) => typeOf(r) === "adult").length,
-    college: allRows.filter((r) => typeOf(r) === "college").length,
+    current: allRows.filter((r) => typeOf(r) === "current").length,
     legacy: allRows.filter((r) => typeOf(r) === "legacy").length,
   };
   const rows = allRows.filter((r) => type === "all" || typeOf(r) === type);

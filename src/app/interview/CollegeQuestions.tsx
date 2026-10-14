@@ -25,7 +25,7 @@ export function CollegeQuestions({ answers, onChange, readOnly = false, sections
         return (
             <div key={field.name}>
                 <p className="block text-sm font-medium text-gray-700 mb-1">{field.label}</p>
-                {field.hint && <p className="text-xs text-gray-500 mb-2">{field.hint}</p>}
+                {field.hint && <p className="text-xs leading-5 text-gray-500 mb-2 whitespace-pre-line">{field.hint}</p>}
 
                 {field.kind === 'textarea' && (
                     <textarea
@@ -95,7 +95,7 @@ export function CollegeQuestions({ answers, onChange, readOnly = false, sections
                 <section key={section.title} className="space-y-5">
                     <h4 className="text-base font-bold text-gray-800 border-b border-gray-200 pb-1">{section.title}</h4>
                     {section.note && (
-                        <p className="text-sm leading-6 text-gray-600 bg-gray-50 rounded-md p-3">{section.note}</p>
+                        <p className="text-sm leading-6 text-gray-600 bg-gray-50 rounded-md p-3 whitespace-pre-line">{section.note}</p>
                     )}
                     {section.fields.map(renderField)}
                 </section>

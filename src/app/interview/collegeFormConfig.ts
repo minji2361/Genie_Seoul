@@ -1,19 +1,3 @@
-export type InterviewType = 'adult' | 'college';
-
-/** DB 저장값: 'legacy' 는 직장인/대학생 구분 이전에 작성된 구 인터뷰지 */
-export type StoredInterviewType = InterviewType | 'legacy';
-
-export const STORED_TYPE_LABEL: Record<StoredInterviewType, string> = {
-    adult: '성인',
-    college: '대학생',
-    legacy: '기타(구 인터뷰지)',
-};
-
-export const INTERVIEW_TYPE_LABEL: Record<InterviewType, string> = {
-    adult: '직장인/성인',
-    college: '대학생',
-};
-
 export type BasicFieldOption = { value: string; label: string };
 
 /** 드롭다운으로 보여줄 텍스트(label)와 저장될 값(value)이 다른 경우를 위한 옵션 목록 */
