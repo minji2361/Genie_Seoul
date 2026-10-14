@@ -1,4 +1,9 @@
-import type { CollegeSection } from '@/app/interview/collegeFormConfig';
+import {
+    AGE_OPTIONS,
+    GENDER_OPTIONS,
+    MBTI_OPTIONS,
+    type CollegeSection,
+} from '@/app/interview/collegeFormConfig';
 
 // 통합 인터뷰지(1:1 심층 라이프스타일 인터뷰) 기본정보 (int_interviews 의 기존 컬럼에 저장 → 통계 공통 집계 가능)
 // '구분'(occupation_type)은 answers 에 저장되고, 구분 값에 따라 major_job 라벨이 바뀝니다.
@@ -13,27 +18,14 @@ export const MAJOR_JOB_LABEL: Record<(typeof OCCUPATION_TYPES)[number], string> 
 
 export const MAJOR_JOB_DEFAULT_LABEL = '직업(직종) / 학과(학년)';
 
-// 드롭다운 선택지 (통계의 나이대/성별/MBTI 집계가 읽는 형식과 맞춤)
-export const AGE_OPTIONS = Array.from({ length: 46 }, (_, i) => `${i + 15}세`);
-export const GENDER_OPTIONS = ['여성', '남성', '기타'] as const;
-export const MBTI_OPTIONS = [
-    'ISTJ', 'ISFJ', 'INFJ', 'INTJ', 'ISTP', 'ISFP', 'INFP', 'INTP',
-    'ESTP', 'ESFP', 'ENFP', 'ENTP', 'ESTJ', 'ESFJ', 'ENFJ', 'ENTJ',
-] as const;
-
-export const BASIC_SELECT_OPTIONS: Record<string, readonly string[]> = {
-    age: AGE_OPTIONS,
-    gender: GENDER_OPTIONS,
-    mbti: MBTI_OPTIONS,
-};
-
+// 기본정보 드롭다운(나이/성별/MBTI)은 구 성인·대학생 인터뷰지와 같은 선택지를 사용
 export const LIFESTYLE_BASIC_FIELDS = [
-    { name: 'name', label: '성함', placeholder: '' },
-    { name: 'age', label: '나이', placeholder: '' },
-    { name: 'gender', label: '성별', placeholder: '' },
-    { name: 'mbti', label: 'MBTI', placeholder: '' },
-    { name: 'major_job', label: MAJOR_JOB_DEFAULT_LABEL, placeholder: '' },
-    { name: 'region', label: '주 활동 동네', placeholder: '직장·학교 근처, 거주지 근처 등' },
+    { name: 'name', label: '성함', placeholder: '', kind: undefined, options: undefined },
+    { name: 'age', label: '나이', placeholder: '', kind: 'select', options: AGE_OPTIONS },
+    { name: 'gender', label: '성별', placeholder: '', kind: 'select', options: GENDER_OPTIONS },
+    { name: 'mbti', label: 'MBTI', placeholder: '', kind: 'select', options: MBTI_OPTIONS },
+    { name: 'major_job', label: MAJOR_JOB_DEFAULT_LABEL, placeholder: '', kind: undefined, options: undefined },
+    { name: 'region', label: '주 활동 동네', placeholder: '직장·학교 근처, 거주지 근처 등', kind: undefined, options: undefined },
 ] as const;
 
 export const LIFESTYLE_SECTIONS: readonly CollegeSection[] = [

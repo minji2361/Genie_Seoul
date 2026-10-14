@@ -158,6 +158,8 @@ export type GenieInterview = {
     name: string;
     age: string;
     gender: string;
+    /** DB 계산 컬럼: gender 가 F/M 이면 "여자"/"남자", 그 외엔 원본 그대로 */
+    gender_label?: string;
     mbti: string;
     region: string;
     hobby: string;

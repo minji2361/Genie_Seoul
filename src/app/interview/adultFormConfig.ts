@@ -1,13 +1,14 @@
 import type { CollegeSection } from '@/app/interview/collegeFormConfig';
+import { AGE_OPTIONS, GENDER_OPTIONS, MBTI_OPTIONS } from '@/app/interview/collegeFormConfig';
 
 // 직장인/성인 인터뷰 기본정보 (int_interviews 의 기존 컬럼에 저장 → 통계 공통 집계 가능)
 export const ADULT_BASIC_FIELDS = [
-    { name: 'name', label: '성함', placeholder: '' },
-    { name: 'age', label: '나이', placeholder: '' },
-    { name: 'gender', label: '성별', placeholder: '' },
-    { name: 'mbti', label: 'MBTI', placeholder: '' },
-    { name: 'major_job', label: '직업(직종)', placeholder: '' },
-    { name: 'region', label: '주 활동 동네', placeholder: '직장 근처, 거주지 근처 등' },
+    { name: 'name', label: '성함', placeholder: '', kind: undefined, options: undefined },
+    { name: 'age', label: '나이', placeholder: '', kind: 'select', options: AGE_OPTIONS },
+    { name: 'gender', label: '성별', placeholder: '', kind: 'select', options: GENDER_OPTIONS },
+    { name: 'mbti', label: 'MBTI', placeholder: '', kind: 'select', options: MBTI_OPTIONS },
+    { name: 'major_job', label: '직업(직종)', placeholder: '', kind: undefined, options: undefined },
+    { name: 'region', label: '주 활동 동네', placeholder: '직장 근처, 거주지 근처 등', kind: undefined, options: undefined },
 ] as const;
 
 export const ADULT_SECTIONS: readonly CollegeSection[] = [

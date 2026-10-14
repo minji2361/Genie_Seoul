@@ -239,7 +239,7 @@ export default function Interview() {
                                         >
                                             <td className="py-4 px-5 font-medium">{item.name}</td>
                                             <td className="py-4 px-5 hidden md:table-cell">{item.age}</td>
-                                            <td className="py-4 px-5 hidden md:table-cell">{item.gender}</td>
+                                            <td className="py-4 px-5 hidden md:table-cell">{item.gender_label || item.gender}</td>
                                             <td className="py-4 px-5 hidden md:table-cell">{item.mbti}</td>
                                             <td className="py-4 px-5 hidden lg:table-cell">{item.region}</td>
                                             <td className="py-4 px-5 text-center flex justify-center gap-3">

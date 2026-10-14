@@ -12,6 +12,7 @@ import {
     BASIC_FIELDS,
     INITIAL_INTERVIEW_FORM,
     INTERVIEW_QUESTIONS,
+    selectClass,
     textAreaClass,
     type InterviewFormState,
 } from '@/app/interview/interviewFormConfig';
@@ -19,7 +20,6 @@ import { getFormKind, getFormSpec, STORED_TYPE_LABEL } from '@/app/interview/for
 import { CollegeQuestions } from '@/app/interview/CollegeQuestions';
 import { type CollegeAnswers } from '@/app/interview/collegeFormConfig';
 import {
-    BASIC_SELECT_OPTIONS,
     MAJOR_JOB_DEFAULT_LABEL,
     MAJOR_JOB_LABEL,
     OCCUPATION_TYPES,
@@ -111,7 +111,7 @@ export function InterviewForm({ mode, interviewId, initialInterview }: Interview
         });
     };
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setForm((prev) => ({ ...prev, [name]: value }));
     };
@@ -321,21 +321,21 @@ export function InterviewForm({ mode, interviewId, initialInterview }: Interview
                                           MAJOR_JOB_DEFAULT_LABEL)
                                         : field.label}
                                 </label>
-                                {isCurrent && BASIC_SELECT_OPTIONS[field.name] ? (
+                                {field.kind === 'select' ? (
                                     <select
                                         id={field.name}
                                         name={field.name}
                                         value={form[field.name]}
-                                        onChange={(e) => setForm((prev) => ({ ...prev, [field.name]: e.target.value }))}
-                                        className="w-full border border-gray-300 rounded-md p-2 bg-white focus:ring-blue-500 focus:border-blue-500"
+                                        onChange={handleChange}
+                                        className={selectClass}
                                     >
                                         <option value="">선택</option>
-                                        {BASIC_SELECT_OPTIONS[field.name].map((opt) => (
-                                            <option key={opt} value={opt}>
-                                                {opt}
+                                        {field.options.map((opt) => (
+                                            <option key={opt.value} value={opt.value}>
+                                                {opt.label}
                                             </option>
                                         ))}
-                                        {form[field.name] && !BASIC_SELECT_OPTIONS[field.name].includes(form[field.name]) && (
+                                        {form[field.name] && !field.options.some((opt) => opt.value === form[field.name]) && (
                                             <option value={form[field.name]}>{form[field.name]}</option>
                                         )}
                                     </select>

@@ -7,7 +7,7 @@ import { brandColor } from '@/lib/brandcolor';
 import { BASIC_FIELDS, INTERVIEW_QUESTIONS, textAreaClass } from '@/app/interview/interviewFormConfig';
 import { getFormKind, getFormSpec, STORED_TYPE_LABEL } from '@/app/interview/formSpecs';
 import { CollegeQuestions } from '@/app/interview/CollegeQuestions';
-import { formatCollegeAnswer, type CollegeAnswers } from '@/app/interview/collegeFormConfig';
+import { formatBasicFieldValue, formatCollegeAnswer, type CollegeAnswers } from '@/app/interview/collegeFormConfig';
 import { MAJOR_JOB_LABEL, OCCUPATION_TYPE_KEY } from '@/app/interview/lifestyleFormConfig';
 import { CLUBS, EVENT_TYPES, MEETING_TIMES, ONEDAY_CLASSES } from '@/app/interview/surveyConfig';
 
@@ -45,7 +45,7 @@ function buildInterviewCopyText(interview: GenieInterview) {
             pushLine('구분', typeof answers[OCCUPATION_TYPE_KEY] === 'string' ? (answers[OCCUPATION_TYPE_KEY] as string) : '');
         }
         for (const field of spec.basicFields) {
-            pushLine(basicLabel(kind, field, answers), interview[field.name] || '');
+            pushLine(basicLabel(kind, field, answers), formatBasicFieldValue(field, interview[field.name] || ''));
         }
         for (const section of spec.sections) {
             for (const field of section.fields) {
@@ -241,7 +241,7 @@ export default function InterviewDetailPage() {
                                     id={field.name}
                                     name={field.name}
                                     rows={3}
-                                    value={interview[field.name] || ''}
+                                    value={formatBasicFieldValue(field, interview[field.name] || '')}
                                     readOnly
                                     tabIndex={-1}
                                     className={readOnlyClass}
