@@ -10,6 +10,7 @@ import {
     type HomePopupConfig,
 } from '@/app/api/supabaseApi';
 import { useAuth } from '@/app/context/AuthContext';
+import { PopupApplicationsList } from '@/components/PopupApplicationsList';
 import { brandColor } from '@/lib/brandcolor';
 
 const EMPTY_CONFIG: HomePopupConfig = {
@@ -19,6 +20,7 @@ const EMPTY_CONFIG: HomePopupConfig = {
     is_active: false,
     content_type: 'text',
     link_url: null,
+    apply_enabled: false,
 };
 
 export default function AdminPopupPage() {
@@ -87,6 +89,7 @@ export default function AdminPopupPage() {
             is_active: config.is_active,
             content_type: config.content_type,
             link_url: config.content_type === 'link' ? config.link_url : null,
+            apply_enabled: config.apply_enabled,
         });
 
         setSaving(false);
@@ -149,6 +152,30 @@ export default function AdminPopupPage() {
                             <span
                                 className="absolute left-1 top-1 h-6 w-6 rounded-full bg-white shadow transition-transform"
                                 style={{ transform: config.is_active ? 'translateX(24px)' : 'translateX(0)' }}
+                            />
+                        </button>
+                    </section>
+
+                    <section className="flex items-center justify-between rounded-lg border p-5" style={{ borderColor: brandColor.deepmoss }}>
+                        <div>
+                            <p className="font-semibold">신청하기 버튼</p>
+                            <p className="text-sm text-gray-500">
+                                {config.apply_enabled
+                                    ? '팝업 문구 아래에 신청하기 버튼이 표시됩니다.'
+                                    : '신청하기 버튼이 숨겨져 있습니다.'}
+                            </p>
+                        </div>
+                        <button
+                            type="button"
+                            role="switch"
+                            aria-checked={config.apply_enabled}
+                            onClick={() => setConfig((prev) => ({ ...prev, apply_enabled: !prev.apply_enabled }))}
+                            className="relative h-8 w-14 rounded-full transition-colors"
+                            style={{ backgroundColor: config.apply_enabled ? brandColor.deepmoss : '#d1d5db' }}
+                        >
+                            <span
+                                className="absolute left-1 top-1 h-6 w-6 rounded-full bg-white shadow transition-transform"
+                                style={{ transform: config.apply_enabled ? 'translateX(24px)' : 'translateX(0)' }}
                             />
                         </button>
                     </section>
@@ -268,6 +295,11 @@ export default function AdminPopupPage() {
                     >
                         {saving ? '저장 중...' : '저장'}
                     </button>
+
+                    <div className="mt-8 pt-6 border-t-4" style={{ borderColor: brandColor.orangeish }}>
+                        <h2 className="text-2xl font-extrabold mb-4">팝업 신청자 목록</h2>
+                        <PopupApplicationsList canDelete />
+                    </div>
                 </div>
             )}
         </main>
