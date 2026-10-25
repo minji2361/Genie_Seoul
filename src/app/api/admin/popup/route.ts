@@ -21,7 +21,7 @@ export async function GET() {
 
   const { data, error } = await admin
     .from("home_popup_config")
-    .select("title, description, image_url, is_active, content_type, link_url")
+    .select("title, description, image_url, is_active, content_type, link_url, apply_enabled")
     .eq("id", 1)
     .maybeSingle();
 
@@ -52,6 +52,7 @@ export async function PATCH(request: Request) {
   if (typeof body.image_url === "string" || body.image_url === null) update.image_url = body.image_url;
   if (typeof body.is_active === "boolean") update.is_active = body.is_active;
   if (body.content_type === "text" || body.content_type === "link") update.content_type = body.content_type;
+  if (typeof body.apply_enabled === "boolean") update.apply_enabled = body.apply_enabled;
   if (typeof body.link_url === "string" || body.link_url === null) update.link_url = body.link_url;
 
   if (Object.keys(update).length === 0) {
@@ -70,7 +71,7 @@ export async function PATCH(request: Request) {
     .from("home_popup_config")
     .update({ ...update, updated_at: new Date().toISOString() })
     .eq("id", 1)
-    .select("title, description, image_url, is_active, content_type, link_url")
+    .select("title, description, image_url, is_active, content_type, link_url, apply_enabled")
     .maybeSingle();
 
   if (error) {

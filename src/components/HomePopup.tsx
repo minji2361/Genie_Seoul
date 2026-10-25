@@ -1,7 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
+import { AGE_OPTIONS, GENDER_OPTIONS } from '@/app/interview/collegeFormConfig';
 
 const STORAGE_KEY = 'genie-home-popup-hide-until';
 
@@ -20,7 +21,21 @@ type HomePopupConfig = {
     is_active: boolean;
     content_type: 'text' | 'link';
     link_url: string | null;
+    apply_enabled?: boolean;
 };
+
+const INITIAL_APPLY_FORM = { name: '', age: '', gender: '', region: '', phone: '', website: '' };
+
+/** 숫자만 입력해도 000-0000-0000 형태로 맞춰 준다 */
+function formatPhone(raw: string): string {
+    const digits = raw.replace(/\D/g, '').slice(0, 11);
+    if (digits.length <= 3) return digits;
+    if (digits.length <= 7) return `${digits.slice(0, 3)}-${digits.slice(3)}`;
+    return `${digits.slice(0, 3)}-${digits.slice(3, 7)}-${digits.slice(7)}`;
+}
+
+const fieldClass =
+    'w-full rounded-lg border border-white/15 bg-white/10 px-3 py-2 text-sm text-white placeholder:text-white/40 focus:border-white/50 focus:outline-none';
 
 function isHiddenForToday(): boolean {
     try {
@@ -45,6 +60,11 @@ function hideForToday() {
 export function HomePopup() {
     const [open, setOpen] = useState(false);
     const [config, setConfig] = useState<HomePopupConfig | null>(null);
+    const [applyOpen, setApplyOpen] = useState(false);
+    const [applyForm, setApplyForm] = useState(INITIAL_APPLY_FORM);
+    const [applying, setApplying] = useState(false);
+    const [applyError, setApplyError] = useState<string | null>(null);
+    const [applied, setApplied] = useState(false);
 
     useEffect(() => {
         let cancelled = false;
@@ -92,6 +112,45 @@ export function HomePopup() {
         setOpen(false);
     };
 
+    const handleApply = async (e: FormEvent) => {
+        e.preventDefault();
+        if (applying) return;
+
+        const { name, age, gender, region, phone } = applyForm;
+        if (!name.trim() || !age || !gender || !region.trim() || !phone) {
+            setApplyError('모든 항목을 입력해 주세요.');
+            return;
+        }
+        if (!/^\d{3}-\d{4}-\d{4}$/.test(phone)) {
+            setApplyError('전화번호는 000-0000-0000 형식으로 입력해 주세요.');
+            return;
+        }
+
+        setApplying(true);
+        setApplyError(null);
+        try {
+            const res = await fetch('/api/popup/apply', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(applyForm),
+            });
+            const json = await res.json().catch(() => ({}));
+            if (!res.ok) {
+                setApplyError(json.error ?? '신청에 실패했습니다. 잠시 후 다시 시도해 주세요.');
+                return;
+            }
+            setApplied(true);
+            setApplyForm(INITIAL_APPLY_FORM);
+        } catch {
+            setApplyError('신청에 실패했습니다. 잠시 후 다시 시도해 주세요.');
+        } finally {
+            setApplying(false);
+        }
+    };
+
+    const setApplyField = (key: keyof typeof INITIAL_APPLY_FORM, value: string) =>
+        setApplyForm((prev) => ({ ...prev, [key]: value }));
+
     const imageSrc = config.image_url || DEFAULT_POPUP.imageSrc;
     const title = config.title || DEFAULT_POPUP.title;
     const description = config.description.length > 0 ? config.description : DEFAULT_POPUP.description;
@@ -113,7 +172,12 @@ export function HomePopup() {
             <div
                 className="
           pointer-events-auto
-          relative z-10 w-full max-w-[440px] overflow-hidden
+          relative z-10 w-full max-w-[440px] max-h-[92vh] overflow-y-auto overscroll-contain
+          [scrollbar-width:thin] [scrollbar-color:rgba(255,255,255,0.28)_transparent]
+          [&::-webkit-scrollbar]:w-1.5
+          [&::-webkit-scrollbar-track]:my-4 [&::-webkit-scrollbar-track]:bg-transparent
+          [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-white/25
+          [&::-webkit-scrollbar-thumb:hover]:bg-white/40
           rounded-3xl
           border border-white/10
           bg-[#0b0b0b]/90 backdrop-blur-xl
@@ -172,6 +236,109 @@ export function HomePopup() {
                                 </span>
                             ))}
                         </p>
+                    )}
+
+                    {config.apply_enabled && (
+                        <div className="mt-4">
+                            <button
+                                type="button"
+                                onClick={() => setApplyOpen((prev) => !prev)}
+                                aria-expanded={applyOpen}
+                                className="w-full rounded-xl bg-white py-3 text-sm font-semibold text-black transition hover:bg-white/90"
+                            >
+                                신청하기
+                            </button>
+
+                            <div
+                                className={`grid transition-all duration-300 ease-out ${
+                                    applyOpen ? 'mt-4 grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+                                }`}
+                            >
+                                <div className="overflow-hidden">
+                                    {applied ? (
+                                        <p className="rounded-xl bg-white/10 px-4 py-5 text-sm text-white">
+                                            신청이 완료되었습니다. 감사합니다!
+                                        </p>
+                                    ) : (
+                                        <form onSubmit={handleApply} className="space-y-3 text-left" noValidate>
+                                            <input
+                                                type="text"
+                                                value={applyForm.name}
+                                                onChange={(e) => setApplyField('name', e.target.value)}
+                                                placeholder="이름"
+                                                maxLength={30}
+                                                aria-label="이름"
+                                                className={fieldClass}
+                                            />
+                                            <div className="grid grid-cols-2 gap-3">
+                                                <select
+                                                    value={applyForm.age}
+                                                    onChange={(e) => setApplyField('age', e.target.value)}
+                                                    aria-label="나이"
+                                                    className={`${fieldClass} [&>option]:text-black`}
+                                                >
+                                                    <option value="">나이</option>
+                                                    {AGE_OPTIONS.map((opt) => (
+                                                        <option key={opt.value} value={opt.value}>
+                                                            {opt.label}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                                <select
+                                                    value={applyForm.gender}
+                                                    onChange={(e) => setApplyField('gender', e.target.value)}
+                                                    aria-label="성별"
+                                                    className={`${fieldClass} [&>option]:text-black`}
+                                                >
+                                                    <option value="">성별</option>
+                                                    {GENDER_OPTIONS.map((opt) => (
+                                                        <option key={opt.value} value={opt.value}>
+                                                            {opt.label}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                            <input
+                                                type="text"
+                                                value={applyForm.region}
+                                                onChange={(e) => setApplyField('region', e.target.value)}
+                                                placeholder="거주지 (예: 중랑구 상봉동)"
+                                                maxLength={60}
+                                                aria-label="거주지"
+                                                className={fieldClass}
+                                            />
+                                            <input
+                                                type="tel"
+                                                inputMode="numeric"
+                                                value={applyForm.phone}
+                                                onChange={(e) => setApplyField('phone', formatPhone(e.target.value))}
+                                                placeholder="전화번호 (000-0000-0000)"
+                                                aria-label="전화번호"
+                                                className={fieldClass}
+                                            />
+                                            {/* 봇 방지용 숨김 입력: 사람은 채우지 않는다 */}
+                                            <input
+                                                type="text"
+                                                tabIndex={-1}
+                                                autoComplete="off"
+                                                aria-hidden="true"
+                                                value={applyForm.website}
+                                                onChange={(e) => setApplyField('website', e.target.value)}
+                                                className="absolute -left-[9999px] h-0 w-0 opacity-0"
+                                            />
+                                            {applyError && <p className="text-xs text-red-300">{applyError}</p>}
+                                            <button
+                                                type="submit"
+                                                disabled={applying}
+                                                className="w-full rounded-xl border border-white/40 py-3 text-sm font-semibold text-white transition hover:bg-white/10 disabled:opacity-50"
+                                            >
+                                                {applying ? '신청 중...' : '신청 완료'}
+                                            </button>
+                                        </form>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
                     )}
 
                     <button

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { deleteGenieInterview, getGenieInterviews, type GenieInterview } from '@/app/api/supabaseApi';
 import { STORED_TYPE_LABEL, storedTypeOf, type StoredInterviewType } from '@/app/interview/formSpecs';
@@ -74,6 +75,16 @@ export default function Interview() {
             >
                 {t.title}
             </h1>
+
+            <div className="mb-4 text-right">
+                <Link
+                    href="/dashboard/popup-applications"
+                    className="text-sm font-medium hover:underline"
+                    style={{ color: brandColor.deepmoss }}
+                >
+                    팝업 신청자 보기 →
+                </Link>
+            </div>
 
             <section className="flex flex-col sm:flex-row sm:justify-between items-center gap-4 mb-8">
                 <button

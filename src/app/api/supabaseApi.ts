@@ -370,6 +370,7 @@ export type HomePopupConfig = {
     is_active: boolean;
     content_type: 'text' | 'link';
     link_url: string | null;
+    apply_enabled: boolean;
 };
 
 export const getAdminPopupConfig = async () => {
@@ -415,4 +416,37 @@ export const uploadAdminPopupImage = async (file: File) => {
     }
 
     return { url: (json.url ?? null) as string | null, error: null };
+};
+
+export type PopupApplication = {
+    id: string;
+    name: string;
+    age: string;
+    gender: string;
+    region: string;
+    phone: string;
+    popup_title: string;
+    created_at: string;
+};
+
+export const getPopupApplications = async () => {
+    const res = await fetch('/api/popup/applications', { credentials: 'include' });
+    const json = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+        return { data: [] as PopupApplication[], error: { message: json.error ?? '신청 내역을 불러오지 못했습니다.' } };
+    }
+
+    return { data: (json.data ?? []) as PopupApplication[], error: null };
+};
+
+export const deletePopupApplication = async (id: string) => {
+    const res = await fetch(`/api/admin/popup/applications/${id}`, { method: 'DELETE', credentials: 'include' });
+    const json = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+        return { error: { message: json.error ?? '삭제에 실패했습니다.' } };
+    }
+
+    return { error: null };
 };
